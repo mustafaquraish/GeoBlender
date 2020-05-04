@@ -22,10 +22,12 @@ from .operators.Scratch import Scratch
 from .operators.line_between_points import LineBetweenPoints
 from .operators.draw_triangle import DrawTriangle
 from .operators.draw_circumcircle import DrawCircumcircle
+from .operators.draw_inscribed_circle import DrawInscribedCircle
 from .operators.bisect_plane import BisectPlane
 from .operators.empty_orthocenter import EmptyOrthocenter
 from .operators.empty_circumcenter import EmptyCircumcenter
 from .operators.empty_barycenter import EmptyBarycenter
+from .operators.empty_incenter import EmptyIncenter
 from .operators.empty_middle import EmptyMiddle
 from .operators.points_plane import PointsPlane
 import bpy
@@ -50,9 +52,10 @@ classes = (
     EmptyMiddle,
     EmptyCircumcenter,
     EmptyBarycenter,
+    EmptyIncenter,
     EmptyOrthocenter,
     DrawCircumcircle,
-    Scratch
+    DrawInscribedCircle,
 )
 
 register, unregister = bpy.utils.register_classes_factory(classes)

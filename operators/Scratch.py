@@ -24,6 +24,6 @@ class Scratch(bpy.types.Operator):
         (A, B, C) = context.selected_objects[-3:]
 
         empty = new_empty()
-        put_at_orthocenter(empty, A, B, C, hide_extra=self.hide)
+        put_at_incenter(empty, A, B, C, hide_extra=self.hide)
 
         return {'FINISHED'}

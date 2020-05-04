@@ -3,7 +3,7 @@ from .constraints import *
 from .drivers import *
 from .objects import *
 
-PLANE_SIZE = 100
+PLANE_SIZE = 300
 
 def align_to_plane_of(obj, A, B, C):
     '''
@@ -15,6 +15,20 @@ def align_to_plane_of(obj, A, B, C):
     copy_location(obj, target=A)
     damped_track(obj, track='X', target=B)
     locked_track(obj, track='Y', lock='X', target=C)
+
+def track_to_angle_between(obj, A, B, axes='XYZ', influence=0.5):
+    '''
+    Make the given axis of the object point towards the bisector (or other 
+    intermediary angle) of the angle formed by the lines to A and B.
+
+    obj:        Source object   (Blender Object)
+    A, B:       2 Objects       (Blender Objects)
+    axes:       Axes (in order) ('XYZ', 'XZY', 'YZX', ...)
+    influence   Influence       (float, 0-1)
+    '''
+    damped_track(obj, axis=axes[0].upper(), target=A)
+    locked_track(obj, axis=axes[1].upper(), lock=axes[0].upper(), target=B)
+    locked_track(obj, axis=axes[0].upper(), lock=axes[2].upper(), target=B, influence=influence)
 
 def make_orthogonal_to(obj, A, B, C, axis='Z'):
     '''
@@ -127,6 +141,25 @@ def put_at_orthocenter(obj, A, B, C, hide_extra=True):
     damped_track(obj, axis='X', target=proj_c)
     locked_track(obj, axis='Y', lock='X', target=A)
     project_along_axis(obj, axis='X', target=pr_plane, opposite=True)
+
+def put_at_incenter(obj, A, B, C, hide_extra=True):
+    '''
+    Constrain the given object at the incenter of 3 points. 
+
+    obj:        Source object   (Blender Object)
+    A, B, C:    3 points        (Blender Objects)
+    
+    Note: This method creates additional objects that are needed to help find
+          the circumcenter. These are hidden by default.
+    '''
+    # Find intersection of projections on opposite plane along angle bisectors
+    pr_plane = new_plane(size=PLANE_SIZE, hide=hide_extra)
+    copy_location(pr_plane, target=A)
+    track_to_angle_between(pr_plane, B, C, axes='XZY')
+
+    copy_location(obj, target=C)
+    track_to_angle_between(obj, B, A)
+    project_along_axis(obj, axis='X',target=pr_plane, opposite=True)
 
 def stretch_between_points(obj, A, B, axis='Z', scale=1):
     '''
