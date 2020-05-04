@@ -18,6 +18,19 @@ Created by Mustafa Quraish
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
+from .operators.Scratch import Scratch
+from .operators.line_between_points import LineBetweenPoints
+from .operators.draw_triangle import DrawTriangle
+from .operators.draw_circumcircle import DrawCircumcircle
+from .operators.bisect_plane import BisectPlane
+from .operators.empty_orthocenter import EmptyOrthocenter
+from .operators.empty_circumcenter import EmptyCircumcenter
+from .operators.empty_barycenter import EmptyBarycenter
+from .operators.empty_middle import EmptyMiddle
+from .operators.points_plane import PointsPlane
+import bpy
+
+
 bl_info = {
     "name": "GeoBlender",
     "description": "A Geometry addon for Blender",
@@ -29,16 +42,22 @@ bl_info = {
     "category": "Geometry"
 }
 
-import bpy
-
-from .operators.points_plane import PointsPlane
-
-classes = [PointsPlane]
+classes = (
+    LineBetweenPoints,
+    PointsPlane,
+    BisectPlane,
+    DrawTriangle,
+    EmptyMiddle,
+    EmptyCircumcenter,
+    EmptyBarycenter,
+    EmptyOrthocenter,
+    DrawCircumcircle,
+    Scratch
+)
 
 register, unregister = bpy.utils.register_classes_factory(classes)
 
 # def register():
-#     print(".................LOADING ADDON")
 #     bpy.utils.register_module(__name__)
 
 # def unregister():

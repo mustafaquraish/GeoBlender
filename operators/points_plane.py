@@ -1,11 +1,12 @@
 import bpy
-from ..utils.new_objects import new_plane
-from ..utils.constraints import copy_location, damped_track, locked_track
+from ..utils.objects import new_plane
+from ..utils.geometry import align_to_plane_of
 
 class PointsPlane(bpy.types.Operator):
     bl_label = "Plane through Points"
     bl_idname = "geometry.points_plane"
     bl_description = "Constrained plane through 3 points"
+    bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     def execute(self, context):
         
@@ -14,10 +15,7 @@ class PointsPlane(bpy.types.Operator):
             return {'CANCELLED'}
 
         (A, B, C) = context.selected_objects[-3:]
-
-        plane = new_plane(context, size=20)
-        copy_location(plane, target=A)
-        damped_track(plane, track='X', target=B)
-        locked_track(plane, track='Y', lock='X', target=C)
+        plane = new_plane(size=20)
+        align_to_plane_of(plane, A, B, C)
 
         return {'FINISHED'}

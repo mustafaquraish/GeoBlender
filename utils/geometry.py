@@ -1,27 +1,40 @@
 import bpy
-from constraints import *
-from new_objects import *
+from .constraints import *
+from .drivers import *
+from .objects import *
 
-def plane_at_points(context, A, B, C, size=10):
+PLANE_SIZE = 100
+
+def align_to_plane_of(obj, A, B, C):
     '''
-    Creates a new plane going through 3 points
+    Aligns an object to the plane defined by 3 points
 
-    context:    Context       (Blender Context)
+    obj:        Source object (Blender Object)
     A, B, C:    3 points      (Blender Objects)
-    size:       Plane size    (float)
     '''
-    plane = new_plane(context, size=size)
-    copy_location(plane, target=A)
-    damped_track(plane, track='X', target=B)
-    locked_track(plane, track='Y', lock='X', target=C)
-    return plane
+    copy_location(obj, target=A)
+    damped_track(obj, track='X', target=B)
+    locked_track(obj, track='Y', lock='X', target=C)
+
+def make_orthogonal_to(obj, A, B, C, axis='Z'):
+    '''
+    Aligns the object so that the object is on the line AB, and the given
+    axis points towards C.
+
+    obj:        Source Object       (Blender object)
+    A, B, C:    3 points            (Blender Objects)  
+    axis:       Axis pointing to C  ('X', 'Y' or 'Z')
+    '''
+    copy_location(obj, target=A)
+    damped_track(obj, axis='X', target=B)
+    locked_track(obj, axis='Z', lock='X', target=C)
 
 def put_in_between(obj, A, B, influence=0.5):
     '''
     Positions an object on the line between two other objects, such that 
         (distance to A)/(distance to B) = influence
 
-    obj:        Source object   (Blender Context)
+    obj:        Source object   (Blender Object)
     A, B:       2 points        (Blender Objects)
     influence:  Influence       (float, 0-1)
     '''
@@ -30,4 +43,102 @@ def put_in_between(obj, A, B, influence=0.5):
     copy_location(obj, target=B)
     copy_location(obj, target=A, influence=influence)
 
+def put_at_circumcenter(obj, A, B, C, hide_extra=True):
+    '''
+    Constrain the given object at the circumcenter of 3 points. 
+
+    obj:        Source object   (Blender Object)
+    A, B, C:    3 points        (Blender Objects)
+    
+    Note: This method creates additional objects that are needed to help find
+          the circumcenter. These are hidden by default.
+    '''
+    # Construct the perp. bisector plane of A-B
+    ab_perp_plane = new_plane(size=PLANE_SIZE, hide=hide_extra)
+    put_in_between(ab_perp_plane, A, B, influence=0.5)
+    damped_track(ab_perp_plane, axis='Z', target=A)
+
+    # Put the object at the midpoint of A-C, and align it with the triangle.
+    put_in_between(obj, A, C, influence=0.5)
+    damped_track(obj, axis='X', target=A)
+    locked_track(obj, lock='X', axis='Y', target=B)
+
+    # Project it onto the plane from above to get the circumcenter
+    project_along_axis(obj, axis='+Y', target=ab_perp_plane, opposite=True)
+
+def put_at_barycenter(obj, A, B, C, hide_extra=True):
+    '''
+    Constrain the given object at the barycenter of 3 points. 
+
+    obj:        Source object   (Blender Object)
+    A, B, C:    3 points        (Blender Objects)
+    
+    Note: This method creates additional objects that are needed to help find
+          the circumcenter. These are hidden by default.
+    '''
+    # Construct the plane going through mid-AB and C, perp to plane.
+    ab_mid_plane = new_plane(size=PLANE_SIZE, hide=hide_extra)
+    put_in_between(ab_mid_plane, A, B, influence=0.5)
+    damped_track(ab_mid_plane, axis='X', target=C)
+    locked_track(ab_mid_plane, axis='Z', lock='X', target=A)
+
+    # Project mid-AC going towards B.
+    put_in_between(obj, A, C, influence=0.5)
+    damped_track(obj, axis='X', target=B)
+    locked_track(obj, axis='Y', lock='X', target=A)
+    project_along_axis(obj, axis='X', target=ab_mid_plane, opposite=True)
+
+def put_at_orthocenter(obj, A, B, C, hide_extra=True):
+    '''
+    Constrain the given object at the orthocenter of 3 points. 
+
+    obj:        Source object   (Blender Object)
+    A, B, C:    3 points        (Blender Objects)
+    
+    Note: This method creates additional objects that are needed to help find
+          the circumcenter. These are hidden by default.
+    '''
+    # Construct planes going through AB and BC, orthogonal to the plane 
+    # containing the triangle ABC.
+    ab_plane = new_plane(size=PLANE_SIZE, hide=hide_extra)
+    make_orthogonal_to(ab_plane, A, B, C)
+
+    bc_plane = new_plane(size=PLANE_SIZE, hide=hide_extra)
+    make_orthogonal_to(bc_plane, B, C, A)
+
+    # Form the projections of A and C onto the opposite planes. Note that
+    # this is because we omitted side CA above, and don't need to consider
+    # the projection of B
+    proj_a = new_empty(hide=hide_extra)
+    copy_location(proj_a, target=A)
+    project_nearest(proj_a, target=bc_plane)
+
+    proj_c = new_empty(hide=hide_extra)
+    copy_location(proj_c, target=C)
+    project_nearest(proj_c, target=ab_plane)
+
+    # Now we want the intersection of the lines a-proj_a and c-proj_c
+    # Use the plane-project method to do this. First, a-proj_a plane
+    pr_plane = new_plane(size=PLANE_SIZE, hide=hide_extra)
+    make_orthogonal_to(pr_plane, proj_a, A, B)
+    
+    # Now project from c onto the plane along the axis pointing to proj_c.
+    copy_location(obj, target=C)
+    damped_track(obj, axis='X', target=proj_c)
+    locked_track(obj, axis='Y', lock='X', target=A)
+    project_along_axis(obj, axis='X', target=pr_plane, opposite=True)
+
+def stretch_between_points(obj, A, B, axis='Z', scale=1):
+    '''
+    'Stretch' the object from one point to another. Effectively, copy
+    location of A, align to B and stretch the given axis to length A-B.
+
+    obj:        Source object   (Blender Object)
+    axis:       Axis to align   ('X', 'Y' or 'Z')
+    A, B:       2 points        (Blender Objects)
+    scale:      stretch scale   (float)
+    '''    
+    copy_location(obj, target=A)
+    damped_track(obj, axis=axis.upper(), target=B)
+    add_driver_distance(obj, 'scale', axis * scale, A, B)
 

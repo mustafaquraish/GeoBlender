@@ -1,11 +1,12 @@
 import bpy
-from ..utils.objects import new_empty
+from ..utils.objects import new_plane
 from ..utils.geometry import put_in_between
+from ..utils.constraints import damped_track
 
-class EmptyMiddle(bpy.types.Operator):
-    bl_label = "Empty between objects"
-    bl_idname = "geometry.empty_middle"
-    bl_description = "Add an empty in the middle of objects"
+class BisectPlane(bpy.types.Operator):
+    bl_label = "Perperndicular Bisecting Plane"
+    bl_idname = "geometry.bisect_plane"
+    bl_description = "Make a plane that is a perpendicular bisector of two points"
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     influence: bpy.props.FloatProperty(
@@ -25,7 +26,9 @@ class EmptyMiddle(bpy.types.Operator):
 
         (A, B) = context.selected_objects[-2:]
 
-        empty = new_empty()
-        put_in_between(empty, A, B, influence=self.influence)
+        plane = new_plane(size=10)
+        put_in_between(plane, A, B, influence=self.influence)
+        damped_track(plane, axis='Z', target=A)
 
         return {'FINISHED'}
+
