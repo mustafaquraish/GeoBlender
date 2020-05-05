@@ -66,63 +66,88 @@ def set_hidden(obj, hide=True):
     obj.hide_viewport = hide
     obj.hide_render = hide
 
+
+@preserve_selection
+def move_origin_center(obj):
+    bpy.ops.object.select_all(action='DESELECT')
+    obj.select_set(True)
+    bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY', center='BOUNDS')
+
+
+@preserve_selection
+def join_objects(obj_list):
+    if len(obj_list) == 0:
+        return None
+
+    bpy.ops.object.select_all(action='DESELECT')
+    c = {}
+    c["object"] = c["active_object"] = obj_list[0]
+    c["selected_objects"] = c["selected_editable_objects"] = obj_list
+    bpy.ops.object.join(c)
+    return obj_list[0]
+
 ###############################################################################
 
+
 @preserve_selection
-def new_plane(size=10, location=(0,0,0), hide=False):
+def new_plane(size=10, location=(0, 0, 0), hide=False):
     bpy.ops.mesh.primitive_plane_add(
-        size=size, 
-        enter_editmode=False, 
-        align='WORLD', 
+        size=size,
+        enter_editmode=False,
+        align='WORLD',
         location=location
     )
     set_hidden(bpy.context.object, hide)
     return bpy.context.object
 
+
 @preserve_selection
-def new_empty(location=(0,0,0), hide=False):
+def new_empty(location=(0, 0, 0), hide=False):
     bpy.ops.object.empty_add(
-        type='PLAIN_AXES', 
-        align='WORLD', 
+        type='PLAIN_AXES',
+        align='WORLD',
         location=location
     )
     set_hidden(bpy.context.object, hide)
     return bpy.context.object
 
+
 @preserve_selection
-def new_circle(radius=1, location=(0,0,0), hide=False):
+def new_circle(radius=1, location=(0, 0, 0), hide=False):
     bpy.ops.curve.primitive_bezier_circle_add(
-        radius=radius, 
-        enter_editmode=False, 
-        align='WORLD', 
+        radius=radius,
+        enter_editmode=False,
+        align='WORLD',
         location=location
     )
     set_hidden(bpy.context.object, hide)
     return bpy.context.object
+
 
 @preserve_selection
 def new_line(length=1, hide=False):
     bpy.ops.curve.simple(
-        align='WORLD', 
-        location=(0, 0, 0), 
-        rotation=(0, 0, 0), 
-        Simple_Type='Line', 
-        Simple_endlocation=(0, 0, length), 
-        shape='3D', 
-        use_cyclic_u=False, 
+        align='WORLD',
+        location=(0, 0, 0),
+        rotation=(0, 0, 0),
+        Simple_Type='Line',
+        Simple_endlocation=(0, 0, length),
+        shape='3D',
+        use_cyclic_u=False,
         edit_mode=False
     )
     set_hidden(bpy.context.object, hide)
     return bpy.context.object
 
+
 @preserve_selection
-def new_cylinder(radius=1, depth=1, vertices=20, location=(0,0,0), hide=False):
+def new_cylinder(radius=1, depth=1, vert=20, location=(0, 0, 0), hide=False):
     bpy.ops.mesh.primitive_cylinder_add(
-        vertices=vertices, 
-        radius=radius, 
-        depth=depth, 
-        enter_editmode=False, 
-        align='WORLD', 
+        vertices=vert,
+        radius=radius,
+        depth=depth,
+        enter_editmode=False,
+        align='WORLD',
         location=location
     )
     set_hidden(bpy.context.object, hide)

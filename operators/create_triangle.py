@@ -7,7 +7,7 @@ class CreateTriangle(bpy.types.Operator):
     bl_label = "Create Triangle"
     bl_idname = "geometry.create_triangle"
     bl_description = "Form the triangle of the 3 points"
-    bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
+    bl_options = {'REGISTER', 'UNDO'}
 
     bevel_depth: bpy.props.FloatProperty(
         name="Bevel Depth:",
@@ -31,5 +31,7 @@ class CreateTriangle(bpy.types.Operator):
         stretch_between_points(lines[2], C, A)
         for line in lines:
             line.data.bevel_depth = self.bevel_depth
+
+        # TODO: Figure out how to join the lines without breaking the bevel.
 
         return {'FINISHED'}
