@@ -34,7 +34,7 @@ class CreateCircumcircle(bpy.types.Operator):
         (A, B, C) = context.selected_objects[-3:]
 
         circumcenter = new_empty(hide=self.hide_extra)
-        circumcenter.name = "Circumcenter"
+        circumcenter.name = "circumcenter"
         put_at_circumcenter(circumcenter, A, B, C, hide_extra=self.hide_extra)
 
         circle = new_circle()

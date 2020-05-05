@@ -37,9 +37,11 @@ class CreateTriangleBisector(bpy.types.Operator):
         others.remove(active)
 
         pr_plane = new_plane(size=PLANE_SIZE, hide=self.hide_extra)
+        pr_plane.name = "projection plane"
         make_orthogonal_to(pr_plane, others[0], others[1], active, axis='Z')
 
         bisector_point = new_empty(hide=self.hide_extra)
+        bisector_point.name = "bisector point"
         copy_location(bisector_point, active)
         track_to_angle_between(bisector_point, others[0], others[1])
         project_along_axis(

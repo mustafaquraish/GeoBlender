@@ -38,10 +38,11 @@ class CreateInscribedCircle(bpy.types.Operator):
         make_orthogonal_to(plane_ab, A, B, C)
 
         inscribed_center = new_empty(hide=self.hide_extra)
-        inscribed_center.name = "Inscribed center"
+        inscribed_center.name = "inscribed center"
         put_at_incenter(inscribed_center, A, B, C, hide_extra=self.hide_extra)
 
         circ_point = new_empty(hide=self.hide_extra)
+        circ_point.name = 'inscribed circ point'
         copy_location(circ_point, inscribed_center)
         project_nearest(circ_point, target=plane_ab)
 
@@ -55,6 +56,6 @@ class CreateInscribedCircle(bpy.types.Operator):
             B=circ_point
         )
         circle.data.bevel_depth = self.bevel_depth
-        circle.name = "Inscribed circle"
+        circle.name = "Inscribed Circle"
 
         return {'FINISHED'}

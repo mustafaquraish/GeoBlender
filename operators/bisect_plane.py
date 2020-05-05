@@ -29,5 +29,6 @@ class BisectPlane(bpy.types.Operator):
         plane = new_plane(size=10)
         put_in_between(plane, A, B, influence=self.influence)
         damped_track(plane, axis='Z', target=A)
+        plane.name = "Perp. Bisector Plane"
 
         return {'FINISHED'}

@@ -29,7 +29,8 @@ class CreateTriangle(bpy.types.Operator):
         stretch_between_points(lines[0], A, B)
         stretch_between_points(lines[1], B, C)
         stretch_between_points(lines[2], C, A)
-        for line in lines:
+        for idx, line in enumerate(lines):
+            line.name = f"Side {idx + 1}"
             line.data.bevel_depth = self.bevel_depth
 
         # TODO: Figure out how to join the lines without breaking the bevel.

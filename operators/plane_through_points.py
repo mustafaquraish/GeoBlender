@@ -18,5 +18,6 @@ class PlaneThroughPoints(bpy.types.Operator):
         (A, B, C) = context.selected_objects[-3:]
         plane = new_plane(size=20)
         align_to_plane_of(plane, A, B, C)
+        plane.name = "Points Plane"
 
         return {'FINISHED'}

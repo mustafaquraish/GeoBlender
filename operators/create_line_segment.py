@@ -28,5 +28,6 @@ class CreateLineSegment(bpy.types.Operator):
         line = new_line()
         stretch_between_points(line, A, B, axis='Z')
         line.data.bevel_depth = self.bevel_depth
+        line.name = "Line Segment"
 
         return {'FINISHED'}

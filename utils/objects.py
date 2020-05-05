@@ -67,6 +67,7 @@ def move_origin_center(obj):
     bpy.ops.object.select_all(action='DESELECT')
     obj.select_set(True)
     bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY', center='BOUNDS')
+    return obj
 
 
 @preserve_selection

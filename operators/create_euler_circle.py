@@ -34,16 +34,19 @@ class CreateEulerCircle(bpy.types.Operator):
         (A, B, C) = context.selected_objects[-3:]
 
         mid_ab = new_empty(hide=self.hide_extra)
+        mid_ab.name = "midpoint 1"
         put_in_between(mid_ab, A, B, influence=0.5)
 
         mid_bc = new_empty(hide=self.hide_extra)
+        mid_bc.name = "midpoint 2"
         put_in_between(mid_bc, B, C, influence=0.5)
 
         mid_ca = new_empty(hide=self.hide_extra)
+        mid_ca.name = "midpoint 3"
         put_in_between(mid_ca, C, A, influence=0.5)
 
         euler_center = new_empty(hide=self.hide_extra)
-        euler_center.name = "Euler Circle center"
+        euler_center.name = "euler circle center"
         put_at_circumcenter(euler_center, mid_ab, mid_bc, mid_ca,
                             hide_extra=self.hide_extra)
 

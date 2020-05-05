@@ -43,9 +43,11 @@ class CreateEulerLine(bpy.types.Operator):
         (A, B, C) = context.selected_objects[-3:]
 
         circumcenter = new_empty(hide=self.hide_extra)
+        circumcenter.name = 'circumcenter'
         put_at_circumcenter(circumcenter, A, B, C, hide_extra=self.hide_extra)
 
         barycenter = new_empty(hide=self.hide_extra)
+        barycenter.name = 'barycenter'
         put_at_barycenter(barycenter, A, B, C, hide_extra=self.hide_extra)
 
         line = new_line()
@@ -53,14 +55,7 @@ class CreateEulerLine(bpy.types.Operator):
         put_in_between(line, circumcenter, barycenter, influence=0.5)
         damped_track(line, axis="Z", target=circumcenter)
         line.scale[2] = self.scale
-        # add_driver_distance(
-        #     obj=line,
-        #     prop='scale',
-        #     fields='Z',
-        #     A=circumcenter,
-        #     B=barycenter,
-        #     scale=self.scale
-        # )
         line.data.bevel_depth = self.bevel_depth
+        line.name = "Euler Line"
 
         return {'FINISHED'}

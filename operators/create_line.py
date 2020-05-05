@@ -41,5 +41,6 @@ class CreateLine(bpy.types.Operator):
         damped_track(line, axis="Z", target=A)
         add_driver_distance(line, 'scale', 'Z', A, B, self.scale)
         line.data.bevel_depth = self.bevel_depth
+        line.name = "Line"
 
         return {'FINISHED'}

@@ -37,9 +37,11 @@ class CreateTriangleAltitude(bpy.types.Operator):
         others.remove(active)
 
         pr_plane = new_plane(size=PLANE_SIZE, hide=self.hide_extra)
+        pr_plane.name = "projection plane"
         make_orthogonal_to(pr_plane, others[0], others[1], active, axis='Z')
 
         altitude_point = new_empty(hide=self.hide_extra)
+        altitude_point.name = "altitude projection"
         copy_location(altitude_point, active)
         project_nearest(altitude_point, target=pr_plane)
 

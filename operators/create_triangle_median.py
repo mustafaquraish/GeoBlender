@@ -35,6 +35,7 @@ class CreateTriangleMedian(bpy.types.Operator):
         others.remove(active)
 
         mid_op = new_empty(hide=self.hide_extra)
+        mid_op.name = "opposite side midpoint"
         put_in_between(mid_op, others[0], others[1], influence=0.5)
 
         line = new_line()

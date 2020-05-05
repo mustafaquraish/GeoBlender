@@ -28,5 +28,6 @@ class EmptyAtMiddle(bpy.types.Operator):
 
         empty = new_empty()
         put_in_between(empty, A, B, influence=self.influence)
+        empty.name = "Midpoint"
 
         return {'FINISHED'}

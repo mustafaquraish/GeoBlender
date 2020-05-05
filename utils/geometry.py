@@ -15,8 +15,8 @@ def align_to_plane_of(obj, A, B, C):
     A, B, C:    3 points      (Blender Objects)
     '''
     copy_location(obj, target=A)
-    damped_track(obj, track='X', target=B)
-    locked_track(obj, track='Y', lock='X', target=C)
+    damped_track(obj, axis='X', target=B)
+    locked_track(obj, axis='Y', lock='X', target=C)
 
 
 def track_to_angle_between(obj, A, B, axes='XYZ', influence=0.5):
@@ -76,6 +76,7 @@ def put_at_circumcenter(obj, A, B, C, hide_extra=True):
     '''
     # Construct the perp. bisector plane of A-B
     ab_perp_plane = new_plane(size=PLANE_SIZE, hide=hide_extra)
+    ab_perp_plane.name = "perpendicular plane"
     put_in_between(ab_perp_plane, A, B, influence=0.5)
     damped_track(ab_perp_plane, axis='Z', target=A)
 
@@ -100,6 +101,7 @@ def put_at_barycenter(obj, A, B, C, hide_extra=True):
     '''
     # Construct the plane going through mid-AB and C, perp to plane.
     ab_mid_plane = new_plane(size=PLANE_SIZE, hide=hide_extra)
+    ab_mid_plane.name = "plane through midpoint"
     put_in_between(ab_mid_plane, A, B, influence=0.5)
     damped_track(ab_mid_plane, axis='X', target=C)
     locked_track(ab_mid_plane, axis='Z', lock='X', target=A)
@@ -124,25 +126,30 @@ def put_at_orthocenter(obj, A, B, C, hide_extra=True):
     # Construct planes going through AB and BC, orthogonal to the plane
     # containing the triangle ABC.
     ab_plane = new_plane(size=PLANE_SIZE, hide=hide_extra)
+    ab_plane.name = "side 1 orth plane"
     make_orthogonal_to(ab_plane, A, B, C)
 
     bc_plane = new_plane(size=PLANE_SIZE, hide=hide_extra)
+    bc_plane.name = "side 2 orth plane"
     make_orthogonal_to(bc_plane, B, C, A)
 
     # Form the projections of A and C onto the opposite planes. Note that
     # this is because we omitted side CA above, and don't need to consider
     # the projection of B
     proj_a = new_empty(hide=hide_extra)
+    proj_a.name = "projection of vertex 1"
     copy_location(proj_a, target=A)
     project_nearest(proj_a, target=bc_plane)
 
     proj_c = new_empty(hide=hide_extra)
+    proj_c.name = "projection of vertex 3"
     copy_location(proj_c, target=C)
     project_nearest(proj_c, target=ab_plane)
 
     # Now we want the intersection of the lines a-proj_a and c-proj_c
     # Use the plane-project method to do this. First, a-proj_a plane
     pr_plane = new_plane(size=PLANE_SIZE, hide=hide_extra)
+    pr_plane.name = "projection plane"
     make_orthogonal_to(pr_plane, proj_a, A, B)
 
     # Now project from c onto the plane along the axis pointing to proj_c.
@@ -164,6 +171,7 @@ def put_at_incenter(obj, A, B, C, hide_extra=True):
     '''
     # Find intersection of projections on opposite plane along bisectors
     pr_plane = new_plane(size=PLANE_SIZE, hide=hide_extra)
+    pr_plane.name = "projection plane"
     copy_location(pr_plane, target=A)
     # Using axes="XZY" here since we the plane to be orth. to the
     track_to_angle_between(pr_plane, B, C, axes='XZY')
