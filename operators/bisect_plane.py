@@ -15,7 +15,6 @@ class BisectPlane(bpy.types.Operator):
         max=1.0, 
         min=0.0, 
         default=0.5,
-        options={'SKIP_SAVE'},
     )
 
     def execute(self, context):

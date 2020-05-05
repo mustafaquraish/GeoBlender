@@ -50,5 +50,5 @@ from .operators.line_between_points     import LineBetweenPoints
 from .operators.draw_inscribed_circle   import DrawInscribedCircle
 
 # Register all classes in the current module
-classes = (obj for _, obj in getmembers(modules[__name__]) if isclass(obj))
+classes = [obj for _, obj in getmembers(modules[__name__]) if isclass(obj)]
 register, unregister = bpy.utils.register_classes_factory(classes)

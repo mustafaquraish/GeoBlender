@@ -28,7 +28,8 @@ def track_to_angle_between(obj, A, B, axes='XYZ', influence=0.5):
     '''
     damped_track(obj, axis=axes[0].upper(), target=A)
     locked_track(obj, axis=axes[1].upper(), lock=axes[0].upper(), target=B)
-    locked_track(obj, axis=axes[0].upper(), lock=axes[2].upper(), target=B, influence=influence)
+    locked_track(obj, axis=axes[0].upper(), lock=axes[2].upper(), target=B, 
+                      influence=influence)
 
 def make_orthogonal_to(obj, A, B, C, axis='Z'):
     '''
@@ -152,9 +153,10 @@ def put_at_incenter(obj, A, B, C, hide_extra=True):
     Note: This method creates additional objects that are needed to help find
           the circumcenter. These are hidden by default.
     '''
-    # Find intersection of projections on opposite plane along angle bisectors
+    # Find intersection of projections on opposite plane along bisectors
     pr_plane = new_plane(size=PLANE_SIZE, hide=hide_extra)
     copy_location(pr_plane, target=A)
+    # Using axes="XZY" here since we the plane to be orth. to the
     track_to_angle_between(pr_plane, B, C, axes='XZY')
 
     copy_location(obj, target=C)
