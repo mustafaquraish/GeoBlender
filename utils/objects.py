@@ -1,25 +1,3 @@
-'''
-Copyright (C) 2020 Mustafa Quraish
-mustafa@cs.toronto.edu
-
-Created by Mustafa Quraish
-
----
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-'''
-
 import bpy
 
 
@@ -60,9 +38,26 @@ def preserve_selection(func):
 def set_hidden(obj, hide=True):
     '''
     Simple function to hide / unhide objects from the viewport and render.
-
-    TODO: Move the objects to another collection.
+    If the object is supposed to be hidden, it is moved to a new collection
+    with the name defined in COLLECTION_NAME.
     '''
+    # Don't need to bother with collections
+    if not hide:
+        return
+
+    COLLECTION_NAME = "GeoBlender Extras"
+
+    # Make a new collection for extra objects if needed.
+    if COLLECTION_NAME not in bpy.data.collections:
+        collection = bpy.data.collections.new(COLLECTION_NAME)
+        bpy.context.scene.collection.children.link(collection)
+    else:
+        collection = bpy.data.collections[COLLECTION_NAME]
+
+    old_collection = obj.users_collection[0]  # get old collection
+    collection.objects.link(obj)        # put obj in extras collection
+    old_collection.objects.unlink(obj)  # unlink from old collection
+
     obj.hide_viewport = hide
     obj.hide_render = hide
 
@@ -80,11 +75,12 @@ def join_objects(obj_list):
         return None
 
     bpy.ops.object.select_all(action='DESELECT')
-    c = {}
+    c = {}  # Temporary context for joining objects
     c["object"] = c["active_object"] = obj_list[0]
     c["selected_objects"] = c["selected_editable_objects"] = obj_list
     bpy.ops.object.join(c)
     return obj_list[0]
+
 
 ###############################################################################
 

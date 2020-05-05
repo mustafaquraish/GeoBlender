@@ -34,6 +34,10 @@ from .operators.create_line_segment     import CreateLineSegment
 from .operators.create_triangle         import CreateTriangle
 from .operators.create_line             import CreateLine
 
+from .operators.create_triangle_altitude    import CreateTriangleAltitude
+from .operators.create_triangle_bisector    import CreateTriangleBisector
+from .operators.create_triangle_median      import CreateTriangleMedian
+
 from .operators.empty_at_circumcenter   import EmptyAtCircumcenter
 from .operators.empty_at_orthocenter    import EmptyAtOrthocenter
 from .operators.empty_at_barycenter     import EmptyAtBarycenter
