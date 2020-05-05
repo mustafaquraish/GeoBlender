@@ -6,7 +6,7 @@ The purpose of this plugin is to make it much easier to apply mathematical and g
 - Creating a plane / circle that goes through any given 3 points
 - Find circumcenter / barycenter / incenter / inscribed circle for a given triangle
 - Bisectors, Medians, Midpoints (without drivers)
-- and much more to come in the future.
+- and more to come in the future.
 
 ---
 
