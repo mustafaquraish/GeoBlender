@@ -45,7 +45,7 @@ def set_hidden(obj, hide=True):
     if not hide:
         return
 
-    COLLECTION_NAME = "GeoBlender Extras"
+    COLLECTION_NAME = bpy.context.scene.geoblender_settings.collection_name
 
     # Make a new collection for extra objects if needed.
     if COLLECTION_NAME not in bpy.data.collections:

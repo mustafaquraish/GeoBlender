@@ -25,6 +25,11 @@ class CreateInscribedCircle(bpy.types.Operator):
         default=0.0,
     )
 
+    def invoke(self, context, event):
+        self.bevel_depth = context.scene.geoblender_settings.bevel_depth
+        self.hide_extra = context.scene.geoblender_settings.hide_extra
+        return self.execute(context)
+
     def execute(self, context):
 
         if (len(context.selected_objects) != 3):
@@ -33,7 +38,7 @@ class CreateInscribedCircle(bpy.types.Operator):
 
         (A, B, C) = context.selected_objects[-3:]
 
-        plane_ab = new_plane(size=PLANE_SIZE, hide=self.hide_extra)
+        plane_ab = new_plane(size=PLANE_SIZE(), hide=self.hide_extra)
         plane_ab.name = 'plane_ab'
         make_orthogonal_to(plane_ab, A, B, C)
 

@@ -18,6 +18,10 @@ class EmptyAtMiddle(bpy.types.Operator):
         options={'SKIP_SAVE'},
     )
 
+    def invoke(self, context, event):
+        self.hide_extra = context.scene.geoblender_settings.hide_extra
+        return self.execute(context)
+
     def execute(self, context):
 
         if (len(context.selected_objects) != 2):

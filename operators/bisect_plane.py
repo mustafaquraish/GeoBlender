@@ -5,9 +5,9 @@ from ..utils.constraints import damped_track
 
 
 class BisectPlane(bpy.types.Operator):
-    bl_label = "Perperndicular Bisecting Plane"
+    bl_label = "Bisecting Plane"
     bl_idname = "geometry.bisect_plane"
-    bl_description = "Make a plane that is a perpendicular bisector of two points"
+    bl_description = "Make a plane orthogonal to the line connecting 2 points"
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     influence: bpy.props.FloatProperty(

@@ -3,7 +3,6 @@ from ..utils.objects import new_empty, new_line, move_origin_center
 from ..utils.geometry import put_in_between
 from ..utils.geometry import put_at_barycenter, put_at_circumcenter
 from ..utils.constraints import damped_track
-from ..utils.drivers import add_driver_distance
 
 
 class CreateEulerLine(bpy.types.Operator):
@@ -33,6 +32,11 @@ class CreateEulerLine(bpy.types.Operator):
         soft_max=100,
         default=30,
     )
+
+    def invoke(self, context, event):
+        self.bevel_depth = context.scene.geoblender_settings.bevel_depth
+        self.hide_extra = context.scene.geoblender_settings.hide_extra
+        return self.execute(context)
 
     def execute(self, context):
 

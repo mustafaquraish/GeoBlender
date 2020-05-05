@@ -27,6 +27,10 @@ class CreateLine(bpy.types.Operator):
         default=5,
     )
 
+    def invoke(self, context, event):
+        self.bevel_depth = context.scene.geoblender_settings.bevel_depth
+        return self.execute(context)
+
     def execute(self, context):
 
         if (len(context.selected_objects) != 2):

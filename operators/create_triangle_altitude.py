@@ -25,6 +25,11 @@ class CreateTriangleAltitude(bpy.types.Operator):
         default=0.0,
     )
 
+    def invoke(self, context, event):
+        self.bevel_depth = context.scene.geoblender_settings.bevel_depth
+        self.hide_extra = context.scene.geoblender_settings.hide_extra
+        return self.execute(context)
+
     def execute(self, context):
 
         if (len(context.selected_objects) != 3):
@@ -33,10 +38,15 @@ class CreateTriangleAltitude(bpy.types.Operator):
 
         (A, B, C) = context.selected_objects[-3:]
         active = context.active_object
+
+        if active is None:
+            self.report({'ERROR'}, 'No active object selected')
+            return {'CANCELLED'}
+
         others = [A, B, C]
         others.remove(active)
 
-        pr_plane = new_plane(size=PLANE_SIZE, hide=self.hide_extra)
+        pr_plane = new_plane(size=PLANE_SIZE(), hide=self.hide_extra)
         pr_plane.name = "projection plane"
         make_orthogonal_to(pr_plane, others[0], others[1], active, axis='Z')
 
