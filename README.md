@@ -1,11 +1,13 @@
-# GeoBlender: A 3D geometry plugin for blender
+# GeoBlender: A 3D geometry plugin for Blender
 ---
+
+<img src="./GeoBlender.png" width="250" height="250"/>
 
 The purpose of this plugin is to make it much easier to apply mathematical and geometric transformations on objects which are not easily done in Blender natively. Examples of such operations are:
 
 - Creating a plane / circle that goes through any given 3 points
-- Find circumcenter / barycenter / incenter / inscribed circle for a given triangle
-- Bisectors, Medians, Midpoints (without drivers)
+- Finding circumcenters / barycenters / incenters / inscribed circles for given triangles
+- Bisectors, Medians, Midpoints, Altitudes 
 - and more to come in the future.
 
 ---
