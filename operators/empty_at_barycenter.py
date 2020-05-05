@@ -3,7 +3,7 @@ from ..utils.objects import new_empty
 from ..utils.geometry import put_at_barycenter
 
 
-class EmptyBarycenter(bpy.types.Operator):
+class EmptyAtBarycenter(bpy.types.Operator):
     bl_label = "Place Empty at Barycenter"
     bl_idname = "geometry.empty_barycenter"
     bl_description = "Place empty at the barycenter of the 3 points"

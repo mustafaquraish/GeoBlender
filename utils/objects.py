@@ -22,6 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import bpy
 
+
 def preserve_selection(func):
     '''
     A wrapper for functions that preserves the previous selection in the
@@ -44,7 +45,8 @@ def preserve_selection(func):
         ret = func(*args, **kwargs)
 
         # Restore the selection
-        ret.select_set(False)
+        if ret is not None:
+            ret.select_set(False)
         for obj in prev_selected:
             obj.select_set(True)
         bpy.context.view_layer.objects.active = prev_active
@@ -53,6 +55,7 @@ def preserve_selection(func):
 
     # Return the wrapped function
     return new_func
+
 
 def set_hidden(obj, hide=True):
     '''

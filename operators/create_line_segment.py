@@ -3,10 +3,10 @@ from ..utils.objects import new_line
 from ..utils.geometry import stretch_between_points
 
 
-class LineBetweenPoints(bpy.types.Operator):
-    bl_label = "Line Between Points"
-    bl_idname = "geometry.line_between_points"
-    bl_description = "Make a line connecting two points"
+class CreateLineSegment(bpy.types.Operator):
+    bl_label = "Create Line Segment"
+    bl_idname = "geometry.create_line_segment"
+    bl_description = "Form the line segment connecting two points"
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     bevel_depth: bpy.props.FloatProperty(

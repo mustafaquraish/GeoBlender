@@ -5,7 +5,7 @@ from ..utils.constraints import copy_transforms, project_nearest, copy_location
 from ..utils.drivers import add_driver_distance
 
 
-class DrawInscribedCircle(bpy.types.Operator):
+class CreateInscribedCircle(bpy.types.Operator):
     bl_label = "Create Inscribed Circle"
     bl_idname = "geometry.create_inscribed_circle"
     bl_description = "Form the inscribed circle of the 3 points"

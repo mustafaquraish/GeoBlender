@@ -5,7 +5,7 @@ from ..utils.constraints import copy_transforms
 from ..utils.drivers import add_driver_distance
 
 
-class DrawCircumcircle(bpy.types.Operator):
+class CreateCircumcircle(bpy.types.Operator):
     bl_label = "Create Circumcircle"
     bl_idname = "geometry.create_circumcircle"
     bl_description = "Form the circumcircle of the 3 points"

@@ -3,7 +3,7 @@ from ..utils.objects import new_line
 from ..utils.geometry import stretch_between_points
 
 
-class DrawTriangle(bpy.types.Operator):
+class CreateTriangle(bpy.types.Operator):
     bl_label = "Create Triangle"
     bl_idname = "geometry.create_triangle"
     bl_description = "Form the triangle of the 3 points"

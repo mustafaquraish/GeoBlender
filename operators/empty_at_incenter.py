@@ -3,7 +3,7 @@ from ..utils.objects import new_empty
 from ..utils.geometry import put_at_incenter
 
 
-class EmptyIncenter(bpy.types.Operator):
+class EmptyAtIncenter(bpy.types.Operator):
     bl_label = "Place Empty at Incenter"
     bl_idname = "geometry.empty_incenter"
     bl_description = "Place empty at the incenter of the 3 points"

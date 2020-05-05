@@ -24,7 +24,7 @@ def make_driver_list(obj, prop, fields):
     return driver_list
 
 
-def add_driver_distance(obj, prop, fields, A, B):
+def add_driver_distance(obj, prop, fields, A, B, scale=1):
     '''
     Add a driver for an object's properties, set to the distance from A to B.
 
@@ -45,5 +45,5 @@ def add_driver_distance(obj, prop, fields, A, B):
         # Set the two objects
         var.targets[0].id = A
         var.targets[1].id = B
-        # Setting the type to avg. uses the single value
-        driver.driver.type = 'AVERAGE'
+        # Set the expression
+        driver.driver.expression = f'{scale} * {var.name}'

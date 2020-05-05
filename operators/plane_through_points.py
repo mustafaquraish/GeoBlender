@@ -3,7 +3,7 @@ from ..utils.objects import new_plane
 from ..utils.geometry import align_to_plane_of
 
 
-class PointsPlane(bpy.types.Operator):
+class PlaneThroughPoints(bpy.types.Operator):
     bl_label = "Plane through Points"
     bl_idname = "geometry.points_plane"
     bl_description = "Constrained plane through 3 points"
