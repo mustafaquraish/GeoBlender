@@ -2,6 +2,7 @@ import bpy
 from ..utils.objects import new_line
 from ..utils.geometry import stretch_between_points
 
+
 class DrawTriangle(bpy.types.Operator):
     bl_label = "Create Triangle"
     bl_idname = "geometry.create_triangle"
@@ -9,7 +10,7 @@ class DrawTriangle(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     bevel_depth: bpy.props.FloatProperty(
-        name="Bevel Depth:", 
+        name="Bevel Depth:",
         description="Thickness of line",
         min=0,
         soft_max=0.5,
@@ -17,7 +18,7 @@ class DrawTriangle(bpy.types.Operator):
     )
 
     def execute(self, context):
-        
+
         if (len(context.selected_objects) != 3):
             self.report({'ERROR'}, 'Need to select 3 objects')
             return {'CANCELLED'}
@@ -32,4 +33,3 @@ class DrawTriangle(bpy.types.Operator):
             line.data.bevel_depth = self.bevel_depth
 
         return {'FINISHED'}
-

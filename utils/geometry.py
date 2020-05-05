@@ -1,9 +1,11 @@
-import bpy
-from .constraints import *
-from .drivers import *
-from .objects import *
+from .constraints import copy_location
+from .constraints import damped_track, locked_track
+from .constraints import project_along_axis, project_nearest
+from .drivers import add_driver_distance
+from .objects import new_empty, new_plane
 
 PLANE_SIZE = 300
+
 
 def align_to_plane_of(obj, A, B, C):
     '''
@@ -15,6 +17,7 @@ def align_to_plane_of(obj, A, B, C):
     copy_location(obj, target=A)
     damped_track(obj, track='X', target=B)
     locked_track(obj, track='Y', lock='X', target=C)
+
 
 def track_to_angle_between(obj, A, B, axes='XYZ', influence=0.5):
     '''
@@ -28,8 +31,9 @@ def track_to_angle_between(obj, A, B, axes='XYZ', influence=0.5):
     '''
     damped_track(obj, axis=axes[0].upper(), target=A)
     locked_track(obj, axis=axes[1].upper(), lock=axes[0].upper(), target=B)
-    locked_track(obj, axis=axes[0].upper(), lock=axes[2].upper(), target=B, 
-                      influence=influence)
+    locked_track(obj, axis=axes[0].upper(), lock=axes[2].upper(), target=B,
+                 influence=influence)
+
 
 def make_orthogonal_to(obj, A, B, C, axis='Z'):
     '''
@@ -43,6 +47,7 @@ def make_orthogonal_to(obj, A, B, C, axis='Z'):
     copy_location(obj, target=A)
     damped_track(obj, axis='X', target=B)
     locked_track(obj, axis='Z', lock='X', target=C)
+
 
 def put_in_between(obj, A, B, influence=0.5):
     '''
@@ -58,13 +63,14 @@ def put_in_between(obj, A, B, influence=0.5):
     copy_location(obj, target=B)
     copy_location(obj, target=A, influence=influence)
 
+
 def put_at_circumcenter(obj, A, B, C, hide_extra=True):
     '''
     Constrain the given object at the circumcenter of 3 points. 
 
     obj:        Source object   (Blender Object)
     A, B, C:    3 points        (Blender Objects)
-    
+
     Note: This method creates additional objects that are needed to help find
           the circumcenter. These are hidden by default.
     '''
@@ -81,13 +87,14 @@ def put_at_circumcenter(obj, A, B, C, hide_extra=True):
     # Project it onto the plane from above to get the circumcenter
     project_along_axis(obj, axis='+Y', target=ab_perp_plane, opposite=True)
 
+
 def put_at_barycenter(obj, A, B, C, hide_extra=True):
     '''
     Constrain the given object at the barycenter of 3 points. 
 
     obj:        Source object   (Blender Object)
     A, B, C:    3 points        (Blender Objects)
-    
+
     Note: This method creates additional objects that are needed to help find
           the circumcenter. These are hidden by default.
     '''
@@ -103,17 +110,18 @@ def put_at_barycenter(obj, A, B, C, hide_extra=True):
     locked_track(obj, axis='Y', lock='X', target=A)
     project_along_axis(obj, axis='X', target=ab_mid_plane, opposite=True)
 
+
 def put_at_orthocenter(obj, A, B, C, hide_extra=True):
     '''
     Constrain the given object at the orthocenter of 3 points. 
 
     obj:        Source object   (Blender Object)
     A, B, C:    3 points        (Blender Objects)
-    
+
     Note: This method creates additional objects that are needed to help find
           the circumcenter. These are hidden by default.
     '''
-    # Construct planes going through AB and BC, orthogonal to the plane 
+    # Construct planes going through AB and BC, orthogonal to the plane
     # containing the triangle ABC.
     ab_plane = new_plane(size=PLANE_SIZE, hide=hide_extra)
     make_orthogonal_to(ab_plane, A, B, C)
@@ -136,12 +144,13 @@ def put_at_orthocenter(obj, A, B, C, hide_extra=True):
     # Use the plane-project method to do this. First, a-proj_a plane
     pr_plane = new_plane(size=PLANE_SIZE, hide=hide_extra)
     make_orthogonal_to(pr_plane, proj_a, A, B)
-    
+
     # Now project from c onto the plane along the axis pointing to proj_c.
     copy_location(obj, target=C)
     damped_track(obj, axis='X', target=proj_c)
     locked_track(obj, axis='Y', lock='X', target=A)
     project_along_axis(obj, axis='X', target=pr_plane, opposite=True)
+
 
 def put_at_incenter(obj, A, B, C, hide_extra=True):
     '''
@@ -149,7 +158,7 @@ def put_at_incenter(obj, A, B, C, hide_extra=True):
 
     obj:        Source object   (Blender Object)
     A, B, C:    3 points        (Blender Objects)
-    
+
     Note: This method creates additional objects that are needed to help find
           the circumcenter. These are hidden by default.
     '''
@@ -161,7 +170,8 @@ def put_at_incenter(obj, A, B, C, hide_extra=True):
 
     copy_location(obj, target=C)
     track_to_angle_between(obj, B, A)
-    project_along_axis(obj, axis='X',target=pr_plane, opposite=True)
+    project_along_axis(obj, axis='X', target=pr_plane, opposite=True)
+
 
 def stretch_between_points(obj, A, B, axis='Z', scale=1):
     '''
@@ -172,8 +182,7 @@ def stretch_between_points(obj, A, B, axis='Z', scale=1):
     axis:       Axis to align   ('X', 'Y' or 'Z')
     A, B:       2 points        (Blender Objects)
     scale:      stretch scale   (float)
-    '''    
+    '''
     copy_location(obj, target=A)
     damped_track(obj, axis=axis.upper(), target=B)
     add_driver_distance(obj, 'scale', axis * scale, A, B)
-

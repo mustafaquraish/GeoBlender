@@ -47,7 +47,13 @@ class DrawInscribedCircle(bpy.types.Operator):
 
         circle = new_circle()
         copy_transforms(circle, target=inscribed_center, transforms="LR")
-        add_driver_distance(circle, 'scale', 'XY', inscribed_center, circ_point)
+        add_driver_distance(
+            obj=circle,
+            prop='scale',
+            fields='XY',
+            A=inscribed_center,
+            B=circ_point
+        )
         circle.data.bevel_depth = self.bevel_depth
         circle.name = "Inscribed circle"
 

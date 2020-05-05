@@ -1,4 +1,6 @@
-import bpy
+'''
+Utilites to add constraints to objects.
+'''
 
 
 def copy_location(obj, target, influence=1.0):
@@ -91,6 +93,7 @@ def damped_track(obj, axis, target, influence=1):
     obj.constraints[-1].target = target
     obj.constraints[-1].influence = influence
 
+
 def track_to(obj, axis, target, up='Z', target_z=False, influence=1):
     '''
     Damped-tracks one object to another.
@@ -112,7 +115,8 @@ def track_to(obj, axis, target, up='Z', target_z=False, influence=1):
     obj.constraints[-1].influence = influence
 
 
-def project_along_axis(obj, axis, target, opposite=False, align_to_normal=None, influence=1):
+def project_along_axis(obj, axis, target, opposite=False,
+                       align_to_normal=None, influence=1):
     '''
     Projects one object to another along an axis.
 
