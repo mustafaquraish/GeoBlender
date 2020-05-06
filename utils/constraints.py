@@ -3,7 +3,7 @@ Utilites to add constraints to objects.
 '''
 
 
-def copy_location(obj, target, influence=1.0):
+def copy_location(obj, target, axes='XYZ', influence=1.0):
     '''
     Makes object copy the location of another.
 
@@ -13,10 +13,13 @@ def copy_location(obj, target, influence=1.0):
     '''
     obj.constraints.new(type='COPY_LOCATION')
     obj.constraints[-1].target = target
+    obj.constraints[-1].use_x = ('X' in axes.upper())
+    obj.constraints[-1].use_y = ('Y' in axes.upper())
+    obj.constraints[-1].use_z = ('Z' in axes.upper())
     obj.constraints[-1].influence = influence
 
 
-def copy_rotation(obj, target, influence=1.0):
+def copy_rotation(obj, target, axes='XYZ', influence=1.0):
     '''
     Makes object copy the rotation of another.
 
@@ -26,10 +29,13 @@ def copy_rotation(obj, target, influence=1.0):
     '''
     obj.constraints.new(type='COPY_ROTATION')
     obj.constraints[-1].target = target
+    obj.constraints[-1].use_x = ('X' in axes.upper())
+    obj.constraints[-1].use_y = ('Y' in axes.upper())
+    obj.constraints[-1].use_z = ('Z' in axes.upper())
     obj.constraints[-1].influence = influence
 
 
-def copy_scale(obj, target, influence=1.0):
+def copy_scale(obj, target, axes='XYZ', influence=1.0):
     '''
     Makes object copy the scale of another.
 
@@ -39,10 +45,13 @@ def copy_scale(obj, target, influence=1.0):
     '''
     obj.constraints.new(type='COPY_SCALE')
     obj.constraints[-1].target = target
+    obj.constraints[-1].use_x = ('X' in axes.upper())
+    obj.constraints[-1].use_y = ('Y' in axes.upper())
+    obj.constraints[-1].use_z = ('Z' in axes.upper())
     obj.constraints[-1].influence = influence
 
 
-def copy_transforms(obj, target, transforms="LRS", influence=1.0):
+def copy_transforms(obj, target, transforms='LRS', mix='REPLACE', influence=1):
     '''
     Makes object copy the transformations of another.
 
@@ -55,10 +64,11 @@ def copy_transforms(obj, target, transforms="LRS", influence=1.0):
     if transforms != "LRS":
         dic = {'L': copy_location, 'S': copy_scale, 'R': copy_rotation}
         for t in transforms:
-            dic[t.upper()](obj, target, influence)
+            dic[t.upper()](obj=obj, target=target, influence=influence)
     else:
         obj.constraints.new(type='COPY_TRANSFORMS')
         obj.constraints[-1].target = target
+        obj.constraints[-1].mix_mode = mix
         obj.constraints[-1].influence = influence
 
 
@@ -85,11 +95,15 @@ def damped_track(obj, axis, target, influence=1):
 
     obj:        Source object   (Blender Object)
     target:     Target object   (Blender Object)
-    axis:       Tracked Axis    ('X', 'Y' or 'Z')
+    axis:       Tracked Axis    ('+X', 'Y' or 'Z')
     influence:  Influence       (float, 0-1)
     '''
+    track_axis = 'TRACK_'
+    track_axis += ('NEGATIVE_' if axis[0] == '-' else '')
+    track_axis += axis[-1].upper()
+
     obj.constraints.new(type='DAMPED_TRACK')
-    obj.constraints[-1].track_axis = 'TRACK_' + axis.upper()
+    obj.constraints[-1].track_axis = track_axis
     obj.constraints[-1].target = target
     obj.constraints[-1].influence = influence
 
@@ -168,6 +182,24 @@ def project_nearest(obj, target, align_to_normal=None, influence=1):
         align_axis += align_to_normal[1].upper()
         obj.constraints[-1].use_track_normal = True
         obj.constraints[-1].track_axis = align_axis
+
+
+def follow_path(obj, target, follow=False, fixed=False, offset=0, influence=1):
+    '''
+    TODO: update this doc.
+
+    Places an object along the given curve at the given position
+
+    obj:                Source object           (Blender Object)
+    target:             Target object           (Blender Object)
+    align_to_normal     Align axis to normal    (None, or '+X', '-X', ...)
+    influence:          Influence               (float, 0-1)
+    '''
+    obj.constraints.new(type='FOLLOW_PATH')
+    obj.constraints[-1].use_curve_follow = follow
+    obj.constraints[-1].use_fixed_location = fixed
+    obj.constraints[-1].target = target
+    obj.constraints[-1].offset_factor = offset
 
 
 def position_on_curve(obj, target, position=0, influence=1):
