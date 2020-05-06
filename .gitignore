@@ -1,4 +1,5 @@
 *.pyc
 *__pycache__*
 *.blend*
+*DS_Store
 *vscode*
