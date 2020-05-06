@@ -168,3 +168,18 @@ def project_nearest(obj, target, align_to_normal=None, influence=1):
         align_axis += align_to_normal[1].upper()
         obj.constraints[-1].use_track_normal = True
         obj.constraints[-1].track_axis = align_axis
+
+
+def position_on_curve(obj, target, position=0, influence=1):
+    '''
+    Places an object along the given curve at the given position
+
+    obj:                Source object           (Blender Object)
+    target:             Target object           (Blender Object)
+    align_to_normal     Align axis to normal    (None, or '+X', '-X', ...)
+    influence:          Influence               (float, 0-1)
+    '''
+    obj.constraints.new(type='FOLLOW_PATH')
+    obj.constraints[-1].use_fixed_location = True
+    obj.constraints[-1].target = target
+    obj.constraints[-1].offset_factor = position
