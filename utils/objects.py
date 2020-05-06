@@ -87,7 +87,10 @@ def join_objects(obj_list):
 
 
 @preserve_selection
-def new_plane(size=10, location=(0, 0, 0), hide=False):
+def new_plane(size=None, location=(0, 0, 0), hide=False):
+    if size is None:
+        size = bpy.context.scene.geoblender_settings.plane_size
+
     bpy.ops.mesh.primitive_plane_add(
         size=size,
         enter_editmode=False,
@@ -143,6 +146,19 @@ def new_cylinder(radius=1, depth=1, vert=20, location=(0, 0, 0), hide=False):
         vertices=vert,
         radius=radius,
         depth=depth,
+        enter_editmode=False,
+        align='WORLD',
+        location=location
+    )
+    set_hidden(bpy.context.object, hide)
+    return bpy.context.object
+
+
+@preserve_selection
+def new_icosphere(radius=1.0, subdivisions=2, location=(0, 0, 0), hide=False):
+    bpy.ops.mesh.primitive_ico_sphere_add(
+        radius=radius,
+        subdivisions=subdivisions,
         enter_editmode=False,
         align='WORLD',
         location=location

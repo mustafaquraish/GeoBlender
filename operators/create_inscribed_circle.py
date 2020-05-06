@@ -1,6 +1,6 @@
 import bpy
 from ..utils.objects import new_circle, new_empty, new_plane
-from ..utils.geometry import put_at_incenter, make_orthogonal_to, PLANE_SIZE
+from ..utils.geometry import put_at_incenter, make_orthogonal_to
 from ..utils.constraints import copy_transforms, project_nearest, copy_location
 from ..utils.drivers import add_driver_distance
 
@@ -38,7 +38,7 @@ class CreateInscribedCircle(bpy.types.Operator):
 
         (A, B, C) = context.selected_objects[-3:]
 
-        plane_ab = new_plane(size=PLANE_SIZE(), hide=self.hide_extra)
+        plane_ab = new_plane(hide=self.hide_extra)
         plane_ab.name = 'plane_ab'
         make_orthogonal_to(plane_ab, A, B, C)
 

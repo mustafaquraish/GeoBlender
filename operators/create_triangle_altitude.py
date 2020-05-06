@@ -1,7 +1,6 @@
 import bpy
 from ..utils.objects import new_line, new_empty, new_plane
-from ..utils.geometry import PLANE_SIZE, stretch_between_points
-from ..utils.geometry import make_orthogonal_to
+from ..utils.geometry import stretch_between_points, make_orthogonal_to
 from ..utils.constraints import copy_location, project_nearest
 
 
@@ -46,7 +45,7 @@ class CreateTriangleAltitude(bpy.types.Operator):
         others = [A, B, C]
         others.remove(active)
 
-        pr_plane = new_plane(size=PLANE_SIZE(), hide=self.hide_extra)
+        pr_plane = new_plane(hide=self.hide_extra)
         pr_plane.name = "projection plane"
         make_orthogonal_to(pr_plane, others[0], others[1], active, axis='Z')
 
