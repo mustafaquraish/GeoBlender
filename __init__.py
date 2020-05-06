@@ -57,6 +57,9 @@ from .operators.empty_at_barycenter         import EmptyAtBarycenter
 from .operators.empty_at_incenter           import EmptyAtIncenter
 from .operators.empty_at_middle             import EmptyAtMiddle
 
+from .operators.line_line_intersection       import LineLineIntersection
+from .operators.line_circle_intersection     import LineCircleIntersection
+
 from .operators.plane_through_points        import PlaneThroughPoints
 from .operators.bisect_plane                import BisectPlane
 
