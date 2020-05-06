@@ -20,7 +20,7 @@ def align_to_plane_of(obj, A, B, C):
 
 def track_to_angle_between(obj, A, B, axes='XYZ', influence=0.5):
     '''
-    Make the given axis of the object point towards the bisector (or other 
+    Make the given axis of the object point towards the bisector (or other
     intermediary angle) of the angle formed by the lines to A and B.
 
     obj:        Source object   (Blender Object)
@@ -40,7 +40,7 @@ def make_orthogonal_to(obj, A, B, C, axis='Z'):
     axis points towards C.
 
     obj:        Source Object       (Blender object)
-    A, B, C:    3 points            (Blender Objects)  
+    A, B, C:    3 points            (Blender Objects)
     axis:       Axis pointing to C  ('X', 'Y' or 'Z')
     '''
     copy_location(obj, target=A)
@@ -50,7 +50,7 @@ def make_orthogonal_to(obj, A, B, C, axis='Z'):
 
 def put_in_between(obj, A, B, influence=0.5):
     '''
-    Positions an object on the line between two other objects, such that 
+    Positions an object on the line between two other objects, such that
         (distance to A)/(distance to B) = influence
 
     obj:        Source object   (Blender Object)
@@ -65,7 +65,7 @@ def put_in_between(obj, A, B, influence=0.5):
 
 def put_at_circumcenter(obj, A, B, C, hide_extra=True):
     '''
-    Constrain the given object at the circumcenter of 3 points. 
+    Constrain the given object at the circumcenter of 3 points.
 
     obj:        Source object   (Blender Object)
     A, B, C:    3 points        (Blender Objects)
@@ -90,7 +90,7 @@ def put_at_circumcenter(obj, A, B, C, hide_extra=True):
 
 def put_at_barycenter(obj, A, B, C, hide_extra=True):
     '''
-    Constrain the given object at the barycenter of 3 points. 
+    Constrain the given object at the barycenter of 3 points.
 
     obj:        Source object   (Blender Object)
     A, B, C:    3 points        (Blender Objects)
@@ -114,7 +114,7 @@ def put_at_barycenter(obj, A, B, C, hide_extra=True):
 
 def put_at_orthocenter(obj, A, B, C, hide_extra=True):
     '''
-    Constrain the given object at the orthocenter of 3 points. 
+    Constrain the given object at the orthocenter of 3 points.
 
     obj:        Source object   (Blender Object)
     A, B, C:    3 points        (Blender Objects)
@@ -160,7 +160,7 @@ def put_at_orthocenter(obj, A, B, C, hide_extra=True):
 
 def put_at_incenter(obj, A, B, C, hide_extra=True):
     '''
-    Constrain the given object at the incenter of 3 points. 
+    Constrain the given object at the incenter of 3 points.
 
     obj:        Source object   (Blender Object)
     A, B, C:    3 points        (Blender Objects)

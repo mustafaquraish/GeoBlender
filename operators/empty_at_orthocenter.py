@@ -20,7 +20,7 @@ class EmptyAtOrthocenter(bpy.types.Operator):
         return self.execute(context)
 
     def execute(self, context):
-        
+
         if (len(context.selected_objects) != 3):
             self.report({'ERROR'}, 'Need to select 3 objects')
             return {'CANCELLED'}
