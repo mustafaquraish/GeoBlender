@@ -20,6 +20,32 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
+from .properties import GeoBlenderSettings
+from .interface import GeoBlenderPanel
+from .operators.scratch import Scratch
+from .operators.bisect_plane import BisectPlane
+from .operators.plane_through_points import PlaneThroughPoints
+from .operators.line_circle_intersection import LineCircleIntersection
+from .operators.line_line_intersection import LineLineIntersection
+from .operators.empty_at_middle import EmptyAtMiddle
+from .operators.empty_at_incenter import EmptyAtIncenter
+from .operators.empty_at_barycenter import EmptyAtBarycenter
+from .operators.empty_at_orthocenter import EmptyAtOrthocenter
+from .operators.empty_at_circumcenter import EmptyAtCircumcenter
+from .operators.create_triangle_median import CreateTriangleMedian
+from .operators.create_triangle_bisector import CreateTriangleBisector
+from .operators.create_triangle_altitude import CreateTriangleAltitude
+from .operators.create_line import CreateLine
+from .operators.create_triangle import CreateTriangle
+from .operators.create_line_segment import CreateLineSegment
+from .operators.create_euler_line import CreateEulerLine
+from .operators.create_euler_circle import CreateEulerCircle
+from .operators.create_circumcircle import CreateCircumcircle
+from .operators.create_inscribed_circle import CreateInscribedCircle
+from sys import modules
+from inspect import isclass
+from inspect import getmembers
+import bpy
 bl_info = {
     "name": "GeoBlender",
     "description": "A 3D Geometry addon for Blender",
@@ -33,45 +59,15 @@ bl_info = {
 }
 
 
-import bpy
-from inspect import getmembers
-from inspect import isclass
-from sys import modules
-
 # Import all the operators
-from .operators.create_inscribed_circle     import CreateInscribedCircle
-from .operators.create_circumcircle         import CreateCircumcircle
-from .operators.create_euler_circle         import CreateEulerCircle
-from .operators.create_euler_line           import CreateEulerLine
-from .operators.create_line_segment         import CreateLineSegment
-from .operators.create_triangle             import CreateTriangle
-from .operators.create_line                 import CreateLine
 
-from .operators.create_triangle_altitude    import CreateTriangleAltitude
-from .operators.create_triangle_bisector    import CreateTriangleBisector
-from .operators.create_triangle_median      import CreateTriangleMedian
-
-from .operators.empty_at_circumcenter       import EmptyAtCircumcenter
-from .operators.empty_at_orthocenter        import EmptyAtOrthocenter
-from .operators.empty_at_barycenter         import EmptyAtBarycenter
-from .operators.empty_at_incenter           import EmptyAtIncenter
-from .operators.empty_at_middle             import EmptyAtMiddle
-
-from .operators.line_line_intersection       import LineLineIntersection
-from .operators.line_circle_intersection     import LineCircleIntersection
-
-from .operators.plane_through_points        import PlaneThroughPoints
-from .operators.bisect_plane                import BisectPlane
 
 # Form a list of all the operators
 operators = [obj for _, obj in getmembers(modules[__name__]) if isclass(obj)]
 
 # Just to help with debugging. Not for the actual intrface :)
-from .operators.scratch import Scratch
 
 # Import interface and properties
-from .interface         import GeoBlenderPanel
-from .properties        import GeoBlenderSettings
 
 # Form a list of all classes
 classes = [obj for _, obj in getmembers(modules[__name__]) if isclass(obj)]

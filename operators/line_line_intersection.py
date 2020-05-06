@@ -33,7 +33,7 @@ class LineLineIntersection(bpy.types.Operator):
                 isinstance(B.data, bpy.types.Curve)):
             self.report({'ERROR'}, 'Both objects needs to be curves')
             return {'CANCELLED'}
-    
+
         a_start = new_empty(hide=self.hide_extra)
         position_on_curve(a_start, A, 0)
 
