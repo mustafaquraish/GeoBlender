@@ -3,6 +3,12 @@ Driver-related utilites to simplify adding drivers to objects without
 the boilerplate.
 '''
 
+transform_props = {
+    'scale': 'SCALE_',
+    'location': 'LOC_',
+    'rotation': 'ROT_',
+}
+
 
 def make_driver_list(obj, prop, fields):
     '''
@@ -51,8 +57,6 @@ def add_driver_distance(obj, prop, fields, A, B, scale=1):
 
 def add_driver(obj, prop, fields, vars_def, expr):
     '''
-    -------------- DOES NOT CURRENTLY WORK --------------------------------
-
     Add a driver for an object's properties, using the transform channels of
     other objects.
 
@@ -67,9 +71,18 @@ def add_driver(obj, prop, fields, vars_def, expr):
 
     Variable definitions are a dictionary with the following format:
     { var_name: (target_object, prop, field) }
+    where:
+        target_obj: Blender Object
+        prop: 'SCALE', 'LOC' or 'ROT'
+        field: 'X', 'Y', 'Z', 'W', '-'
+            - Note: if this value is `-`, then the corresponding destination
+                field is used. So, for the driver for the `X` component the
+                value of the `X` field will be used, etc. Useful to set the
+                X-Y-Z components of the destination based on the X-Y-Z
+                components of the source.
 
     For example, to represent `x = Cube.scale[1]`,
-    { x: (Cube, 'S', 'Y') }
+    { x: (Cube, 'scale', 'Y') }
     '''
     # Add the needed drivers to the object
     driver_list = make_driver_list(obj, prop.lower(), fields)
@@ -84,10 +97,18 @@ def add_driver(obj, prop, fields, vars_def, expr):
             var = driver.driver.variables.new()
             var.name = var_name
             var.type = 'TRANSFORMS'
+            # Get correct property string
+            t_prop = transform_props[t_prop.lower()]
+
+            # If `t_field` is '-', then pick the corresponding field
+            # using the driver index.
+            if t_field == '-':
+                t_field = 'XYZW'[driver.array_index]
+
             # Set the target object and the correct data path
-            data_path = f'{t_prop.lower()}.{t_field.lower()}'
+            transform_type = t_prop + t_field.upper()
             var.targets[0].id = t_obj
-            var.targets[0].data_path = data_path
+            var.targets[0].transform_type = transform_type
 
         # Set the expression
         driver.driver.expression = expr

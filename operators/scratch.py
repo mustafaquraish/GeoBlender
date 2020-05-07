@@ -1,7 +1,7 @@
 import bpy
 from ..utils.objects import *
 from ..utils.geometry import *
-from ..utils.drivers import *
+from ..utils.drivers import add_driver
 from ..utils.constraints import *
 
 class Scratch(bpy.types.Operator):
@@ -22,8 +22,17 @@ class Scratch(bpy.types.Operator):
             return {'CANCELLED'}
 
         (A, B, C) = context.selected_objects[-3:]
-
-        empty = new_empty()
-        put_at_incenter(empty, A, B, C, hide_extra=self.hide)
+        add_driver(
+            obj=A,
+            prop='scale',
+            fields='XZ',
+            vars_def={
+                'x': (B, 'scale', 'X'),
+                'y': (B, 'scale', 'Y'),
+                'z': (C, 'rotation', 'W'),
+                'c': (C, 'location', '-')
+            },
+            expr='sqrt(x**2 + y**2) + z'
+        )
 
         return {'FINISHED'}

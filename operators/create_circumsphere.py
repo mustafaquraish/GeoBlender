@@ -1,8 +1,8 @@
 import bpy
 from ..utils.objects import new_empty, new_plane, new_sphere
 from ..utils.geometry import put_at_circumcenter, put_in_between
-from ..utils.constraints import copy_location, copy_transforms
-from ..utils.constraints import project_along_axis, damped_track
+from ..utils.constraints import copy_transforms, project_along_axis
+from ..utils.constraints import damped_track
 from ..utils.drivers import add_driver_distance
 
 
@@ -25,7 +25,7 @@ class CreateCircumsphere(bpy.types.Operator):
     def execute(self, context):
 
         if (len(context.selected_objects) != 4):
-            self.report({'ERROR'}, 'Need to select 3 objects')
+            self.report({'ERROR'}, 'Need to select 4 objects')
             return {'CANCELLED'}
 
         (A, B, C, D) = context.selected_objects[-4:]
@@ -41,7 +41,7 @@ class CreateCircumsphere(bpy.types.Operator):
         project_along_axis(center, axis='Z', target=pr_plane, opposite=True)
 
         circumsphere = new_sphere(segments=64, rings=32)
-        copy_location(circumsphere, center)
+        copy_transforms(circumsphere, target=center, transforms='LR')
         add_driver_distance(
             obj=circumsphere,
             prop='scale',
