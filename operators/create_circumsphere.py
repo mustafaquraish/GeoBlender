@@ -40,7 +40,7 @@ class CreateCircumsphere(bpy.types.Operator):
         put_at_circumcenter(center, A, B, C, hide_extra=self.hide_extra)
         project_along_axis(center, axis='Z', target=pr_plane, opposite=True)
 
-        circumsphere = new_sphere(segments=200, rings=100)
+        circumsphere = new_sphere(segments=64, rings=32)
         copy_location(circumsphere, center)
         add_driver_distance(
             obj=circumsphere,
