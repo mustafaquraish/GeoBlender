@@ -41,6 +41,7 @@ from sys import modules
 # Import all the operators
 from .operators.create_inscribed_circle     import CreateInscribedCircle
 from .operators.create_circumcircle         import CreateCircumcircle
+from .operators.create_circumsphere         import CreateCircumsphere
 from .operators.create_euler_circle         import CreateEulerCircle
 from .operators.create_euler_line           import CreateEulerLine
 from .operators.create_line_segment         import CreateLineSegment
