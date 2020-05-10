@@ -28,12 +28,13 @@ bl_info = {
     "blender": (2, 80, 0),
     "location": "3D View Sidebar > GeoBlender tab",
     "wiki_url": "https://github.com/mustafaquraish/GeoBlender",
-    "tracker_url": "https://github.com/mustafaquraish",
+    "tracker_url": "https://github.com/mustafaquraish/GeoBlender",
     "category": "Geometry"
 }
 
 
 import bpy
+import addon_utils
 from inspect import getmembers
 from inspect import isclass
 from sys import modules
@@ -76,6 +77,11 @@ from .properties        import GeoBlenderSettings
 
 # Form a list of all classes
 classes = [obj for _, obj in getmembers(modules[__name__]) if isclass(obj)]
+
+# Enable the Extra Objects: Curves addon
+(installed, enabled) = addon_utils.check("add_curve_extra_objects")
+if installed and (not enabled):
+    addon_utils.enable("add_curve_extra_objects")
 
 
 def register():
