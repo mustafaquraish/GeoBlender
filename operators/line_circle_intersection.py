@@ -1,5 +1,5 @@
 import bpy
-from ..utils.objects import new_empty, new_cylinder, new_line, new_icosphere, set_hidden
+from ..utils.objects import new_empty, new_cylinder, new_line, set_hidden
 from ..utils.objects import move_origin_center
 from ..utils.constraints import position_on_curve, copy_transforms
 from ..utils.constraints import project_along_axis, copy_scale
@@ -35,17 +35,16 @@ class LineCircleIntersection(bpy.types.Operator):
             self.report({'ERROR'}, 'Both objects needs to be curves')
             return {'CANCELLED'}
 
-        if 'BezierCircle' in A.data.name and 'Line' in B.data.name:
+        if 'Circle' in A.data.name and 'Line' in B.data.name:
             circle, line = A, B
-        elif 'Line' in A.data.name and 'BezierCircle' in B.data.name:
+        elif 'Line' in A.data.name and 'Circle' in B.data.name:
             circle, line = B, A
         else:
             self.report({'ERROR'}, 'Need to select a line and a circle')
             return {'CANCELLED'}
 
-        # Don't ask me why, but setting the `hide=...` flag here completely
-        # breaks the 2nd intersection stuff. I have no idea. Just going to
-        # hide it manually at the end... 
+        # Setting `hide=self.hide_extra` here seems to break the intersection
+        # tests, unsure why. TODO: fix this. For now, just hide it later.
         line2 = new_line()
         move_origin_center(line2, center='MEDIAN')
         # Make the line really large to ensure it encompasses the circle
@@ -56,17 +55,17 @@ class LineCircleIntersection(bpy.types.Operator):
         copy_transforms(pr_cyl, circle, transforms='LR')
         copy_scale(pr_cyl, target=circle, axes='XY')  # Don't copy Z scale
 
-        intersection_1 = new_icosphere()
+        intersection_1 = new_empty()
         position_on_curve(intersection_1, line2, position=0)
         project_along_axis(intersection_1, 'Z', target=pr_cyl, opposite=True)
         intersection_1.name = "Intersection 1"
 
-        intersection_2 = new_icosphere()
+        intersection_2 = new_empty()
         position_on_curve(intersection_2, line2, position=1)
         project_along_axis(intersection_2, 'Z', target=pr_cyl, opposite=True)
         intersection_2.name = "Intersection 2"
 
-        # Yeah, idk...
+        # Hide the line from earlier if needed.
         set_hidden(line2, hide=self.hide_extra)
         
         return {'FINISHED'}

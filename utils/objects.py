@@ -53,9 +53,10 @@ def set_hidden(obj, hide=True):
     else:
         collection = bpy.data.collections[COLLECTION_NAME]
 
-    # old_collection = obj.users_collection[0]  # get old collection
-    collection.objects.link(obj)        # put obj in extras collection
-    # old_collection.objects.unlink(obj)  # unlink from old collection
+    old_collections = obj.users_collection  # get old collection
+    collection.objects.link(obj)    # put obj in extras collection
+    for coll in old_collections:
+        coll.objects.unlink(obj)    # unlink from old collection
 
     obj.hide_viewport = hide
     obj.hide_render = hide
