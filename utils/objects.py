@@ -23,8 +23,7 @@ def preserve_selection(func):
         ret = func(*args, **kwargs)
 
         # Restore the selection
-        if ret is not None:
-            ret.select_set(False)
+        bpy.ops.object.select_all(action='DESELECT')
         for obj in prev_selected:
             obj.select_set(True)
         bpy.context.view_layer.objects.active = prev_active
@@ -54,19 +53,20 @@ def set_hidden(obj, hide=True):
     else:
         collection = bpy.data.collections[COLLECTION_NAME]
 
-    old_collection = obj.users_collection[0]  # get old collection
-    collection.objects.link(obj)        # put obj in extras collection
-    old_collection.objects.unlink(obj)  # unlink from old collection
+    old_collections = obj.users_collection  # get old collection
+    collection.objects.link(obj)    # put obj in extras collection
+    for coll in old_collections:
+        coll.objects.unlink(obj)    # unlink from old collection
 
     obj.hide_viewport = hide
     obj.hide_render = hide
 
 
 @preserve_selection
-def move_origin_center(obj):
+def move_origin_center(obj, center='BOUNDS'):
     bpy.ops.object.select_all(action='DESELECT')
     obj.select_set(True)
-    bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY', center='BOUNDS')
+    bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY', center=center)
     return obj
 
 
@@ -81,6 +81,34 @@ def join_objects(obj_list):
     c["selected_objects"] = c["selected_editable_objects"] = obj_list
     bpy.ops.object.join(c)
     return obj_list[0]
+
+
+@preserve_selection
+def duplicate(obj, hide=False):
+    bpy.ops.object.select_all(action='DESELECT')
+    obj.select_set(True)
+    bpy.ops.object.duplicate()
+    set_hidden(bpy.context.object, hide)
+    return bpy.context.object
+
+
+@preserve_selection
+def duplicate_to_mesh(obj, hide=False):
+    bpy.ops.object.select_all(action='DESELECT')
+    obj.select_set(True)
+    bpy.ops.object.duplicate()
+    bpy.ops.object.convert(target='MESH')
+    set_hidden(bpy.context.object, hide)
+    return bpy.context.object
+
+
+@preserve_selection
+def convert_to_mesh(obj, hide=False):
+    bpy.ops.object.select_all(action='DESELECT')
+    obj.select_set(True)
+    bpy.ops.object.convert(target='MESH')
+    set_hidden(bpy.context.object, hide)
+    return bpy.context.object
 
 
 ###############################################################################
@@ -125,6 +153,20 @@ def new_circle(radius=1, location=(0, 0, 0), hide=False):
 
 
 @preserve_selection
+def new_mesh_circle(radius=1, vert=100, location=(0, 0, 0), hide=False):
+    bpy.ops.mesh.primitive_circle_add(
+        radius=radius,
+        vertices=vert,
+        fill_type='NGON',
+        enter_editmode=False,
+        align='WORLD',
+        location=location
+    )
+    set_hidden(bpy.context.object, hide)
+    return bpy.context.object
+
+
+@preserve_selection
 def new_line(length=1, hide=False):
     bpy.ops.curve.simple(
         align='WORLD',
@@ -136,8 +178,9 @@ def new_line(length=1, hide=False):
         use_cyclic_u=False,
         edit_mode=False
     )
-    set_hidden(bpy.context.object, hide)
-    return bpy.context.object
+    line = bpy.context.object
+    set_hidden(line, hide)
+    return line
 
 
 @preserve_selection
