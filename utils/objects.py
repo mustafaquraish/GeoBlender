@@ -64,9 +64,16 @@ def set_hidden(obj, hide=True):
 
 @preserve_selection
 def move_origin_center(obj, center='BOUNDS'):
+    # Object needs to be visible to do this, temporarily make it visible
+    prev_hidden = obj.hide_viewport
+    obj.hide_viewport = False
+
     bpy.ops.object.select_all(action='DESELECT')
     obj.select_set(True)
     bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY', center=center)
+
+    obj.hide_viewport = prev_hidden
+
     return obj
 
 

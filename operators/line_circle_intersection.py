@@ -43,9 +43,7 @@ class LineCircleIntersection(bpy.types.Operator):
             self.report({'ERROR'}, 'Need to select a line and a circle')
             return {'CANCELLED'}
 
-        # Setting `hide=self.hide_extra` here seems to break the intersection
-        # tests, unsure why. TODO: fix this. For now, just hide it later.
-        line2 = new_line()
+        line2 = new_line(hide=self.hide_extra)
         move_origin_center(line2, center='MEDIAN')
         # Make the line really large to ensure it encompasses the circle
         line2.scale.z = 10e4
@@ -64,8 +62,5 @@ class LineCircleIntersection(bpy.types.Operator):
         position_on_curve(intersection_2, line2, position=1)
         project_along_axis(intersection_2, 'Z', target=pr_cyl, opposite=True)
         intersection_2.name = "Intersection 2"
-
-        # Hide the line from earlier if needed.
-        set_hidden(line2, hide=self.hide_extra)
         
         return {'FINISHED'}
