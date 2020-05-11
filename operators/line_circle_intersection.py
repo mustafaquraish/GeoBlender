@@ -1,8 +1,8 @@
 import bpy
-from ..utils.objects import new_empty, new_cylinder, new_line, set_hidden
+from ..utils.objects import new_empty, new_cylinder, new_line
 from ..utils.objects import move_origin_center
 from ..utils.constraints import position_on_curve, copy_transforms
-from ..utils.constraints import project_along_axis, copy_scale
+from ..utils.constraints import project_along_axis, copy_scale, copy_rotation
 
 
 class LineCircleIntersection(bpy.types.Operator):
@@ -55,11 +55,13 @@ class LineCircleIntersection(bpy.types.Operator):
 
         intersection_1 = new_empty()
         position_on_curve(intersection_1, line2, position=0)
+        copy_rotation(intersection_1, line2)
         project_along_axis(intersection_1, 'Z', target=pr_cyl, opposite=True)
         intersection_1.name = "Intersection 1"
 
         intersection_2 = new_empty()
         position_on_curve(intersection_2, line2, position=1)
+        copy_rotation(intersection_2, line2)
         project_along_axis(intersection_2, 'Z', target=pr_cyl, opposite=True)
         intersection_2.name = "Intersection 2"
         
