@@ -1,8 +1,7 @@
-import bpy
 from .constraints import copy_location
 from .constraints import damped_track, locked_track
 from .constraints import project_along_axis, project_nearest
-from .drivers import add_driver_distance
+from .drivers import add_driver, add_driver_distance, driver_namespace
 from .objects import new_empty, new_plane
 
 
@@ -193,3 +192,45 @@ def stretch_between_points(obj, A, B, axis='Z', scale=1):
     copy_location(obj, target=A)
     damped_track(obj, axis=axis.upper(), target=B)
     add_driver_distance(obj, 'scale', axis * scale, A, B)
+
+###############################################################################
+
+
+def put_at_radical_intercept(obj, A, B):
+    '''
+    Place the given object at the  intersection point of the radical axis of 2
+    given circles and the line connecting their centers.
+
+    obj:        Source object   (Blender Object)
+    A, B:       2 Circles       (Blender Objects)
+    '''
+    add_driver(
+        obj=obj,
+        prop='location',
+        fields='XYZ',
+        vars_def={
+            'd': ('distance', A, B),
+            'r1': ('transform', A, 'scale', 'X'),
+            'r2': ('transform', B, 'scale', 'X'),
+            'o1': ('transform', A, 'location', '-'),
+            'o2': ('transform', B, 'location', '-'),
+        },
+        expr='gb_radical_axis_intercept(d, r1, r2, o1, o2)'
+    )
+
+
+@driver_namespace
+def gb_radical_axis_intercept(d, r1, r2, o1, o2):
+    '''
+    Function to be used in the driver to help compute the intersection point of
+    the radical axis of 2 circles and the line connecting their centers.
+
+    d:          Distance b/w circles             (float)
+    r1, r2:     Radii of circles                 (float)
+    oa, ob:     X,Y or Z positions of circles    (float)
+
+    Return: Returns the X, Y or Z position of the intersection point when the
+            corresponding X, Y and Z positions are passed in as `oa` and `ob`
+    '''
+    frac = (d*d + r1*r1 - r2*r2)/(2*d*d)
+    return (1-frac)*o1 + frac*o2

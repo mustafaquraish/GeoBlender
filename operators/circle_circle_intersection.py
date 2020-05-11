@@ -1,7 +1,9 @@
 import bpy
-from ..utils.objects import new_empty, new_cylinder, new_mesh_circle
-from ..utils.constraints import position_on_curve, copy_transforms
+from ..utils.objects import new_empty, new_cylinder
+from ..utils.constraints import position_on_curve, copy_transforms, damped_track, copy_location
+from ..utils.geometry import put_in_between
 from ..utils.constraints import project_along_axis, copy_rotation, locked_track
+from ..utils.drivers import add_driver_distance, add_driver, driver_namespace
 
 
 class CircleCircleIntersection(bpy.types.Operator):
@@ -18,7 +20,7 @@ class CircleCircleIntersection(bpy.types.Operator):
 
     def invoke(self, context, event):
         self.hide_extra = context.scene.geoblender_settings.hide_extra
-        return self.execute(context)
+        return self.execute(context) 
 
     def execute(self, context):
 
@@ -33,31 +35,52 @@ class CircleCircleIntersection(bpy.types.Operator):
             self.report({'ERROR'}, 'Both objects needs to be curves')
             return {'CANCELLED'}
 
-        if 'BezierCircle' not in A.data.name or 'Circle' not in B.data.name:
-            self.report({'ERROR'}, 'Need to select a line and a circle')
+        if 'Circle' not in A.data.name or 'Circle' not in B.data.name:
+            self.report({'ERROR'}, 'Need to select 2 circles')
             return {'CANCELLED'}
 
-        int_center = new_empty()
-        copy_transforms(int_center, A, transforms='LR')
-        locked_track(int_center, lock='Z', axis='X', target=B)
+        # line = new_line()
+        # move_origin_center(line)
+        # put_in_between(line, A, B, influence=0.5)
+        # damped_track(line, axis="Z", target=A)
+        # add_driver_distance(line, 'scale', 'Z', A, B, 100)
+        # line.name = "Line"
 
-        mesh_circ = new_mesh_circle(hide=self.hide_extra)
-        copy_transforms(mesh_circ, B)
-        project_along_axis(int_center, axis='X', target=mesh_circ)
+        int_center = new_empty(hide=self.hide_extra)
+        add_driver(
+            obj=int_center,
+            prop='location',
+            fields='XYZ',
+            vars_def={
+                'd': ('distance', A, B),
+                'r1': ('transform', A, 'scale', 'X'),
+                'r2': ('transform', B, 'scale', 'X'),
+                'o1': ('transform', A, 'location', '-'),
+                'o2': ('transform', B, 'location', '-'),
+            },
+            expr='gb_radical_axis_intercept(d, r1, r2, o1, o2)'
+        )
 
-        # pr_cyl = new_cylinder(vert=100, hide=self.hide_extra)
-        # copy_transforms(pr_cyl, circle)
+        pr_cyl = new_cylinder(hide=self.hide_extra)
+        copy_transforms(pr_cyl, target=A)
 
-        # intersection_1 = new_empty()
-        # position_on_curve(intersection_1, line, position=0)
-        # copy_rotation(intersection_1, line)
-        # project_along_axis(intersection_1, 'Z', target=pr_cyl, opposite=True)
-        # intersection_1.name = "Intersection 1"
+        int_1 = new_empty()
+        copy_location(int_1, int_center)
+        copy_rotation(int_1, A)
+        locked_track(int_1, lock='Z', axis='X', target=B)
+        project_along_axis(int_1, axis='Y', target=pr_cyl)
 
-        # intersection_2 = new_empty()
-        # position_on_curve(intersection_2, line, position=1)
-        # copy_rotation(intersection_2, line)
-        # project_along_axis(intersection_2, 'Z', target=pr_cyl, opposite=True)
-        # intersection_2.name = "Intersection 2"
+        int_2 = new_empty()
+        copy_location(int_2, int_center)
+        copy_rotation(int_2, A)
+        locked_track(int_2, lock='Z', axis='X', target=B)
+        project_along_axis(int_2, axis='-Y', target=pr_cyl)
+
+        # line = new_line()
+        # move_origin_center(line)
+        # put_in_between(line, int_1, int_2, influence=0.5)
+        # damped_track(line, axis="Z", target=int_1)
+        # add_driver_distance(line, 'scale', 'Z', int_1, int_2, 100)
+        # line.name = "Line"
 
         return {'FINISHED'}

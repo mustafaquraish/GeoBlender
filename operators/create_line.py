@@ -2,7 +2,6 @@ import bpy
 from ..utils.objects import new_line, move_origin_center
 from ..utils.geometry import put_in_between
 from ..utils.constraints import damped_track
-from ..utils.drivers import add_driver_distance
 
 
 class CreateLine(bpy.types.Operator):
@@ -19,12 +18,12 @@ class CreateLine(bpy.types.Operator):
         default=0.0,
     )
 
-    scale: bpy.props.FloatProperty(
-        name="Length scale:",
-        description="Scale relative to distance",
+    length: bpy.props.FloatProperty(
+        name="Length:",
+        description="Length of line",
         min=0,
         soft_max=100,
-        default=5,
+        default=30,
     )
 
     def invoke(self, context, event):
@@ -43,7 +42,7 @@ class CreateLine(bpy.types.Operator):
         move_origin_center(line)
         put_in_between(line, A, B, influence=0.5)
         damped_track(line, axis="Z", target=A)
-        add_driver_distance(line, 'scale', 'Z', A, B, self.scale)
+        line.scale.z = self.length
         line.data.bevel_depth = self.bevel_depth
         line.name = "Line"
 

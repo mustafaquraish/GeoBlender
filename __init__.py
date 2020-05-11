@@ -41,6 +41,7 @@ from sys import modules
 
 # Import all the operators
 from .operators.create_inscribed_circle     import CreateInscribedCircle
+from .operators.create_radical_axis         import CreateRadicalAxis
 from .operators.create_circumcircle         import CreateCircumcircle
 from .operators.create_circumsphere         import CreateCircumsphere
 from .operators.create_euler_circle         import CreateEulerCircle
@@ -74,7 +75,12 @@ from .operators.scratch import Scratch
 
 # Import interface and properties
 from .interface         import GeoBlenderProperties
-from .interface         import GeoBlenderOperators
+from .interface         import GeoBlenderTriangleConstructions
+from .interface         import GeoBlender2DConstructions
+from .interface         import GeoBlender3DConstructions
+from .interface         import GeoBlenderPlanarIntersections
+
+
 from .properties        import GeoBlenderSettings
 
 # Form a list of all classes

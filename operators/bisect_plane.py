@@ -18,6 +18,14 @@ class BisectPlane(bpy.types.Operator):
         default=0.5,
     )
 
+    size: bpy.props.FloatProperty(
+        name="Size:",
+        description="Size of the Plane",
+        min=0.0,
+        soft_max=100,
+        default=10,
+    )
+
     def execute(self, context):
 
         if (len(context.selected_objects) != 2):
@@ -26,7 +34,7 @@ class BisectPlane(bpy.types.Operator):
 
         (A, B) = context.selected_objects[-2:]
 
-        plane = new_plane(size=10)
+        plane = new_plane(size=self.size)
         put_in_between(plane, A, B, influence=self.influence)
         damped_track(plane, axis='Z', target=A)
         plane.name = "Perp. Bisector Plane"

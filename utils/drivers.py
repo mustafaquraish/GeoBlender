@@ -3,9 +3,38 @@ Driver-related utilites to simplify adding drivers to objects without
 the boilerplate.
 '''
 
+
+def driver_namespace(func):
+    '''
+    Use this annotation to add a custom function to the driver namespace
+    for Blender. For instance adding the following annotation:
+
+    >   @driver_namespace
+        def custom_function(...):
+            ...
+            return ...
+
+    will allow you to use `custom_function()` in the driver expressions.
+    '''
+    import bpy  # Need this to set driver namespace
+    bpy.app.driver_namespace[func.__name__] = func
+    return func
+
+
+# @driver_namespace
+# def custom_function(x, y):
+#     return x + y
+
+
+################################################################################
+
+
 transform_props = {
     'scale': 'SCALE_',
+
     'location': 'LOC_',
+    'position': 'LOC_',
+
     'rotation': 'ROT_',
 }
 
@@ -60,7 +89,7 @@ def add_driver(obj, prop, fields, vars_def, expr):
     Add a driver for an object's properties, using the transform channels of
     other objects.
 
-    TODO: Support other variable modes including `Single property`, ...
+    TODO: Support other variable types...
     TODO: Support other `spaces` for channels other than WORLD space
 
     obj:       Source objects       (Blender Object)
@@ -70,8 +99,13 @@ def add_driver(obj, prop, fields, vars_def, expr):
     expr:      Driver Expression    (String)
 
     Variable definitions are a dictionary with the following format:
-    { var_name: (target_object, prop, field) }
+    { 
+        var_name: (type='transform', target_object, prop, field),
+        var_name: (type='distance', object_1, object_2)
+    }
     where:
+        type: 'transform', 'distance', (... unsupported ...)
+        object_1, object_2: 2 objects to compute distance
         target_obj: Blender Object
         prop: 'SCALE', 'LOC' or 'ROT'
         field: 'X', 'Y', 'Z', 'W', '-'
@@ -91,24 +125,45 @@ def add_driver(obj, prop, fields, vars_def, expr):
     for driver in driver_list:
         # For each variable definition
         for var_name in vars_def:
-            # Get the details of the definition
-            (t_obj, t_prop, t_field) = vars_def[var_name]
-            # Create a new variable and assign the name/type
+            # Create a new variable and assign the name
+
             var = driver.driver.variables.new()
             var.name = var_name
-            var.type = 'TRANSFORMS'
-            # Get correct property string
-            t_prop = transform_props[t_prop.lower()]
 
-            # If `t_field` is '-', then pick the corresponding field
-            # using the driver index.
-            if t_field == '-':
-                t_field = 'XYZW'[driver.array_index]
+            # Get the details of the definition
+            t_type = vars_def[var_name][0]
 
-            # Set the target object and the correct data path
-            transform_type = t_prop + t_field.upper()
-            var.targets[0].id = t_obj
-            var.targets[0].transform_type = transform_type
+            if t_type == 'transform':
+                var.type = 'TRANSFORMS'
 
+                (t_obj, t_prop, t_field) = vars_def[var_name][1:]
+                
+                # Get correct property string
+                t_prop = transform_props[t_prop.lower()]
+
+                # If `t_field` is '-', then pick the corresponding field
+                # using the driver index.
+                if t_field == '-':
+                    t_field = 'XYZW'[driver.array_index]
+
+                # Set the target object and the correct data path
+                transform_type = t_prop + t_field.upper()
+                var.targets[0].id = t_obj
+                var.targets[0].transform_type = transform_type
+            
+            elif t_type == 'distance':
+
+                var.type = 'LOC_DIFF'
+
+                (A, B) = vars_def[var_name][1:]
+
+                # Set the two objects
+                var.targets[0].id = A
+                var.targets[1].id = B
+            
+            else:
+                raise Exception("Driver variable type not in " +
+                                "{'transform', 'distance'}")
+                
         # Set the expression
         driver.driver.expression = expr

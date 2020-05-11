@@ -17,6 +17,21 @@ class Scratch(bpy.types.Operator):
     )
 
     def execute(self, context):
+
+        A, B = context.selected_objects[-2:]
+
+        add_driver(
+            obj=A,
+            prop='scale',
+            fields='XYZ',
+            vars_def={
+                'x': ('transform', B, 'position', 'X'),
+                'y': ('transform', B, 'position', 'Y')
+            },
+            expr='lmaoplswork(x,y)'
+        )
+
+        return {'FINISHED'}
         
         if (len(context.selected_objects) != 3):
             return {'CANCELLED'}
@@ -27,10 +42,10 @@ class Scratch(bpy.types.Operator):
             prop='scale',
             fields='XZ',
             vars_def={
-                'x': (B, 'scale', 'X'),
-                'y': (B, 'scale', 'Y'),
-                'z': (C, 'rotation', 'W'),
-                'c': (C, 'location', '-')
+                'x': ('transform', B, 'scale', 'X'),
+                'y': ('transform', B, 'scale', 'Y'),
+                'z': ('transform', C, 'rotation', 'W'),
+                'c': ('distance', C, B)
             },
             expr='sqrt(x**2 + y**2) + z'
         )

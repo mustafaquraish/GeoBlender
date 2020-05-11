@@ -174,13 +174,19 @@ def new_mesh_circle(radius=1, vert=100, location=(0, 0, 0), hide=False):
 
 
 @preserve_selection
-def new_line(length=1, hide=False):
+def new_line(length=1, axis='Z', hide=False):
+    end_loc = (
+        length if axis == 'X' else 0,
+        length if axis == 'Y' else 0,
+        length if axis == 'Z' else 0
+    )
+
     bpy.ops.curve.simple(
         align='WORLD',
         location=(0, 0, 0),
         rotation=(0, 0, 0),
         Simple_Type='Line',
-        Simple_endlocation=(0, 0, length),
+        Simple_endlocation=end_loc,
         shape='3D',
         use_cyclic_u=False,
         edit_mode=False
@@ -191,7 +197,7 @@ def new_line(length=1, hide=False):
 
 
 @preserve_selection
-def new_cylinder(radius=1, depth=1, vert=20, location=(0, 0, 0), hide=False):
+def new_cylinder(radius=1, depth=1, vert=100, location=(0, 0, 0), hide=False):
     bpy.ops.mesh.primitive_cylinder_add(
         vertices=vert,
         radius=radius,
