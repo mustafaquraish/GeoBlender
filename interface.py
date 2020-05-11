@@ -2,9 +2,9 @@ from . import operators
 import bpy
 
 
-class GeoBlenderPanel(bpy.types.Panel):
-    bl_idname = "OBJECT_PT_geoblender"
-    bl_label = "GeoBlender"
+class GeoBlenderProperties(bpy.types.Panel):
+    bl_idname = "OBJECT_PT_geoblender_props"
+    bl_label = "Default Properties"
     bl_category = "GeoBlender"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
@@ -14,9 +14,6 @@ class GeoBlenderPanel(bpy.types.Panel):
         layout = self.layout
         layout.use_property_split = True
         settings = context.scene.geoblender_settings
-
-        row = layout.row()
-        row.label(text="Default Properties", icon="SETTINGS")
 
         row = layout.row()
         row.prop(settings, 'hide_extra')
@@ -30,7 +27,18 @@ class GeoBlenderPanel(bpy.types.Panel):
         row = layout.row()
         row.prop(settings, 'collection_name', expand=True)
 
-        layout.row().separator()
+
+class GeoBlenderOperators(bpy.types.Panel):
+    bl_idname = "OBJECT_PT_geoblender_ops"
+    bl_label = "Operators"
+    bl_category = "GeoBlender"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+    bl_options = {'DEFAULT_CLOSED'}
+
+    def draw(self, context):
+        layout = self.layout
+        layout.use_property_split = True
 
         row = layout.row()
         row.label(text="Geometric Operators", icon="VIEW3D")

@@ -73,7 +73,8 @@ operators = [obj for _, obj in getmembers(modules[__name__]) if isclass(obj)]
 from .operators.scratch import Scratch
 
 # Import interface and properties
-from .interface         import GeoBlenderPanel
+from .interface         import GeoBlenderProperties
+from .interface         import GeoBlenderOperators
 from .properties        import GeoBlenderSettings
 
 # Form a list of all classes
