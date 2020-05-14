@@ -155,6 +155,7 @@ def new_circle(radius=1, location=(0, 0, 0), hide=False):
         align='WORLD',
         location=location
     )
+    bpy.context.object.data.resolution_u = 64
     set_hidden(bpy.context.object, hide)
     return bpy.context.object
 
