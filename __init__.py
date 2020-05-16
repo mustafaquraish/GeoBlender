@@ -49,8 +49,11 @@ from .operators.create_euler_line           import CreateEulerLine
 from .operators.create_line_segment         import CreateLineSegment
 from .operators.create_triangle             import CreateTriangle
 from .operators.create_line                 import CreateLine
+from .operators.create_semicircle                 import CreateSemicircle
 
 from .operators.reflect_point               import ReflectAboutPoint
+from .operators.circle_tangents import CircleTangents
+
 
 from .operators.create_triangle_altitude    import CreateTriangleAltitude
 from .operators.create_triangle_bisector    import CreateTriangleBisector

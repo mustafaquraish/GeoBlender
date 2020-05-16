@@ -161,6 +161,23 @@ def new_circle(radius=1, location=(0, 0, 0), hide=False):
 
 
 @preserve_selection
+def new_arc(radius=1, location=(0, 0, 0), angle=180, sides=40, hide=False):
+    bpy.ops.curve.simple(
+        align='WORLD',
+        location=location,
+        rotation=(0, 0, 0),
+        Simple_Type='Arc',
+        Simple_endangle=angle,
+        Simple_sides=sides,
+        Simple_radius=radius,
+        use_cyclic_u=False,
+        edit_mode=False
+    )
+    set_hidden(bpy.context.object, hide)
+    return bpy.context.object
+
+
+@preserve_selection
 def new_mesh_circle(radius=1, vert=100, location=(0, 0, 0), hide=False):
     bpy.ops.mesh.primitive_circle_add(
         radius=radius,
