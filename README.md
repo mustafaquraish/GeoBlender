@@ -12,6 +12,21 @@ The purpose of this plugin is to make it much easier to apply mathematical and g
 
 ---
 
+## Backlog
+
+### Design / interface:
+- Documentation
+- Add `poll()` to each operator to dynamically disable
+- Add driver to `bevel_depth` for curves to divide by current scale
+
+
+### Operators:
+- Dynamic arc between lines to denote angle
+- If possible, ellipse through focii and curve point
+- Parallel line through point
+
+---
+
 ## How to use
 
 - Click *Clone or Download* above on the right, and then *Download ZIP*
