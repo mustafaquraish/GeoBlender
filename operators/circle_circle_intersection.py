@@ -18,33 +18,43 @@ class CircleCircleIntersection(bpy.types.Operator):
         default=True,
     )
 
-    def invoke(self, context, event):
-        self.hide_extra = context.scene.geoblender_settings.hide_extra
-        return self.execute(context) 
-
-    def execute(self, context):
-
+    @classmethod
+    def poll(cls, context):
+        # return False
         if (len(context.selected_objects) != 2):
-            self.report({'ERROR'}, 'Need to select 2 objects')
-            return {'CANCELLED'}
+            return False
 
         (A, B) = context.selected_objects[-2:]
 
         if not (isinstance(A.data, bpy.types.Curve) and
                 isinstance(B.data, bpy.types.Curve)):
-            self.report({'ERROR'}, 'Both objects needs to be curves')
-            return {'CANCELLED'}
+            return False
 
         if 'Circle' not in A.data.name or 'Circle' not in B.data.name:
-            self.report({'ERROR'}, 'Need to select 2 circles')
-            return {'CANCELLED'}
+            return False
 
-        # line = new_line()
-        # move_origin_center(line)
-        # put_in_between(line, A, B, influence=0.5)
-        # damped_track(line, axis="Z", target=A)
-        # add_driver_distance(line, 'scale', 'Z', A, B, 100)
-        # line.name = "Line"
+        return True
+
+    def invoke(self, context, event):
+        self.hide_extra = context.scene.geoblender_settings.hide_extra
+        return self.execute(context)
+
+    def execute(self, context):
+
+        # if (len(context.selected_objects) != 2):
+        #     self.report({'ERROR'}, 'Need to select 2 objects')
+        #     return {'CANCELLED'}
+
+        (A, B) = context.selected_objects[-2:]
+
+        # if not (isinstance(A.data, bpy.types.Curve) and
+        #         isinstance(B.data, bpy.types.Curve)):
+        #     self.report({'ERROR'}, 'Both objects needs to be curves')
+        #     return {'CANCELLED'}
+
+        # if 'Circle' not in A.data.name or 'Circle' not in B.data.name:
+        #     self.report({'ERROR'}, 'Need to select 2 circles')
+        #     return {'CANCELLED'}
 
         int_center = new_empty(hide=self.hide_extra)
         add_driver(
