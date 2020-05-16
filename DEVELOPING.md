@@ -40,7 +40,7 @@
         from ..utils.geometry import *
         from ..utils.drivers import *
         ```
-       to import everything, even though I highly recommend it and will need to be fixed eventually.
+       to import everything, even though I highly recommend against it and will need to be fixed eventually.
     - Go to `__init__.py` and import the class you made. It will look like:
         ```
         from .operators.FILENAME.py import OPERATORCLASSNAME
