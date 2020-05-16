@@ -18,7 +18,9 @@ The purpose of this plugin is to make it much easier to apply mathematical and g
 - Documentation
 - Add `poll()` to each operator to dynamically disable
 - Add driver to `bevel_depth` for curves to divide by current scale
-
+- Figure out how to do imports in a nicer way in `__init__.py` and `interface.py` to comply with PEP8. Possible fix to this is to add a `register()` and `unregister()` function to the `.py` files for each of the individual operators. This would make the imports cleaner.
+    - This is what Blender's default add-ons seem to do, so likely a good design choice and worth investing some time to do it eventually.
+    - Also probably split `interface.py` into multiple files for each of the panels. It's getting really messy... Maybe even automate it.
 
 ### Operators:
 - Dynamic arc between lines to denote angle
