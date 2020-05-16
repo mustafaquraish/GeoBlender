@@ -26,11 +26,11 @@ class BisectPlane(bpy.types.Operator):
         default=10,
     )
 
-    def execute(self, context):
+    @classmethod
+    def poll(cls, context):
+        return (len(context.selected_objects) == 2)
 
-        if (len(context.selected_objects) != 2):
-            self.report({'ERROR'}, 'Need to select 2 objects')
-            return {'CANCELLED'}
+    def execute(self, context):
 
         (A, B) = context.selected_objects[-2:]
 

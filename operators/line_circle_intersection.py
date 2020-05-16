@@ -18,22 +18,29 @@ class LineCircleIntersection(bpy.types.Operator):
         default=True,
     )
 
-    def invoke(self, context, event):
-        self.hide_extra = context.scene.geoblender_settings.hide_extra
-        return self.execute(context)
-
-    def execute(self, context):
-
+    @classmethod
+    def poll(cls, context):
         if (len(context.selected_objects) != 2):
-            self.report({'ERROR'}, 'Need to select 2 objects')
-            return {'CANCELLED'}
+            return False
 
         (A, B) = context.selected_objects[-2:]
 
         if not (isinstance(A.data, bpy.types.Curve) and
                 isinstance(B.data, bpy.types.Curve)):
-            self.report({'ERROR'}, 'Both objects needs to be curves')
-            return {'CANCELLED'}
+            return False
+
+        if (not ('Circle' in A.data.name and 'Line' in B.data.name) and
+                not ('Line' in A.data.name and 'Circle' in B.data.name)):
+            return False
+        
+        return True
+
+    def invoke(self, context, event):
+        self.hide_extra = context.scene.geoblender_settings.hide_extra
+        return self.execute(context)
+
+    def execute(self, context):
+        (A, B) = context.selected_objects[-2:]
 
         if 'Circle' in A.data.name and 'Line' in B.data.name:
             circle, line = A, B
@@ -41,7 +48,7 @@ class LineCircleIntersection(bpy.types.Operator):
             circle, line = B, A
         else:
             self.report({'ERROR'}, 'Need to select a line and a circle')
-            return {'CANCELLED'}
+            return {'CANCELLED'}  # Shouldn't get here...
 
         line2 = new_line(hide=self.hide_extra)
         move_origin_center(line2, center='MEDIAN')
@@ -64,5 +71,5 @@ class LineCircleIntersection(bpy.types.Operator):
         copy_rotation(intersection_2, line2)
         project_along_axis(intersection_2, 'Z', target=pr_cyl, opposite=True)
         intersection_2.name = "Intersection 2"
-        
+
         return {'FINISHED'}

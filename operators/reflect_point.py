@@ -9,25 +9,21 @@ class ReflectAboutPoint(bpy.types.Operator):
     bl_description = "Replect an object about a point"
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
+    @classmethod
+    def poll(cls, context):
+        return (len(context.selected_objects) == 2 and
+                context.object is not None)
+
     def execute(self, context):
-
-        if (len(context.selected_objects) != 2):
-            self.report({'ERROR'}, 'Need to select 2 objects')
-            return {'CANCELLED'}
-
         (A, B) = context.selected_objects[-2:]
         active = bpy.context.object
-
-        if active is None:
-            self.report({'ERROR'}, 'No active object selected')
-            return {'CANCELLED'}
 
         others = [A, B]
         others.remove(active)
         other = others[0]
 
         # active, other
-        
+
         empty = new_empty()
         add_driver(
             obj=empty,

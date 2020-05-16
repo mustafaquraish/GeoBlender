@@ -23,23 +23,19 @@ class CreateTriangleMedian(bpy.types.Operator):
         default=0.0,
     )
 
+    @classmethod
+    def poll(cls, context):
+        return (len(context.selected_objects) == 3 and
+                context.object is not None)
+
     def invoke(self, context, event):
         self.bevel_depth = context.scene.geoblender_settings.bevel_depth
         self.hide_extra = context.scene.geoblender_settings.hide_extra
         return self.execute(context)
 
     def execute(self, context):
-
-        if (len(context.selected_objects) != 3):
-            self.report({'ERROR'}, 'Need to select 3 objects')
-            return {'CANCELLED'}
-
         (A, B, C) = context.selected_objects[-3:]
         active = context.active_object
-
-        if active is None:
-            self.report({'ERROR'}, 'No active object selected')
-            return {'CANCELLED'}
 
         others = [A, B, C]
         others.remove(active)

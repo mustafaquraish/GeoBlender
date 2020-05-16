@@ -18,16 +18,15 @@ class CreateCircumsphere(bpy.types.Operator):
         default=True,
     )
 
+    @classmethod
+    def poll(cls, context):
+        return (len(context.selected_objects) == 4)
+
     def invoke(self, context, event):
         self.hide_extra = context.scene.geoblender_settings.hide_extra
         return self.execute(context)
 
     def execute(self, context):
-
-        if (len(context.selected_objects) != 4):
-            self.report({'ERROR'}, 'Need to select 4 objects')
-            return {'CANCELLED'}
-
         (A, B, C, D) = context.selected_objects[-4:]
 
         pr_plane = new_plane(hide=self.hide_extra)

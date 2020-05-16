@@ -17,16 +17,15 @@ class CreateTriangle(bpy.types.Operator):
         default=0.0,
     )
 
+    @classmethod
+    def poll(cls, context):
+        return (len(context.selected_objects) == 3)
+
     def invoke(self, context, event):
         self.bevel_depth = context.scene.geoblender_settings.bevel_depth
         return self.execute(context)
 
     def execute(self, context):
-
-        if (len(context.selected_objects) != 3):
-            self.report({'ERROR'}, 'Need to select 3 objects')
-            return {'CANCELLED'}
-
         (A, B, C) = context.selected_objects[-3:]
 
         lines = [new_line(), new_line(), new_line()]

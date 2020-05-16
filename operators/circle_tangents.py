@@ -1,10 +1,9 @@
 import bpy
 from ..utils.objects import new_empty, new_cylinder, new_line
-from ..utils.constraints import position_on_curve, copy_transforms
-from ..utils.constraints import locked_track, copy_rotation
-from ..utils.geometry import put_in_between, stretch_between_points
-from ..utils.constraints import project_along_axis, copy_location
-from ..utils.drivers import add_driver_distance, add_driver, driver_namespace
+from ..utils.constraints import copy_transforms, copy_rotation, copy_location
+from ..utils.constraints import locked_track, project_along_axis
+from ..utils.geometry import stretch_between_points
+from ..utils.drivers import add_driver
 
 
 class CircleTangents(bpy.types.Operator):
@@ -19,30 +18,38 @@ class CircleTangents(bpy.types.Operator):
         default=True,
     )
 
+    @classmethod
+    def poll(cls, context):
+        if (len(context.selected_objects) != 2):
+            return False
+
+        (A, B) = context.selected_objects[-2:]
+
+        if not (isinstance(A.data, bpy.types.Curve) or
+                isinstance(B.data, bpy.types.Curve)):
+            return False
+
+        if not (A.data is not None and 'Circle' in A.data.name) and\
+           not (B.data is not None and 'Circle' in B.data.name):
+            return False
+
+        return True
+
     def invoke(self, context, event):
         self.hide_extra = context.scene.geoblender_settings.hide_extra
         return self.execute(context)
 
     def execute(self, context):
 
-        if (len(context.selected_objects) != 2):
-            self.report({'ERROR'}, 'Need to select 2 objects')
-            return {'CANCELLED'}
-
         (A, B) = context.selected_objects[-2:]
-
-        if not (isinstance(A.data, bpy.types.Curve) or
-                isinstance(B.data, bpy.types.Curve)):
-            self.report({'ERROR'}, 'Need to select at least one Circle')
-            return {'CANCELLED'}
 
         if A.data is not None and 'Circle' in A.data.name:
             circle, point = A, B
         elif B.data is not None and 'Circle' in B.data.name:
             circle, point = B, A
         else:
-            self.report({'ERROR'}, 'Need to select a circle and other object')
-            return {'CANCELLED'}
+            self.report({'ERROR'}, 'Need to select at least one circle')
+            return {'CANCELLED'}  # Shouldn't get here...
 
         '''
         General idea here:
@@ -54,6 +61,7 @@ class CircleTangents(bpy.types.Operator):
             points of the circles C' and C.
         '''
 
+        # Modified version of driver from `geometry.put_at_radical_intercept()`
         int_center = new_empty(hide=self.hide_extra)
         add_driver(
             obj=int_center,

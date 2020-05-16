@@ -15,16 +15,15 @@ class EmptyAtCircumcenter(bpy.types.Operator):
         default=True,
     )
 
+    @classmethod
+    def poll(cls, context):
+        return (len(context.selected_objects) == 3)
+
     def invoke(self, context, event):
         self.hide_extra = context.scene.geoblender_settings.hide_extra
         return self.execute(context)
 
     def execute(self, context):
-
-        if (len(context.selected_objects) != 3):
-            self.report({'ERROR'}, 'Need to select 3 objects')
-            return {'CANCELLED'}
-
         (A, B, C) = context.selected_objects[-3:]
 
         circumcenter = new_empty()

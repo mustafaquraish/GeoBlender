@@ -26,26 +26,29 @@ class CreateRadicalAxis(bpy.types.Operator):
         default=30,
     )
 
-    def invoke(self, context, event):
-        self.bevel_depth = context.scene.geoblender_settings.bevel_depth
-        return self.execute(context)
-
-    def execute(self, context):
-
+    @classmethod
+    def poll(cls, context):
+        # return False
         if (len(context.selected_objects) != 2):
-            self.report({'ERROR'}, 'Need to select 2 objects')
-            return {'CANCELLED'}
+            return False
 
         (A, B) = context.selected_objects[-2:]
 
         if not (isinstance(A.data, bpy.types.Curve) and
                 isinstance(B.data, bpy.types.Curve)):
-            self.report({'ERROR'}, 'Both objects needs to be curves')
-            return {'CANCELLED'}
+            return False
 
         if 'Circle' not in A.data.name or 'Circle' not in B.data.name:
-            self.report({'ERROR'}, 'Need to select 2 circles')
-            return {'CANCELLED'}
+            return False
+
+        return True
+
+    def invoke(self, context, event):
+        self.bevel_depth = context.scene.geoblender_settings.bevel_depth
+        return self.execute(context)
+
+    def execute(self, context):
+        (A, B) = context.selected_objects[-2:]
 
         radical_axis = new_line(length=self.length, axis='Y')
         move_origin_center(radical_axis)

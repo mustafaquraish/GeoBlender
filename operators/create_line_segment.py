@@ -17,16 +17,15 @@ class CreateLineSegment(bpy.types.Operator):
         default=0.0,
     )
 
+    @classmethod
+    def poll(cls, context):
+        return (len(context.selected_objects) == 2)
+
     def invoke(self, context, event):
         self.bevel_depth = context.scene.geoblender_settings.bevel_depth
         return self.execute(context)
 
     def execute(self, context):
-
-        if (len(context.selected_objects) != 2):
-            self.report({'ERROR'}, 'Need to select 2 objects')
-            return {'CANCELLED'}
-
         (A, B) = context.selected_objects[-2:]
 
         line = new_line()
