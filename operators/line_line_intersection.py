@@ -29,7 +29,7 @@ class LineLineIntersection(bpy.types.Operator):
         if not (isinstance(A.data, bpy.types.Curve) and
                 isinstance(B.data, bpy.types.Curve)):
             return False
-        
+
         if (not ('Line' in A.data.name and 'Line' in B.data.name)):
             return False
 

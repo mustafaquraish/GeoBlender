@@ -13,8 +13,8 @@ class Scratch(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     hide: bpy.props.BoolProperty(
-        name="Hide:", 
-        description="hide", 
+        name="Hide:",
+        description="hide",
         default=True,
     )
 
@@ -34,7 +34,7 @@ class Scratch(bpy.types.Operator):
         )
 
         return {'FINISHED'}
-        
+
         if (len(context.selected_objects) != 3):
             return {'CANCELLED'}
 
