@@ -1,4 +1,4 @@
-name: Format python code
+name: PEP8 formatting
 on: push
 jobs:
   autopep8:
