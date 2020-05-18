@@ -9,6 +9,9 @@ class EmptyAtMiddle(bpy.types.Operator):
     bl_description = "Add an empty in the middle of objects"
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
+    # GeoBlender Panel Type
+    gb_panel = '2D Constructions'
+
     influence: bpy.props.FloatProperty(
         name="Position:",
         description="Influence",

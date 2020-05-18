@@ -1,9 +1,8 @@
 import bpy
 from ..utils.objects import new_empty, new_cylinder
-from ..utils.constraints import position_on_curve, copy_transforms, damped_track, copy_location
-from ..utils.geometry import put_in_between, put_at_radical_intercept
+from ..utils.constraints import copy_transforms, copy_location
+from ..utils.geometry import put_at_radical_intercept
 from ..utils.constraints import project_along_axis, copy_rotation, locked_track
-from ..utils.drivers import add_driver_distance, add_driver, driver_namespace
 
 
 class CircleCircleIntersection(bpy.types.Operator):
@@ -11,6 +10,9 @@ class CircleCircleIntersection(bpy.types.Operator):
     bl_idname = "geometry.circle_circle_intersection"
     bl_description = "Place a line at the intersection of 2 circles"
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
+
+    # GeoBlender Panel Type
+    gb_panel = 'Planar Intersections'
 
     hide_extra: bpy.props.BoolProperty(
         name="Hide Extra Objects:",

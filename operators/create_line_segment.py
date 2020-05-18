@@ -9,6 +9,9 @@ class CreateLineSegment(bpy.types.Operator):
     bl_description = "Form the line segment connecting two points"
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
+    # GeoBlender Panel Type
+    gb_panel = '2D Constructions'
+
     bevel_depth: bpy.props.FloatProperty(
         name="Bevel Depth:",
         description="Thickness of line",

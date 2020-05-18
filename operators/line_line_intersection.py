@@ -11,6 +11,8 @@ class LineLineIntersection(bpy.types.Operator):
     bl_description = "Place empty at the intersection of 2 lines"
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
+    gb_panel = 'Planar Intersections'  # GeoBlender Panel for the operator
+
     hide_extra: bpy.props.BoolProperty(
         name="Hide Extra Objects:",
         description="Hide extra objects needed for orthocenter",
@@ -27,7 +29,10 @@ class LineLineIntersection(bpy.types.Operator):
         if not (isinstance(A.data, bpy.types.Curve) and
                 isinstance(B.data, bpy.types.Curve)):
             return False
-        
+
+        if (not ('Line' in A.data.name and 'Line' in B.data.name)):
+            return False
+
         return True
 
     def invoke(self, context, event):

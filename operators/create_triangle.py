@@ -9,6 +9,9 @@ class CreateTriangle(bpy.types.Operator):
     bl_description = "Form the triangle of the 3 points"
     bl_options = {'REGISTER', 'UNDO'}
 
+    # GeoBlender Panel Type
+    gb_panel = 'Triangle Constructions'
+
     bevel_depth: bpy.props.FloatProperty(
         name="Bevel Depth:",
         description="Thickness of line",

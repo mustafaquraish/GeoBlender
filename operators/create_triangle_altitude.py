@@ -10,6 +10,9 @@ class CreateTriangleAltitude(bpy.types.Operator):
     bl_description = "Form the altitude of the triangle from active vertex"
     bl_options = {'REGISTER', 'UNDO'}
 
+    # GeoBlender Panel Type
+    gb_panel = 'Triangle Constructions'
+
     hide_extra: bpy.props.BoolProperty(
         name="Hide Extra Objects:",
         description="Hide extra objects needed for triangle altitude",
