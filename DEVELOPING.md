@@ -32,52 +32,24 @@
     - Go over some of the operators in the directory and make sure you understand the general workflow of how everything is set up
 
 10. When you make a new operator (in a new file in the `operators` directory), here's what you need to make sure you do:
-    - If you've copied another operator as a template, make sure you change the class name and `bl_idname`, `bl_label`, ...
-    - If you don't want to deal with manual imports of each function, you can start off with:
-        ```python
-        from ..utils.objects import *
-        from ..utils.constraints import *
-        from ..utils.geometry import *
-        from ..utils.drivers import *
-        ```
-       to import everything, even though I highly recommend against it and will need to be fixed eventually.
-    - Go to `__init__.py` and import the class you made. It will look like:
-        ```
-        from .operators.FILENAME.py import OPERATORCLASSNAME
-        ```
-        use the existing imports as an example.
-    - Add the same line to `interface.py` at the top.
-    - Finally, in `interface.py`, find the correct panel's class in which you want to insert the operator, and then add the name of the class into the `operators` list inside it. For example, if `OPERATORCLASSNAME` should be added in the `2D Constructions` Panel:
-        ```python
-        class GeoBlender2DConstructions(bpy.types.Panel):
-            bl_idname = "OBJECT_PT_geoblender_2d_construtions"
-            bl_label = "2D Constructions"
-            bl_category = "GeoBlender"
-            bl_space_type = "VIEW_3D"
-            bl_region_type = "UI"
-            bl_options = {'DEFAULT_CLOSED'}
+    - Add a field called `gb_panel` with a string representing the name of the Panel it should be added to. If a panel with this name doesn't already exist it will be created. If this is not done, it will not be added to any panel.
+    ```python
+    class YourOperator(bpy.types.Operator):
+        ...
+        gb_panel = 'Triangle Constructions'    
+        ...
+    ```
+    - Add a `poll()` method:
+    ```python
+    class YourOperator(bpy.types.Operator):
+        ...
 
-            def draw(self, context):
-                layout = self.layout
-                layout.use_property_split = True
-
-                operators = [
-                    CreateInscribedCircle,
-                    EmptyAtCircumcenter,
-                    CreateRadicalAxis,
-                    CreateCircumcircle,
-                    CreateEulerCircle,
-                    CreateEulerLine,
-                    CreateLineSegment,
-                    CreateLine,
-                    ReflectAboutPoint,
-                    
-                    OPERATORCLASSNAME,  <<<<< # THIS IS WHAT YOU SHOULD ADD
-                ]
-
-                for op in operators:
-                    row = layout.row()
-                    row.operator(op.bl_idname)
-        ```
-
+        @classmethod
+        def poll(cls, context):
+            ...
+            return (True / False)
+        
+        ...
+    ```
+    This method essentially checks the selected objects through `context` to see if this operator can be run or not. It is responsible for enabling and disabling the button in the panel.
 11. Your operator should now be available in the corresponding panel in Blender.
