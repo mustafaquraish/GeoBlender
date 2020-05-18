@@ -26,7 +26,7 @@ def driver_namespace(func):
 #     return x + y
 
 
-################################################################################
+##########################################################################
 
 
 transform_props = {
@@ -99,7 +99,7 @@ def add_driver(obj, prop, fields, vars_def, expr):
     expr:      Driver Expression    (String)
 
     Variable definitions are a dictionary with the following format:
-    { 
+    {
         var_name: (type='transform', target_object, prop, field),
         var_name: (type='distance', object_1, object_2)
     }
@@ -137,7 +137,7 @@ def add_driver(obj, prop, fields, vars_def, expr):
                 var.type = 'TRANSFORMS'
 
                 (t_obj, t_prop, t_field) = vars_def[var_name][1:]
-                
+
                 # Get correct property string
                 t_prop = transform_props[t_prop.lower()]
 
@@ -150,7 +150,7 @@ def add_driver(obj, prop, fields, vars_def, expr):
                 transform_type = t_prop + t_field.upper()
                 var.targets[0].id = t_obj
                 var.targets[0].transform_type = transform_type
-            
+
             elif t_type == 'distance':
 
                 var.type = 'LOC_DIFF'
@@ -160,10 +160,10 @@ def add_driver(obj, prop, fields, vars_def, expr):
                 # Set the two objects
                 var.targets[0].id = A
                 var.targets[1].id = B
-            
+
             else:
                 raise Exception("Driver variable type not in " +
                                 "{'transform', 'distance'}")
-                
+
         # Set the expression
         driver.driver.expression = expr

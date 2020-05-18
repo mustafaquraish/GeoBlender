@@ -34,7 +34,7 @@ class LineCircleIntersection(bpy.types.Operator):
         if (not ('Circle' in A.data.name and 'Line' in B.data.name) and
                 not ('Line' in A.data.name and 'Circle' in B.data.name)):
             return False
-        
+
         return True
 
     def invoke(self, context, event):
