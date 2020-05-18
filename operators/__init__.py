@@ -7,7 +7,7 @@ import os
 
 ###############################################################################
 
-# This is the list of operators that will be imported by other modules. 
+# This is the list of operators that will be imported by other modules.
 operator_list = []
 
 ###############################################################################

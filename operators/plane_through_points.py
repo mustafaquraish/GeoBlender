@@ -29,7 +29,7 @@ class PlaneThroughPoints(bpy.types.Operator):
 
     def execute(self, context):
         (A, B, C) = context.selected_objects[-3:]
-        
+
         plane = new_plane(size=20)
         put_at_circumcenter(plane, A, B, C, hide_extra=self.hide_extra)
         damped_track(plane, axis='X', target=A)
