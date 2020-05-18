@@ -1,8 +1,10 @@
 import bpy
+
 from ..utils.objects import *
 from ..utils.geometry import *
 from ..utils.drivers import add_driver
 from ..utils.constraints import *
+
 
 class Scratch(bpy.types.Operator):
     bl_label = "Scratch Operator"

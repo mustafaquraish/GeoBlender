@@ -12,6 +12,8 @@ class LineCircleIntersection(bpy.types.Operator):
                      "and circle on the same plane"
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
+    gb_panel = 'Planar Intersections'  # GeoBlender Panel for the operator
+
     hide_extra: bpy.props.BoolProperty(
         name="Hide Extra Objects:",
         description="Hide extra objects needed for orthocenter",

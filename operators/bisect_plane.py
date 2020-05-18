@@ -10,6 +10,9 @@ class BisectPlane(bpy.types.Operator):
     bl_description = "Make a plane orthogonal to the line connecting 2 points"
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
+    # GeoBlender Panel Type
+    gb_panel = '3D Constructions'
+
     influence: bpy.props.FloatProperty(
         name="Position:",
         description="Influence",

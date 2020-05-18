@@ -1,35 +1,55 @@
 import bpy
+# from enum import Enum
+from collections import defaultdict
+from .operators import operator_list
 
-from .operators.create_inscribed_circle import CreateInscribedCircle
-from .operators.create_radical_axis import CreateRadicalAxis
-from .operators.create_circumcircle import CreateCircumcircle
-from .operators.create_circumsphere import CreateCircumsphere
-from .operators.create_euler_circle import CreateEulerCircle
-from .operators.create_euler_line import CreateEulerLine
-from .operators.create_line_segment import CreateLineSegment
-from .operators.create_triangle import CreateTriangle
-from .operators.create_line import CreateLine
-from .operators.create_semicircle                 import CreateSemicircle
+'''
+TODO: Add Enum support to make avoid new panels for typos...
+Previous attempt commented out. Getting bl_rna errors.
+'''
 
-from .operators.reflect_point import ReflectAboutPoint
-from .operators.circle_tangents import CircleTangents
 
-from .operators.create_triangle_altitude import CreateTriangleAltitude
-from .operators.create_triangle_bisector import CreateTriangleBisector
-from .operators.create_triangle_median import CreateTriangleMedian
+###############################################################################
 
-from .operators.empty_at_circumcenter import EmptyAtCircumcenter
-from .operators.empty_at_orthocenter import EmptyAtOrthocenter
-from .operators.empty_at_barycenter import EmptyAtBarycenter
-from .operators.empty_at_incenter import EmptyAtIncenter
-from .operators.empty_at_middle import EmptyAtMiddle
+'''
+class PanelTypes(Enum):
+    Constructions2D = '2D Constructions'
+    Constructions3D = '2D Constructions'
+    ConstructionsTriangle = 'Triangle Constructions'
+    PlanarIntersections = 'Planar Intersections'
+    Hidden = None       # This won't add the operator to any panel
+'''
 
-from .operators.line_line_intersection import LineLineIntersection
-from .operators.line_circle_intersection import LineCircleIntersection
-from .operators.circle_circle_intersection import CircleCircleIntersection
+###############################################################################
 
-from .operators.plane_through_points import PlaneThroughPoints
-from .operators.bisect_plane import BisectPlane
+
+def make_operator_panel(label, ops):
+    '''
+    Makes an additional GeoBlender panel with the given label and list of ops.
+    '''
+
+    id_name = "OBJECT_PT_geoblender_" + label.lower().replace(' ', '_')
+
+    class OperatorPanel(bpy.types.Panel):
+        bl_idname = id_name
+        bl_label = label
+        bl_category = "GeoBlender"
+        bl_space_type = "VIEW_3D"
+        bl_region_type = "UI"
+        bl_options = {'DEFAULT_CLOSED'}
+
+        def draw(self, context):
+            layout = self.layout
+            layout.use_property_split = True
+
+            for op in ops:
+                row = layout.row()
+                row.operator(op.bl_idname)
+
+    return OperatorPanel
+
+
+###############################################################################
 
 
 class GeoBlenderProperties(bpy.types.Panel):
@@ -58,128 +78,38 @@ class GeoBlenderProperties(bpy.types.Panel):
         row.prop(settings, 'collection_name', expand=True)
 
 
-# class GeoBlenderOperators(bpy.types.Panel):
-#     bl_idname = "OBJECT_PT_geoblender_ops"
-#     bl_label = "Operators"
-#     bl_category = "GeoBlender"
-#     bl_space_type = "VIEW_3D"
-#     bl_region_type = "UI"
-#     bl_options = {'DEFAULT_CLOSED'}
+###############################################################################
 
-#     def draw(self, context):
-#         layout = self.layout
-#         layout.use_property_split = True
+panel_list = [GeoBlenderProperties]
 
-#         row = layout.row()
-#         row.label(text="Geometric Operators", icon="VIEW3D")
+###############################################################################
 
-#         for op in operators:
-#             row = layout.row()
-#             row.operator(op.bl_idname)
+'''
+Each Operator should have an attribute called `gb_panel` with the name of the
+panel it should be added to. If this attribute isn't set, the operator is not
+added to any panel (but can be accessed using F3).
+'''
 
+# Stores { 'panel name': [... panel operators ...] }
+panel_dictionary = defaultdict(list)
 
-class GeoBlender2DConstructions(bpy.types.Panel):
-    bl_idname = "OBJECT_PT_geoblender_2d_construtions"
-    bl_label = "2D Constructions"
-    bl_category = "GeoBlender"
-    bl_space_type = "VIEW_3D"
-    bl_region_type = "UI"
-    bl_options = {'DEFAULT_CLOSED'}
+for op in operator_list:
 
-    def draw(self, context):
-        layout = self.layout
-        layout.use_property_split = True
+    try:
+        panel_dictionary[op.gb_panel].append(op)
+        '''
+        # If gb_panel is set as one of the predefined Panels
+        if op.gb_panel in PanelTypes:
+            panel_dictionary[op.gb_panel.value].append(op)
+        else:
+            raise Exception('GeoBlender Panel Type not recognized. Use one of '
+                            'the predefined types or make your own in '
+                            '`interface.py`')
+        '''
+    # Do nothing if the `gb_panel` attribute is missing
+    except AttributeError:
+        pass
 
-        operators = [
-            CreateInscribedCircle,
-            EmptyAtCircumcenter,
-            CreateRadicalAxis,
-            CreateCircumcircle,
-            CreateEulerCircle,
-            CreateEulerLine,
-            CreateLineSegment,
-            CreateLine,
-            ReflectAboutPoint,
-            CircleTangents,
-            CreateSemicircle
-        ]
-
-        for op in operators:
-            row = layout.row()
-            row.operator(op.bl_idname)
-
-
-class GeoBlender3DConstructions(bpy.types.Panel):
-    bl_idname = "OBJECT_PT_geoblender_3d_construtions"
-    bl_label = "3D Constructions"
-    bl_category = "GeoBlender"
-    bl_space_type = "VIEW_3D"
-    bl_region_type = "UI"
-    bl_options = {'DEFAULT_CLOSED'}
-
-    def draw(self, context):
-        layout = self.layout
-        layout.use_property_split = True
-
-        operators = [
-            PlaneThroughPoints,
-            CreateCircumsphere,
-            BisectPlane,
-        ]
-
-        for op in operators:
-            row = layout.row()
-            row.operator(op.bl_idname)
-
-
-class GeoBlenderTriangleConstructions(bpy.types.Panel):
-    bl_idname = "OBJECT_PT_geoblender_tri_construtions"
-    bl_label = "Triangle Constructions"
-    bl_category = "GeoBlender"
-    bl_space_type = "VIEW_3D"
-    bl_region_type = "UI"
-    bl_options = {'DEFAULT_CLOSED'}
-
-    def draw(self, context):
-        layout = self.layout
-        layout.use_property_split = True
-
-        operators = [
-            CreateTriangle,
-            EmptyAtIncenter,
-            CreateTriangleAltitude,
-            CreateTriangleBisector,
-            CreateTriangleMedian,
-            EmptyAtBarycenter,
-            EmptyAtOrthocenter,
-        ]
-
-        for op in operators:
-            row = layout.row()
-            row.operator(op.bl_idname)
-
-
-class GeoBlenderPlanarIntersections(bpy.types.Panel):
-    bl_idname = "OBJECT_PT_geoblender_planar_intersections"
-    bl_label = "Planar Intersections"
-    bl_category = "GeoBlender"
-    bl_space_type = "VIEW_3D"
-    bl_region_type = "UI"
-    bl_options = {'DEFAULT_CLOSED'}
-
-    def draw(self, context):
-        layout = self.layout
-        layout.use_property_split = True
-
-        row = layout.row()
-        row.label(text="For objects on the same plane")
-
-        operators = [
-            LineLineIntersection,
-            LineCircleIntersection,
-            CircleCircleIntersection
-        ]
-
-        for op in operators:
-            row = layout.row()
-            row.operator(op.bl_idname)
+for panel_name, panel_ops in panel_dictionary.items():
+    if panel_name is not None:
+        panel_list.append(make_operator_panel(panel_name, panel_ops))

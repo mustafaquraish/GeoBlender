@@ -12,6 +12,9 @@ class CreateCircumsphere(bpy.types.Operator):
     bl_description = "Form the circumsphere of the 4 points"
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
+    # GeoBlender Panel Type
+    gb_panel = '3D Constructions'
+
     hide_extra: bpy.props.BoolProperty(
         name="Hide Extra Objects:",
         description="Hide extra objects needed for circumsphere",

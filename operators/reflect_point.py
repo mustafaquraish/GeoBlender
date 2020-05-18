@@ -9,6 +9,9 @@ class ReflectAboutPoint(bpy.types.Operator):
     bl_description = "Replect an object about a point"
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
+    # GeoBlender Panel Type
+    gb_panel = '3D Constructions'
+
     @classmethod
     def poll(cls, context):
         return (len(context.selected_objects) == 2 and

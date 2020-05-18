@@ -9,6 +9,9 @@ class EmptyAtBarycenter(bpy.types.Operator):
     bl_description = "Place empty at the barycenter of the 3 points"
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
+    # GeoBlender Panel Type
+    gb_panel = 'Triangle Constructions'
+
     hide_extra: bpy.props.BoolProperty(
         name="Hide Extra Objects:",
         description="Hide extra objects needed for barycenter",

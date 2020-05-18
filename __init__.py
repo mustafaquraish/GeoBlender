@@ -20,6 +20,13 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
+import bpy
+import addon_utils
+
+from .operators import operator_list
+from .interface import panel_list
+from .properties import GeoBlenderSettings
+
 bl_info = {
     "name": "GeoBlender",
     "description": "A 3D Geometry addon for Blender",
@@ -32,65 +39,6 @@ bl_info = {
     "category": "Geometry"
 }
 
-
-import bpy
-import addon_utils
-from inspect import getmembers
-from inspect import isclass
-from sys import modules
-
-# Import all the operators
-from .operators.create_inscribed_circle     import CreateInscribedCircle
-from .operators.create_radical_axis         import CreateRadicalAxis
-from .operators.create_circumcircle         import CreateCircumcircle
-from .operators.create_circumsphere         import CreateCircumsphere
-from .operators.create_euler_circle         import CreateEulerCircle
-from .operators.create_euler_line           import CreateEulerLine
-from .operators.create_line_segment         import CreateLineSegment
-from .operators.create_triangle             import CreateTriangle
-from .operators.create_line                 import CreateLine
-from .operators.create_semicircle                 import CreateSemicircle
-
-from .operators.reflect_point               import ReflectAboutPoint
-from .operators.circle_tangents import CircleTangents
-
-
-from .operators.create_triangle_altitude    import CreateTriangleAltitude
-from .operators.create_triangle_bisector    import CreateTriangleBisector
-from .operators.create_triangle_median      import CreateTriangleMedian
-
-from .operators.empty_at_circumcenter       import EmptyAtCircumcenter
-from .operators.empty_at_orthocenter        import EmptyAtOrthocenter
-from .operators.empty_at_barycenter         import EmptyAtBarycenter
-from .operators.empty_at_incenter           import EmptyAtIncenter
-from .operators.empty_at_middle             import EmptyAtMiddle
-
-from .operators.line_line_intersection       import LineLineIntersection
-from .operators.line_circle_intersection     import LineCircleIntersection
-from .operators.circle_circle_intersection   import CircleCircleIntersection
-
-from .operators.plane_through_points        import PlaneThroughPoints
-from .operators.bisect_plane                import BisectPlane
-
-# Form a list of all the operators
-operators = [obj for _, obj in getmembers(modules[__name__]) if isclass(obj)]
-
-# Just to help with debugging. Not for the actual intrface :)
-from .operators.scratch import Scratch
-
-# Import interface and properties
-from .interface         import GeoBlenderProperties
-from .interface         import GeoBlenderTriangleConstructions
-from .interface         import GeoBlender2DConstructions
-from .interface         import GeoBlender3DConstructions
-from .interface         import GeoBlenderPlanarIntersections
-
-
-from .properties        import GeoBlenderSettings
-
-# Form a list of all classes
-classes = [obj for _, obj in getmembers(modules[__name__]) if isclass(obj)]
-
 # Enable the Extra Objects: Curves addon
 (installed, enabled) = addon_utils.check("add_curve_extra_objects")
 if installed and (not enabled):
@@ -98,12 +46,18 @@ if installed and (not enabled):
 
 
 def register():
-    for cl in classes:
+    # Register Panels and Operators
+    for cl in panel_list + operator_list:
         bpy.utils.register_class(cl)
+    # Register GeoBlender properties to the Scene
+    bpy.utils.register_class(GeoBlenderSettings)
     pointer_prop = bpy.props.PointerProperty(type=GeoBlenderSettings)
     bpy.types.Scene.geoblender_settings = pointer_prop
 
 
 def unregister():
-    for cl in classes:
+    # Unregister Panels and Operators
+    for cl in panel_list + operator_list:
         bpy.utils.unregister_class(cl)
+    # Unregister Properties
+    bpy.utils.unregister_class(GeoBlenderSettings)
