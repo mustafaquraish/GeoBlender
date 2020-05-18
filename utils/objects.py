@@ -242,10 +242,10 @@ def new_icosphere(radius=1.0, subdivisions=2, location=(0, 0, 0), hide=False):
 
 
 @preserve_selection
-def new_sphere(radius=1, segments=32, rings=16, location=(0, 0, 0), hide=False):
+def new_sphere(radius=1, segments=32, location=(0, 0, 0), hide=False):
     bpy.ops.mesh.primitive_uv_sphere_add(
         segments=segments,
-        ring_count=rings,
+        ring_count=segments // 2,
         radius=radius,
         enter_editmode=False,
         align='WORLD',
