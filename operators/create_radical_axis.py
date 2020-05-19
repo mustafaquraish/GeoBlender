@@ -58,6 +58,8 @@ class CreateRadicalAxis(bpy.types.Operator):
         put_at_radical_intercept(radical_axis, A, B)
         copy_rotation(radical_axis, target=A)
         locked_track(radical_axis, lock='Z', axis='X', target=B)
+        for i in range(3):
+            radical_axis.scale[i] = self.length
         add_abs_bevel(radical_axis, self.bevel_depth)
         radical_axis.name = "Radical Axis"
 

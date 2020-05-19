@@ -25,8 +25,8 @@ class CreateLine(bpy.types.Operator):
         name="Length:",
         description="Length of line",
         min=0,
-        soft_max=100,
-        default=30,
+        soft_max=300,
+        default=100,
     )
 
     @classmethod
@@ -44,7 +44,8 @@ class CreateLine(bpy.types.Operator):
         move_origin_center(line)
         put_in_between(line, A, B, influence=0.5)
         damped_track(line, axis="Z", target=A)
-        line.scale.z = self.length
+        for i in range(3):
+            line.scale[i] = self.length
         add_abs_bevel(line, self.bevel_depth)
         line.name = "Line"
 

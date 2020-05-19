@@ -187,6 +187,7 @@ def new_arc(radius=1, location=(0, 0, 0), angle=180, sides=40, hide=False):
         Simple_sides=sides,
         Simple_radius=radius,
         use_cyclic_u=False,
+        shape='3D',
         edit_mode=False
     )
     set_hidden(bpy.context.object, hide)
