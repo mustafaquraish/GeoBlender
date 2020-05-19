@@ -191,7 +191,14 @@ def stretch_between_points(obj, A, B, axis='Z', scale=1):
     '''
     copy_location(obj, target=A)
     damped_track(obj, axis=axis.upper(), target=B)
-    add_driver_distance(obj, 'scale', axis * scale, A, B)
+    add_driver_distance(
+        obj=obj,
+        prop='scale',
+        fields='XYZ',
+        A=A,
+        B=B,
+        scale=scale
+    )
 
 
 ###############################################################################

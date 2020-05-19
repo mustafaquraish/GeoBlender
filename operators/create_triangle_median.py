@@ -1,5 +1,5 @@
 import bpy
-from ..utils.objects import new_line, new_empty
+from ..utils.objects import new_line, new_empty, add_abs_bevel
 from ..utils.geometry import stretch_between_points, put_in_between
 
 
@@ -49,7 +49,7 @@ class CreateTriangleMedian(bpy.types.Operator):
 
         line = new_line()
         stretch_between_points(line, active, mid_op, axis='Z')
-        line.data.bevel_depth = self.bevel_depth
+        add_abs_bevel(line, self.bevel_depth)
         line.name = "Median"
 
         return {'FINISHED'}

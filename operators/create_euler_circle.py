@@ -1,5 +1,5 @@
 import bpy
-from ..utils.objects import new_circle, new_empty
+from ..utils.objects import new_circle, new_empty, add_abs_bevel
 from ..utils.geometry import put_at_circumcenter, put_in_between
 from ..utils.constraints import copy_transforms
 from ..utils.drivers import add_driver_distance
@@ -59,8 +59,8 @@ class CreateEulerCircle(bpy.types.Operator):
 
         circle = new_circle()
         copy_transforms(circle, target=euler_center, transforms="LR")
-        add_driver_distance(circle, 'scale', 'XY', euler_center, mid_ab)
-        circle.data.bevel_depth = self.bevel_depth
+        add_driver_distance(circle, 'scale', 'XYZ', euler_center, mid_ab)
+        add_abs_bevel(circle, self.bevel_depth)
         circle.name = "Euler Circle"
 
         return {'FINISHED'}

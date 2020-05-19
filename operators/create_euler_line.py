@@ -1,5 +1,6 @@
 import bpy
-from ..utils.objects import new_empty, new_line, move_origin_center
+from ..utils.objects import new_empty, new_line
+from ..utils.objects import move_origin_center, add_abs_bevel
 from ..utils.geometry import put_in_between
 from ..utils.geometry import put_at_barycenter, put_at_circumcenter
 from ..utils.constraints import damped_track
@@ -32,8 +33,8 @@ class CreateEulerLine(bpy.types.Operator):
         name="Length:",
         description="Length of Euler Line",
         min=0,
-        soft_max=100,
-        default=30,
+        soft_max=300,
+        default=100,
     )
 
     @classmethod
@@ -60,8 +61,9 @@ class CreateEulerLine(bpy.types.Operator):
         move_origin_center(line)
         put_in_between(line, circumcenter, barycenter, influence=0.5)
         damped_track(line, axis="Z", target=circumcenter)
-        line.scale[2] = self.scale
-        line.data.bevel_depth = self.bevel_depth
+        for i in range(3):
+            line.scale[i] = self.scale
+        add_abs_bevel(line, self.bevel_depth)
         line.name = "Euler Line"
 
         return {'FINISHED'}

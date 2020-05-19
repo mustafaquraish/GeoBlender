@@ -1,5 +1,5 @@
 import bpy
-from ..utils.objects import new_line, move_origin_center
+from ..utils.objects import new_line, move_origin_center, add_abs_bevel
 from ..utils.constraints import copy_rotation, locked_track
 from ..utils.geometry import put_at_radical_intercept
 
@@ -25,8 +25,8 @@ class CreateRadicalAxis(bpy.types.Operator):
         name="Length:",
         description="Length of line",
         min=0,
-        soft_max=100,
-        default=30,
+        soft_max=300,
+        default=100,
     )
 
     @classmethod
@@ -58,7 +58,7 @@ class CreateRadicalAxis(bpy.types.Operator):
         put_at_radical_intercept(radical_axis, A, B)
         copy_rotation(radical_axis, target=A)
         locked_track(radical_axis, lock='Z', axis='X', target=B)
-        radical_axis.data.bevel_depth = self.bevel_depth
+        add_abs_bevel(radical_axis, self.bevel_depth)
         radical_axis.name = "Radical Axis"
 
         return {'FINISHED'}

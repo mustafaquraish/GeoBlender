@@ -1,5 +1,5 @@
 import bpy
-from ..utils.objects import new_line, new_empty, new_plane
+from ..utils.objects import new_line, new_empty, new_plane, add_abs_bevel
 from ..utils.geometry import stretch_between_points, make_orthogonal_to
 from ..utils.constraints import copy_location, project_nearest
 
@@ -55,7 +55,7 @@ class CreateTriangleAltitude(bpy.types.Operator):
 
         line = new_line()
         stretch_between_points(line, active, altitude_point, axis='Z')
-        line.data.bevel_depth = self.bevel_depth
+        add_abs_bevel(line, self.bevel_depth)
         line.name = "Altitude"
 
         return {'FINISHED'}

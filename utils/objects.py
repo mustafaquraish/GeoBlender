@@ -1,4 +1,5 @@
 import bpy
+from .drivers import add_driver
 
 
 def preserve_selection(func):
@@ -117,6 +118,21 @@ def convert_to_mesh(obj, hide=False):
     set_hidden(bpy.context.object, hide)
     return bpy.context.object
 
+
+def add_abs_bevel(obj, bevel_depth):
+    from bpy.types import Curve
+    if not isinstance(obj.data, Curve):
+        return
+    add_driver(
+        obj=obj.data,
+        prop='bevel_depth',
+        vars_def={
+            'sx': ('transform', obj, 'scale', 'X'),
+            'sy': ('transform', obj, 'scale', 'Y'),
+            'sz': ('transform', obj, 'scale', 'Z'),
+        },
+        expr=f'{bevel_depth} / max(sx, sy, sz)'
+    )
 
 ###############################################################################
 

@@ -1,5 +1,5 @@
 import bpy
-from ..utils.objects import new_line
+from ..utils.objects import new_line, add_abs_bevel
 from ..utils.geometry import stretch_between_points
 
 
@@ -33,7 +33,7 @@ class CreateLineSegment(bpy.types.Operator):
 
         line = new_line()
         stretch_between_points(line, A, B, axis='Z')
-        line.data.bevel_depth = self.bevel_depth
+        add_abs_bevel(line, self.bevel_depth)
         line.name = "Line Segment"
 
         return {'FINISHED'}

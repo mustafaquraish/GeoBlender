@@ -1,5 +1,5 @@
 import bpy
-from ..utils.objects import new_circle, new_empty
+from ..utils.objects import new_circle, new_empty, add_abs_bevel
 from ..utils.geometry import put_at_circumcenter
 from ..utils.constraints import copy_transforms
 from ..utils.drivers import add_driver_distance
@@ -46,8 +46,8 @@ class CreateCircumcircle(bpy.types.Operator):
 
         circle = new_circle()
         copy_transforms(circle, target=circumcenter, transforms="LR")
-        add_driver_distance(circle, 'scale', 'XY', circumcenter, A)
-        circle.data.bevel_depth = self.bevel_depth
+        add_driver_distance(circle, 'scale', 'XYZ', circumcenter, A)
+        add_abs_bevel(circle, self.bevel_depth)
         circle.name = "Cirumcircle"
 
         return {'FINISHED'}

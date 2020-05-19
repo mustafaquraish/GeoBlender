@@ -1,5 +1,5 @@
 import bpy
-from ..utils.objects import new_arc
+from ..utils.objects import new_arc, add_abs_bevel
 from ..utils.drivers import add_driver_distance
 from ..utils.geometry import put_in_between
 from ..utils.constraints import damped_track
@@ -51,12 +51,12 @@ class CreateSemicircle(bpy.types.Operator):
         add_driver_distance(
             obj=semi,
             prop='scale',
-            fields='XY',
+            fields='XYZ',
             A=A,
             B=B,
             scale=0.5
         )
         semi.name = "Semicircle"
-        semi.data.bevel_depth = self.bevel_depth
+        add_abs_bevel(semi, self.bevel_depth)
 
         return {'FINISHED'}

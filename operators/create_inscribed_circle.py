@@ -1,5 +1,5 @@
 import bpy
-from ..utils.objects import new_circle, new_empty, new_plane
+from ..utils.objects import new_circle, new_empty, new_plane, add_abs_bevel
 from ..utils.geometry import put_at_incenter, make_orthogonal_to
 from ..utils.constraints import copy_transforms, project_nearest, copy_location
 from ..utils.drivers import add_driver_distance
@@ -58,11 +58,11 @@ class CreateInscribedCircle(bpy.types.Operator):
         add_driver_distance(
             obj=circle,
             prop='scale',
-            fields='XY',
+            fields='XYZ',
             A=inscribed_center,
             B=circ_point
         )
-        circle.data.bevel_depth = self.bevel_depth
+        add_abs_bevel(circle, self.bevel_depth)
         circle.name = "Inscribed Circle"
 
         return {'FINISHED'}

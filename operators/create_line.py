@@ -1,5 +1,5 @@
 import bpy
-from ..utils.objects import new_line, move_origin_center
+from ..utils.objects import new_line, move_origin_center, add_abs_bevel
 from ..utils.geometry import put_in_between
 from ..utils.constraints import damped_track
 
@@ -45,7 +45,7 @@ class CreateLine(bpy.types.Operator):
         put_in_between(line, A, B, influence=0.5)
         damped_track(line, axis="Z", target=A)
         line.scale.z = self.length
-        line.data.bevel_depth = self.bevel_depth
+        add_abs_bevel(line, self.bevel_depth)
         line.name = "Line"
 
         return {'FINISHED'}

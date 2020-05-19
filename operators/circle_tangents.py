@@ -1,5 +1,5 @@
 import bpy
-from ..utils.objects import new_empty, new_cylinder, new_line
+from ..utils.objects import new_empty, new_cylinder, new_line, add_abs_bevel
 from ..utils.constraints import copy_transforms, copy_rotation, copy_location
 from ..utils.constraints import locked_track, project_along_axis
 from ..utils.geometry import stretch_between_points
@@ -21,6 +21,14 @@ class CircleTangents(bpy.types.Operator):
         default=True,
     )
 
+    bevel_depth: bpy.props.FloatProperty(
+        name="Bevel Depth:",
+        description="Depth for tangents bevel",
+        soft_min=0.0,
+        soft_max=0.5,
+        default=0.0,
+    )
+
     @classmethod
     def poll(cls, context):
         if (len(context.selected_objects) != 2):
@@ -39,6 +47,7 @@ class CircleTangents(bpy.types.Operator):
         return True
 
     def invoke(self, context, event):
+        self.bevel_depth = context.scene.geoblender_settings.bevel_depth
         self.hide_extra = context.scene.geoblender_settings.hide_extra
         return self.execute(context)
 
@@ -73,16 +82,16 @@ class CircleTangents(bpy.types.Operator):
             vars_def={
                 'd': ('distance', circle, point),
                 'r1': ('transform', circle, 'scale', 'X'),
-                'o1': ('transform', A, 'location', '-'),
-                'o2': ('transform', B, 'location', '-'),
+                'o1': ('transform', circle, 'location', '-'),
+                'o2': ('transform', point, 'location', '-'),
             },
             # Parameters to the helper function:
             #   distance: len(A-B) / 2
             #   r1      : radius of C
-            #   r2      : radius of C', len(A-B) / 2
-            #   o1      : location of C, A
-            #   o2      : location of M, (A + B) / 2
-            expr='gb_rad_axis_helper(d/2, r1, d/2, o1, (o1+o2)/2)'
+            #   r2      : radius of C' [ len(A-B) / 2 ]
+            #   o1      : location of C, [ A ]
+            #   o2      : location of M, [ (A + B) / 2 ]
+            expr='gb_rad_axis_helper(d / 2, r1, d / 2, o1, (o1 + o2) / 2)'
         )
 
         pr_cyl = new_cylinder(hide=self.hide_extra)
@@ -102,8 +111,10 @@ class CircleTangents(bpy.types.Operator):
 
         tangent1 = new_line()
         stretch_between_points(tangent1, int_1, point)
+        add_abs_bevel(tangent1, self.bevel_depth)
 
         tangent2 = new_line()
         stretch_between_points(tangent2, int_2, point)
+        add_abs_bevel(tangent2, self.bevel_depth)
 
         return {'FINISHED'}
