@@ -98,10 +98,10 @@ def add_driver(obj, prop, fields=None, vars_def={}, expr="1.0"):
                 raise Exception("Driver variable type not in "
                                 "{'transform', 'distance'}")
 
-        driver.driver.expression=expr
+        driver.driver.expression = expr
 
 
-def add_driver_distance(obj, prop, fields, A, B, scale = 1):
+def add_driver_distance(obj, prop, fields, A, B, scale=1):
     '''
     Add a driver for an object's properties, set to the distance from A to B.
 
@@ -111,16 +111,16 @@ def add_driver_distance(obj, prop, fields, A, B, scale = 1):
     A, B:      The 2 Objects        (Blender Objects)
     '''
     # Add the needed drivers to the object
-    driver_list=make_driver_list(obj, prop.lower(), fields)
+    driver_list = make_driver_list(obj, prop.lower(), fields)
 
     # Set the drivers to the distance
     for driver in driver_list:
         # Create a variable
-        var=driver.driver.variables.new()
-        var.name='dist'
-        var.type='LOC_DIFF'
+        var = driver.driver.variables.new()
+        var.name = 'dist'
+        var.type = 'LOC_DIFF'
         # Set the two objects
-        var.targets[0].id=A
-        var.targets[1].id=B
+        var.targets[0].id = A
+        var.targets[1].id = B
         # Set the expression
-        driver.driver.expression=f'{scale} * {var.name}'
+        driver.driver.expression = f'{scale} * {var.name}'
