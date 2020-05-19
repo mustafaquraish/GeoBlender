@@ -82,7 +82,7 @@ class CircleTangents(bpy.types.Operator):
             #   r2      : radius of C', len(A-B) / 2
             #   o1      : location of C, A
             #   o2      : location of M, (A + B) / 2
-            expr='gb_radical_axis_intercept(d/2, r1, d/2, o1, (o1+o2)/2)'
+            expr='gb_rad_axis_helper(d/2, r1, d/2, o1, (o1+o2)/2)'
         )
 
         pr_cyl = new_cylinder(hide=self.hide_extra)

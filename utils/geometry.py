@@ -1,7 +1,7 @@
 from .constraints import copy_location
 from .constraints import damped_track, locked_track
 from .constraints import project_along_axis, project_nearest
-from .drivers import add_driver, add_driver_distance, driver_namespace
+from .drivers import add_driver, add_driver_distance
 from .objects import new_empty, new_plane
 
 
@@ -216,12 +216,11 @@ def put_at_radical_intercept(obj, A, B):
             'o1': ('transform', A, 'location', '-'),
             'o2': ('transform', B, 'location', '-'),
         },
-        expr='gb_radical_axis_intercept(d, r1, r2, o1, o2)'
+        expr='gb_rad_axis_helper(d, r1, r2, o1, o2)'
     )
 
 
-@driver_namespace
-def gb_radical_axis_intercept(d, r1, r2, o1, o2):
+def gb_rad_axis_helper(d, r1, r2, o1, o2):
     '''
     Function to be used in the driver to help compute the intersection point of
     the radical axis of 2 circles and the line connecting their centers.

@@ -22,10 +22,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import bpy
 import addon_utils
+from bpy.app import driver_namespace
+from bpy.app.handlers import persistent
+
 
 from .operators import operator_list
 from .interface import panel_list
 from .properties import GeoBlenderSettings
+
+# -----------------------------------------------------------------------------
 
 bl_info = {
     "name": "GeoBlender",
@@ -39,25 +44,55 @@ bl_info = {
     "category": "Geometry"
 }
 
+# -----------------------------------------------------------------------------
+
 # Enable the Extra Objects: Curves addon
 (installed, enabled) = addon_utils.check("add_curve_extra_objects")
 if installed and (not enabled):
     addon_utils.enable("add_curve_extra_objects")
 
+# -----------------------------------------------------------------------------
+
+
+@persistent
+def load_post_handler(dummy):
+    '''
+    This function is meant to be called after a file is loaded. Use this to
+    add functions to the driver namespace, since they are not persistent by
+    default.
+    '''
+    from .utils.geometry import gb_rad_axis_helper
+
+    custom_driver_funcs = [
+        gb_rad_axis_helper,
+    ]
+
+    for func in custom_driver_funcs:
+        bpy.app.driver_namespace[func.__name__] = func
+        print(f"*** Added {func.__name__} to driver namespace")
+
+# -----------------------------------------------------------------------------
+
+
+classes = [
+    GeoBlenderSettings,
+] + operator_list + panel_list
+
 
 def register():
-    # Register Panels and Operators
-    for cl in panel_list + operator_list:
+    for cl in classes:
         bpy.utils.register_class(cl)
-    # Register GeoBlender properties to the Scene
-    bpy.utils.register_class(GeoBlenderSettings)
+
+    load_post_handler(None)
+    bpy.app.handlers.load_post.append(load_post_handler)
+
+    # Add GeoBlender properties to the Scene
     pointer_prop = bpy.props.PointerProperty(type=GeoBlenderSettings)
     bpy.types.Scene.geoblender_settings = pointer_prop
 
 
 def unregister():
-    # Unregister Panels and Operators
-    for cl in panel_list + operator_list:
+    for cl in classes:
         bpy.utils.unregister_class(cl)
-    # Unregister Properties
-    bpy.utils.unregister_class(GeoBlenderSettings)
+
+    bpy.app.handlers.load_post.remove(load_post_handler)

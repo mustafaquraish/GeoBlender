@@ -3,32 +3,6 @@ Driver-related utilites to simplify adding drivers to objects without
 the boilerplate.
 '''
 
-
-def driver_namespace(func):
-    '''
-    Use this annotation to add a custom function to the driver namespace
-    for Blender. For instance adding the following annotation:
-
-    >   @driver_namespace
-        def custom_function(...):
-            ...
-            return ...
-
-    will allow you to use `custom_function()` in the driver expressions.
-    '''
-    import bpy  # Need this to set driver namespace
-    bpy.app.driver_namespace[func.__name__] = func
-    return func
-
-
-# @driver_namespace
-# def custom_function(x, y):
-#     return x + y
-
-
-##########################################################################
-
-
 transform_props = {
     'scale': 'SCALE_',
 
