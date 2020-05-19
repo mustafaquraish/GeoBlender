@@ -22,9 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import bpy
 import addon_utils
-from bpy.app import driver_namespace
 from bpy.app.handlers import persistent
-
 
 from .operators import operator_list
 from .interface import panel_list
