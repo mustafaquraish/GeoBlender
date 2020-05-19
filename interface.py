@@ -1,31 +1,15 @@
 import bpy
-# from enum import Enum
 from collections import defaultdict
 from .operators import operator_list
 
-'''
-TODO: Add Enum support to make avoid new panels for typos...
-Previous attempt commented out. Getting bl_rna errors.
-'''
-
-
-###############################################################################
-
-'''
-class PanelTypes(Enum):
-    Constructions2D = '2D Constructions'
-    Constructions3D = '2D Constructions'
-    ConstructionsTriangle = 'Triangle Constructions'
-    PlanarIntersections = 'Planar Intersections'
-    Hidden = None       # This won't add the operator to any panel
-'''
 
 ###############################################################################
 
 
-def make_operator_panel(label, ops):
+def operator_panel_factory(label, ops):
     '''
-    Makes an additional GeoBlender panel with the given label and list of ops.
+    Makes an additional GeoBlender panel with the given label and list of ops,
+    and returns the class to be registered.
     '''
 
     id_name = "OBJECT_PT_geoblender_" + label.lower().replace(' ', '_')
@@ -94,22 +78,13 @@ added to any panel (but can be accessed using F3).
 panel_dictionary = defaultdict(list)
 
 for op in operator_list:
-
     try:
         panel_dictionary[op.gb_panel].append(op)
-        '''
-        # If gb_panel is set as one of the predefined Panels
-        if op.gb_panel in PanelTypes:
-            panel_dictionary[op.gb_panel.value].append(op)
-        else:
-            raise Exception('GeoBlender Panel Type not recognized. Use one of '
-                            'the predefined types or make your own in '
-                            '`interface.py`')
-        '''
+
     # Do nothing if the `gb_panel` attribute is missing
     except AttributeError:
         pass
 
 for panel_name, panel_ops in panel_dictionary.items():
     if panel_name is not None:
-        panel_list.append(make_operator_panel(panel_name, panel_ops))
+        panel_list.append(operator_panel_factory(panel_name, panel_ops))

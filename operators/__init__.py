@@ -2,7 +2,7 @@
 This file just serves as a place to list out all the operators in the folder,
 so they can be imported as required by the other files.
 '''
-
+from bpy.types import Operator
 import os
 
 ###############################################################################
@@ -23,9 +23,10 @@ files = [fname[:-3]
 for py in files:
     # Import the file as a module
     mod = __import__('.'.join([__name__, py]), fromlist=[py])
-    # Get all the classes
+    # Get all the Operator classes
     classes = [getattr(mod, x)
                for x in dir(mod)
-               if isinstance(getattr(mod, x), type)]
+               if isinstance(getattr(mod, x), type)
+               and issubclass(getattr(mod, x), Operator)]
     # Add them onto the list
     operator_list += classes
