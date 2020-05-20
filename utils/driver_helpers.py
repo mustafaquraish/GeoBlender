@@ -1,5 +1,5 @@
 '''
-This file contains functions that are to be added to the driver namespace for 
+This file contains functions that are to be added to the driver namespace for
 different operators. The functions here should be prefixed by `gb_` to avoid
 clashes in the driver namespace.
 '''
