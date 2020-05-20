@@ -226,18 +226,4 @@ def put_at_radical_intercept(obj, A, B):
         expr='gb_rad_axis_helper(d, r1, r2, o1, o2)'
     )
 
-
-def gb_rad_axis_helper(d, r1, r2, o1, o2):
-    '''
-    Function to be used in the driver to help compute the intersection point of
-    the radical axis of 2 circles and the line connecting their centers.
-
-    d:          Distance b/w circles             (float)
-    r1, r2:     Radii of circles                 (float)
-    oa, ob:     X,Y or Z positions of circles    (float)
-
-    Return: Returns the X, Y or Z position of the intersection point when the
-            corresponding X, Y and Z positions are passed in as `oa` and `ob`
-    '''
-    frac = (d * d + r1 * r1 - r2 * r2) / (2 * d * d)
-    return (1 - frac) * o1 + frac * o2
+###############################################################################

@@ -59,10 +59,12 @@ def load_post_handler(dummy):
     add functions to the driver namespace, since they are not persistent by
     default.
     '''
-    from .utils.geometry import gb_rad_axis_helper
+    from .utils.driver_helpers import gb_rad_axis_helper
+    from .utils.driver_helpers import gb_drive_angle_bevel
 
     custom_driver_funcs = [
         gb_rad_axis_helper,
+        gb_drive_angle_bevel,
     ]
 
     for func in custom_driver_funcs:
