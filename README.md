@@ -17,10 +17,8 @@ The purpose of this plugin is to make it much easier to apply mathematical and g
 
 ### Design / interface:
 - Documentation
-- Add driver to `bevel_depth` for curves to divide by current scale
 
 ### Operators:
-- Dynamic arc between lines to denote angle
 - If possible, ellipse through focii and curve point
 - Parallel line through point
 
