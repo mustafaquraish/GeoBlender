@@ -1,5 +1,8 @@
 # GeoBlender: A 3D geometry plugin for Blender
 ---
+
+- Mustafa and Stefanos
+
 ![PEP8 formatting](https://github.com/mustafaquraish/GeoBlender/workflows/PEP8%20formatting/badge.svg)
 
 <img src="https://imgur.com/QbJPH2R.jpg" width="250" height="250"/>
