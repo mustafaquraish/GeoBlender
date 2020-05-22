@@ -23,10 +23,12 @@ files = [fname[:-3]
 for py in files:
     # Import the file as a module
     mod = __import__('.'.join([__name__, py]), fromlist=[py])
+    
     # Get all the Operator classes
     classes = [getattr(mod, x)
                for x in dir(mod)
                if isinstance(getattr(mod, x), type)
                and issubclass(getattr(mod, x), Operator)]
+
     # Add them onto the list
     operator_list += classes
