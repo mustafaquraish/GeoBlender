@@ -12,7 +12,8 @@ transform_props = {
 
 def make_driver_list(obj, prop, fields=None):
     '''
-    Form a list of drivers for the required fields on an object property.
+    Add drivers to the actual object for the correct properties, and return a 
+    list of the newly added drivers back.
 
     obj:       Source objects       (Blender Object)
     prop:      Driver's property    ('scale', 'location', ...)
@@ -24,12 +25,12 @@ def make_driver_list(obj, prop, fields=None):
     for example, 'XY' means the X and Y fields have a new driver created.
     '''
     if fields is None:
-        return [obj.driver_add(prop)]
+        return [obj.driver_add(prop.lower())]
 
     driver_list = []
     for axis in fields:
         idx = 'XYZW'.index(axis.upper())
-        driver_list.append(obj.driver_add(prop, idx))
+        driver_list.append(obj.driver_add(prop.lower(), idx))
     return driver_list
 
 
@@ -63,7 +64,9 @@ def add_driver(obj, prop, fields=None, vars_def={}, expr="1.0"):
                 field is used. (from `driver.array_index`)
 
     For example, to represent `x = Cube.scale[1]`,
-    { x: (Cube, 'scale', 'Y') }
+    { 
+        x: ('transform', Cube, 'scale', 'Y') 
+    }
     '''
     driver_list = make_driver_list(obj, prop, fields)
 
@@ -103,15 +106,17 @@ def add_driver(obj, prop, fields=None, vars_def={}, expr="1.0"):
 
 def add_driver_distance(obj, prop, fields, A, B, scale=1):
     '''
-    Add a driver for an object's properties, set to the distance from A to B.
+    Add a driver for an object's properties, set to the distance from A to B,
+    scaled by some factor.
 
     obj:       Source objects       (Blender Object)
     prop:      Driver's property    ('scale', 'location', ...)
     fields:    Fields of prop.      (String, look at `make_driver_list`)
     A, B:      The 2 Objects        (Blender Objects)
+    scale:     Scaling factor       (float)
     '''
     # Add the needed drivers to the object
-    driver_list = make_driver_list(obj, prop.lower(), fields)
+    driver_list = make_driver_list(obj, prop, fields)
 
     # Set the drivers to the distance
     for driver in driver_list:
