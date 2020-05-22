@@ -59,15 +59,17 @@ def load_post_handler(dummy):
     add functions to the driver namespace, since they are not persistent by
     default.
     '''
-    from .utils.driver_helpers import gb_rad_axis_helper
-    from .utils.driver_helpers import gb_drive_angle_bevel
+    from types import FunctionType
+    from .utils import driver_helpers as d_h
 
-    custom_driver_funcs = [
-        gb_rad_axis_helper,
-        gb_drive_angle_bevel,
-    ]
+    # Extract all the elements of the module that are functions and have names
+    # beginning with 'gb_'.
+    custom_funcs = [getattr(d_h, x)
+                    for x in dir(d_h)
+                    if isinstance(getattr(d_h, x), FunctionType)
+                    if getattr(d_h, x).__name__.startswith("gb_")]
 
-    for func in custom_driver_funcs:
+    for func in custom_funcs:
         bpy.app.driver_namespace[func.__name__] = func
         print(f"*** Added {func.__name__} to driver namespace")
 

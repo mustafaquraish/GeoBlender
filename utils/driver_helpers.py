@@ -2,6 +2,9 @@
 This file contains functions that are to be added to the driver namespace for
 different operators. The functions here should be prefixed by `gb_` to avoid
 clashes in the driver namespace.
+
+All functions with names that start with 'gb_' will automatically be added into
+the driver_namespace by __init__.py
 '''
 
 
