@@ -46,7 +46,7 @@ class CreateEllipse(bpy.types.Operator):
         add_driver(
             obj=circ,
             prop='scale',
-            fields='Y',
+            fields='YZ',  # Scale Z too so bevel looks 3D.
             vars_def={
                 'ab': ('distance', A, B),
                 'ac': ('distance', A, C),
@@ -58,7 +58,7 @@ class CreateEllipse(bpy.types.Operator):
         add_driver(
             obj=circ,
             prop='scale',
-            fields='XZ',  # Scale Z too so bevel looks 3D.
+            fields='X', 
             vars_def={
                 'ac': ('distance', A, C),
                 'bc': ('distance', B, C),
