@@ -52,7 +52,12 @@ def copy_scale(obj, target, axes='XYZ', influence=1.0):
     obj.constraints[-1].influence = influence
 
 
-def copy_transforms(obj, target, transforms='LRS', mix='REPLACE', influence=1.0):
+def copy_transforms(
+        obj,
+        target,
+        transforms='LRS',
+        mix='REPLACE',
+        influence=1.0):
     '''
     Makes object copy the transformations of another.
 
