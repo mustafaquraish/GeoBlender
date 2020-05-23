@@ -3,7 +3,7 @@ Utilites to add constraints to objects.
 '''
 
 
-def copy_location(obj, target, axes='XYZ', influence=1.0):
+def copy_location(obj, target, axes='XYZ', influence=1):
     '''
     Makes object copy the location of another.
 
@@ -19,7 +19,7 @@ def copy_location(obj, target, axes='XYZ', influence=1.0):
     obj.constraints[-1].influence = influence
 
 
-def copy_rotation(obj, target, axes='XYZ', mix='REPLACE', influence=1.0):
+def copy_rotation(obj, target, axes='XYZ', mix='replace', influence=1):
     '''
     Makes object copy the rotation of another.
 
@@ -36,7 +36,7 @@ def copy_rotation(obj, target, axes='XYZ', mix='REPLACE', influence=1.0):
     obj.constraints[-1].influence = influence
 
 
-def copy_scale(obj, target, axes='XYZ', influence=1.0):
+def copy_scale(obj, target, axes='XYZ', influence=1):
     '''
     Makes object copy the scale of another.
 
@@ -52,12 +52,7 @@ def copy_scale(obj, target, axes='XYZ', influence=1.0):
     obj.constraints[-1].influence = influence
 
 
-def copy_transforms(
-        obj,
-        target,
-        transforms='LRS',
-        mix='REPLACE',
-        influence=1.0):
+def copy_transforms(obj, target, transforms='LRS', mix='replace', influence=1):
     '''
     Makes object copy the transformations of another.
 
