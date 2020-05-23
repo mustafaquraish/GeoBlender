@@ -21,6 +21,14 @@ class CreateCircumsphere(bpy.types.Operator):
         default=True,
     )
 
+    segments: bpy.props.IntProperty(
+        name="Resolution:",
+        description="Resolution for the Sphere",
+        min=3,
+        soft_max=150,
+        default=64,
+    )
+
     @classmethod
     def poll(cls, context):
         return (len(context.selected_objects) == 4)
@@ -42,7 +50,7 @@ class CreateCircumsphere(bpy.types.Operator):
         put_at_circumcenter(center, A, B, C, hide_extra=self.hide_extra)
         project_along_axis(center, axis='Z', target=pr_plane, opposite=True)
 
-        circumsphere = new_sphere(segments=64, rings=32)
+        circumsphere = new_sphere(segments=self.segments)
         copy_transforms(circumsphere, target=center, transforms='LR')
         add_driver_distance(
             obj=circumsphere,

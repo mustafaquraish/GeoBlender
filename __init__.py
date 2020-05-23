@@ -64,10 +64,10 @@ def load_post_handler(dummy):
 
     # Extract all the elements of the module that are functions and have names
     # beginning with 'gb_'.
-    custom_funcs = [getattr(d_h, x)
-                    for x in dir(d_h)
-                    if isinstance(getattr(d_h, x), FunctionType)
-                    if getattr(d_h, x).__name__.startswith("gb_")]
+    custom_funcs = [getattr(d_h, name)
+                    for name in dir(d_h)
+                    if isinstance(getattr(d_h, name), FunctionType)
+                    if name.startswith("gb_")]
 
     for func in custom_funcs:
         bpy.app.driver_namespace[func.__name__] = func
