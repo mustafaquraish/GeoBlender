@@ -6,7 +6,7 @@ from ..utils.drivers import add_driver
 class ReflectAboutPoint(bpy.types.Operator):
     bl_label = "Reflect about Point"
     bl_idname = "geometry.reflect_about_point"
-    bl_description = "Replect an object about a point"
+    bl_description = "Reflect an object about a point"
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     # GeoBlender Panel Type
