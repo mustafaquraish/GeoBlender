@@ -3,9 +3,6 @@
 <!-- Use `#` for biggest titles (like Heading 1) -->
 # 2D constructions
 
-<!-- Adding just `---` (three dashes) will draw a new line -->
----
-
 <!-- Section heading can use `##`, then `###`, etc... -->
 ## Basic Constructions
 
@@ -41,6 +38,7 @@
 - ~~Add an angle arc for an angle BAC defined by three points A,B,C.~~
 - Add an angle arc for an angle BAC given the points B, A, and the size of the angle (this should also create the point C and have as option whether we want the arc or not)
 
+<!-- Adding just `---` (three dashes) will draw a new line -->
 ---
 
 ## Intersections (2D)
