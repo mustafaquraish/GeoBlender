@@ -10,7 +10,7 @@
 - Add a plane (default XY plane for plane geometry.)
 
 ### Points
-- Add a point on the plane (clearly on the XY plane, so Z coordinate should be driven by 0)
+- Add a point on the plane (given a selected plane, clearly  the XY plane by default, so Z coordinate should be driven by 0). Otherwise we need to know the equation of the selected plane and just drive the XYZ coordinates. 
 - Constrainted additions for points:
     - Add a point on a line (say a point on the altitude. The point needs to be added on this line and must be constraint to move only on that line (like in geogebra; very important for dynamic constructions)
     - Add a point on a circle (same as above) [easiest for the above is to have lines, rays, segments and circles defined as curves and then use the follow path constraint with fixed position on.]
