@@ -58,7 +58,7 @@ class CreateEllipse(bpy.types.Operator):
         add_driver(
             obj=circ,
             prop='scale',
-            fields='X', 
+            fields='X',
             vars_def={
                 'ac': ('distance', A, C),
                 'bc': ('distance', B, C),
