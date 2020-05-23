@@ -63,7 +63,7 @@ def add_driver(obj, prop, fields=None, vars_def={}, expr="1.0"):
                 field is used. (from `driver.array_index`)
 
     For example, to represent `x = Cube.scale[1]`,
-    { x: (Cube, 'scale', 'Y') }
+    { x: ('transform', Cube, 'scale', 'Y') }
     '''
     driver_list = make_driver_list(obj, prop, fields)
 
