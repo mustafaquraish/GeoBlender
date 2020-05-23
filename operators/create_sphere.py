@@ -13,6 +13,14 @@ class CreateSphere(bpy.types.Operator):
     # GeoBlender Panel Type
     gb_panel = '3D Constructions'
 
+    segments: bpy.props.IntProperty(
+        name="Resolution:",
+        description="Resolution for the Sphere",
+        min=3,
+        soft_max=150,
+        default=64,
+    )
+
     @classmethod
     def poll(cls, context):
         return (len(context.selected_objects) == 2 and
@@ -29,7 +37,7 @@ class CreateSphere(bpy.types.Operator):
         others.remove(B)
         A = others[0]
 
-        sphere = new_sphere(segments=64)
+        sphere = new_sphere(segments=self.segments)
         copy_location(sphere, A)
 
         add_driver_distance(sphere, 'scale', 'XYZ', A, B)
