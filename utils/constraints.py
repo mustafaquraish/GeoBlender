@@ -69,7 +69,7 @@ def copy_transforms(obj, target, transforms='LRS', mix='replace', influence=1):
     else:
         obj.constraints.new(type='COPY_TRANSFORMS')
         obj.constraints[-1].target = target
-        obj.constraints[-1].mix_mode = mix
+        obj.constraints[-1].mix_mode = mix.upper()
         obj.constraints[-1].influence = influence
 
 
