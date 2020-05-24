@@ -32,6 +32,9 @@ def circle_circle_intersection(A, B, hide_extra=True):
     locked_track(int_2, lock='Z', axis='X', target=B)
     project_along_axis(int_2, axis='-Y', target=pr_cyl)
 
+'''
+Do I need to incldue the name of the hidden and the visible obljects that we create here? (yes..)
+'''
 
 '''
 What about the arguments of the circle_circle_intersection function? should they just be the given 

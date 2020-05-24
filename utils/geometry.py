@@ -170,7 +170,7 @@ def put_at_incenter(obj, A, B, C, hide_extra=True):
     pr_plane = new_plane(hide=hide_extra)
     pr_plane.name = "projection plane"
     copy_location(pr_plane, target=A)
-    # Using axes="XZY" here since we the plane to be orth. to the
+    # Using axes="XZY" here since we the pr_plane to be orthogonal to the plane of A, B, C.
     track_to_angle_between(pr_plane, B, C, axes='XZY')
 
     copy_location(obj, target=C)
