@@ -1,6 +1,7 @@
 import bpy
 import math
 
+
 class CreateAngleArc(bpy.types.Operator):
     bl_label = "Measure Angle"
     bl_idname = "geometry.measure_angle"
@@ -25,7 +26,6 @@ class CreateAngleArc(bpy.types.Operator):
         others.remove(A)
         B, C = others
 
-
         v1 = B.location - A.location
         v2 = C.location - A.location
         frac = v1.dot(v2) / (v1.length * v2.length)
@@ -46,7 +46,7 @@ class CreateAngleArc(bpy.types.Operator):
             signed_angle = angle
         else:
             signed_angle = math.tau - angle
-        
+
         if self.other_angle:
             signed_angle = math.tau - signed_angle
 

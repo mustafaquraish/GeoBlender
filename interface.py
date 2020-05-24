@@ -89,7 +89,6 @@ class GeoBlenderMeasurePanel(bpy.types.Panel):
         row = layout.row()
         row.prop(settings, 'collection_name', expand=True)
 
-
     def draw(self, context):
         layout = self.layout
         measurements = context.scene.geoblender_measurements
