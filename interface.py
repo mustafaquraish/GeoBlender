@@ -36,7 +36,7 @@ def operator_panel_factory(label, ops):
 ###############################################################################
 
 
-class GeoBlenderProperties(bpy.types.Panel):
+class GeoBlenderPropertiesPanel(bpy.types.Panel):
     bl_idname = "OBJECT_PT_geoblender_props"
     bl_label = "Default Properties"
     bl_category = "GeoBlender"
@@ -64,7 +64,45 @@ class GeoBlenderProperties(bpy.types.Panel):
 
 ###############################################################################
 
-panel_list = [GeoBlenderProperties]
+class GeoBlenderMeasurePanel(bpy.types.Panel):
+    bl_idname = "OBJECT_PT_geoblender_measure"
+    bl_label = "Measurements"
+    bl_category = "GeoBlender"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+    bl_options = {'DEFAULT_CLOSED'}
+
+    def draw2(self, context):
+        layout = self.layout
+        layout.use_property_split = True
+        settings = context.scene.geoblender_settings
+
+        row = layout.row()
+        row.prop(settings, 'hide_extra')
+
+        row = layout.row()
+        row.prop(settings, "plane_size", expand=True)
+
+        row = layout.row()
+        row.prop(settings, 'bevel_depth', expand=True)
+
+        row = layout.row()
+        row.prop(settings, 'collection_name', expand=True)
+
+
+    def draw(self, context):
+        layout = self.layout
+        measurements = context.scene.geoblender_measurements
+
+        col = layout.column(align=True)
+        row = col.row(align=True)
+        row.operator("geometry.measure_angle")
+        row.prop(measurements, "angle", text="")
+
+
+###############################################################################
+
+panel_list = [GeoBlenderPropertiesPanel, GeoBlenderMeasurePanel]
 
 ###############################################################################
 

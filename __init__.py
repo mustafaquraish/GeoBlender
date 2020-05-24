@@ -27,6 +27,7 @@ from bpy.app.handlers import persistent
 from .operators import operator_list
 from .interface import panel_list
 from .properties import GeoBlenderSettings
+from .properties import GeoBlenderMeasurements
 
 # -----------------------------------------------------------------------------
 
@@ -78,6 +79,7 @@ def load_post_handler(dummy):
 
 classes = [
     GeoBlenderSettings,
+    GeoBlenderMeasurements,
 ] + operator_list + panel_list
 
 
@@ -89,8 +91,10 @@ def register():
     bpy.app.handlers.load_post.append(load_post_handler)
 
     # Add GeoBlender properties to the Scene
-    pointer_prop = bpy.props.PointerProperty(type=GeoBlenderSettings)
-    bpy.types.Scene.geoblender_settings = pointer_prop
+    geo_props = bpy.props.PointerProperty(type=GeoBlenderSettings)
+    geo_measures = bpy.props.PointerProperty(type=GeoBlenderMeasurements)
+    bpy.types.Scene.geoblender_settings = geo_props
+    bpy.types.Scene.geoblender_measurements = geo_measures
 
 
 def unregister():
