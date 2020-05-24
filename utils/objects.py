@@ -232,7 +232,7 @@ def new_line(length=1, axis='Z', hide=False):
 
 
 @preserve_selection
-def new_cylinder(radius=1, depth=1, vert=100, location=(0, 0, 0), hide=False):
+def new_cylinder(radius=1, depth=1, vert=256, location=(0, 0, 0), hide=False):
     bpy.ops.mesh.primitive_cylinder_add(
         vertices=vert,
         radius=radius,
