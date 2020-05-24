@@ -35,8 +35,7 @@ def track_to_angle_between(obj, A, B, axes='XYZ', influence=0.5):
 
 def make_orthogonal_to(obj, A, B, C, axis='Z'):
     '''
-    Aligns the object so that the object is on the line AB, and the given
-    axis points towards C.
+    Locates the object at A, aligns X axis with AB and Z axis to AC as much as possible.
 
     obj:        Source Object       (Blender object)
     A, B, C:    3 points            (Blender Objects)
