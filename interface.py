@@ -25,7 +25,7 @@ def operator_panel_factory(label, panel_dict, parent=None):
     class OperatorPanel(bpy.types.Panel):
         if parent is not None:
             bl_parent_id = parent.bl_idname
-            bl_idname =f"{parent.bl_idname}_{class_name}"
+            bl_idname = f"{parent.bl_idname}_{class_name}"
         else:
             bl_idname = f"OBJECT_PT_geoblender_{class_name}"
 
@@ -60,8 +60,8 @@ def operator_panel_factory(label, panel_dict, parent=None):
 
 class GeoBlenderPropertiesPanel(bpy.types.Panel):
     '''
-    This panel stores the Default properties for the operators. When making a 
-    new operator, these values are used by default for the local operator 
+    This panel stores the Default properties for the operators. When making a
+    new operator, these values are used by default for the local operator
     properties. This panel also allows you to choose the default collection
     for the extra object created by the addon.
     '''
@@ -95,7 +95,7 @@ class GeoBlenderPropertiesPanel(bpy.types.Panel):
 class GeoBlenderMeasurePanel(bpy.types.Panel):
     '''
     This panel is to allow measurements and display their values at the point
-    of measurement in the UI itself. This will need to be changed manually 
+    of measurement in the UI itself. This will need to be changed manually
     to add more measurement operators.
     '''
     bl_idname = "OBJECT_PT_geoblender_measure"
@@ -123,7 +123,7 @@ panel_list = [GeoBlenderPropertiesPanel, GeoBlenderMeasurePanel]
 
 
 '''
-This structure below is best explained by an example. For instance, the 
+This structure below is best explained by an example. For instance, the
 following menu structure:
 
             -> 2D Constructions
@@ -142,7 +142,7 @@ will be represented in the top level dictionary (below) as follows:
                         'operators' = [],
                         'subpanels' = {
                             'Circle Constructions': {
-                                'operators' = [ CreateInscribedCircle, 
+                                'operators' = [ CreateInscribedCircle,
                                                 CreateEulerCircle,
                                             ],
                                 'subpanels' = {}
@@ -188,4 +188,4 @@ for op in operator_list:
 
 
 for panel_name, panel_dict in top_level_panel_dict['subpanels'].items():
-        panel_list += operator_panel_factory(panel_name, panel_dict)
+    panel_list += operator_panel_factory(panel_name, panel_dict)
