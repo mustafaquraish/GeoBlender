@@ -43,16 +43,14 @@ def gb_drive_angle_bevel(start, ax, ay, az, bx, by, bz, cx, cy, cz):
     angle = math.acos(frac)
     normal = v1.cross(v2)
 
-    TOL = 10e-6
-
     # This is tricky: we need to establish some sort of 'correct' normal for
     # the plane around which everything is oriented. Arbitrarily, we assume
     # that the normal with greater Z component is 'correct'. If equal, compare
-    # Y, then X.    (Using TOLerance for floating point comparison)
+    # Y, then X.
     is_correct = (
-        (normal.z < -TOL) or                                     # Z<0
-        (normal.z < TOL and normal.y < -TOL) or                  # Z=0, Y<0
-        (normal.z < TOL and normal.y < TOL and normal.x < -TOL)  # Z,Y=0, X<0
+        (normal.z < 0) or
+        (normal.z == 0 and normal.y < 0) or
+        (normal.z == normal.y == 0 and normal.x < 0)
     )
 
     if is_correct:
