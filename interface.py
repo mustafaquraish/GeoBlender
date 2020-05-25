@@ -72,23 +72,6 @@ class GeoBlenderMeasurePanel(bpy.types.Panel):
     bl_region_type = "UI"
     bl_options = {'DEFAULT_CLOSED'}
 
-    def draw2(self, context):
-        layout = self.layout
-        layout.use_property_split = True
-        settings = context.scene.geoblender_settings
-
-        row = layout.row()
-        row.prop(settings, 'hide_extra')
-
-        row = layout.row()
-        row.prop(settings, "plane_size", expand=True)
-
-        row = layout.row()
-        row.prop(settings, 'bevel_depth', expand=True)
-
-        row = layout.row()
-        row.prop(settings, 'collection_name', expand=True)
-
     def draw(self, context):
         layout = self.layout
         measurements = context.scene.geoblender_measurements
