@@ -20,12 +20,14 @@ def operator_panel_factory(label, panel_dict, parent=None):
     a sub-panel of a parent, it must be passed in.
     '''
 
+    class_name = label.lower().replace(' ', '_')
+
     class OperatorPanel(bpy.types.Panel):
         if parent is not None:
             bl_parent_id = parent.bl_idname
+            bl_idname =f"{parent.bl_idname}_{class_name}"
         else:
-            id_name = "OBJECT_PT_geoblender_" + label.lower().replace(' ', '_')
-            bl_idname = id_name
+            bl_idname = f"OBJECT_PT_geoblender_{class_name}"
 
         bl_label = label
         bl_category = "GeoBlender"
