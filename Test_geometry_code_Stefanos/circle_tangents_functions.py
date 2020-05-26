@@ -1,5 +1,5 @@
 
-#The next function computes the tangent points tan1 and tan2 where the tangents
+# The next function computes the tangent points tan1 and tan2 where the tangents
 # from a point A outside a cicle C intersect C
 
 def tangent_points(tan1, tan2, A, C):
@@ -7,7 +7,7 @@ def tangent_points(tan1, tan2, A, C):
     circle_help= new_circle()
     circle_from_diameter(circle_help, A, B, hide_extra=True)
 
-    #we next compute the intersection points of the two circles
+    # We next compute the intersection points of the two circles
 
     circle_circle_intersection(tan1, tan2, circle_help, C, hide_extra=True)
 
@@ -20,7 +20,7 @@ def tangent_points(tan1, tan2, A, C):
     add_abs_bevel(tangent1, self.bevel_depth)
 
 
-#The next function computes the tangent lines line1 and line2 
+# The next function computes the tangent lines line1 and line2 
 # from a point A outside a cicle C to the circle C
 
 def tangent_lines(line1, line2, A, C):
