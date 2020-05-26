@@ -27,11 +27,11 @@ def orthogonal_projection(obj, A, line, hide_extra=True):
     locked_track(obj, lock='Z', axis='-X', target=C)
 
     
-def orthogonal_line(A, line, length=100, hide_extra=True):
+def orthogonal_line(perp_line, A, line,  hide_extra=True):
 
    ''' 
-    This function creates the normal line of length to a line through 
-    a point A. 
+    This function moves perp_line so that it is the normal line of
+     length to a line through a point A. 
     '''
 
     B = new_empty(hide=hide_extra)
@@ -41,7 +41,7 @@ def orthogonal_line(A, line, length=100, hide_extra=True):
     position_on_curve(C, line, 1)
 
     proje = new_empty(hide=hide_extra)
-    orthogonal_projection(proje, A, B, C)
+    orthogonal_projection(proje, A, line)
 
     line0 = new_line(length = 2, axis='Y', hide=hide_extra)
     move_origin_center(line0)
@@ -55,7 +55,6 @@ def orthogonal_line(A, line, length=100, hide_extra=True):
     point0 = new_empty(hide=hide_extra)
     position_on_curve(point, line0, position=1, influence=1)
 
-    perp_line = new_line(length, axis='Z')
     move_origin_center(perp_line)
     copy_location(perp_line, proje)
     damped_track(perp_line, 'Z', point0)
@@ -77,32 +76,28 @@ def perpendicular_bisector_plane(obj, A, B, hide_extra=True):
     plane.name = "Perp. Bisector Plane"
 
 
-def perpendicular_bisector_from_points(A, B, length, hide_extra = True):
+def perpendicular_bisector_of_2points(line, A, B, hide_extra = True):
     '''
     Given two points A, B on a 2D plane, construct the 2D perpendicular 
     bisector.
     '''
 
     mid_point=new_empty(hide=hide_extra)
-    orthogonal_projection(mid_point, A, B) # Y axis of mid_point is perp to AB
+    seg=new_line(hide=hide_extra)
+    segment(seg, A,B)
+    orthogonal_projection(mid_point, seg) # Y axis of mid_point is perp to line
 
-    orthogonal_line(mid_point, A, B, length)
+    orthogonal_line(line, mid_point, seg)
 
 
-def perpendicular_bisector_of_line(line, length, hide_extra = True):
+def perpendicular_bisector_of_line(perp, line,  hide_extra = True):
      '''
     Given a line on a 2D plane, construct the 2D perpendicular 
     bisector (line).
     '''
 
-    B = new_empty(hide=hide_extra)
-    position_on_curve(B, line, 0)
-
-    C = new_empty(hide=hide_extra)
-    position_on_curve(C, line, 1)
-
     mid_point=new_empty(hide=hide_extra)
-    orthogonal_projection(mid_point, B, C) # Y axis of mid_point is perp to AB
+    orthogonal_projection(mid_point, line) # Y axis of mid_point is perp to line
 
-    orthogonal_line(mid_point, B, C, length)
+    orthogonal_line(perp, mid_point, line)
 

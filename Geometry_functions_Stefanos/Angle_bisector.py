@@ -48,5 +48,5 @@ def external_bisector(external, B, C, A, hide_extra= True):
     internal = new_line(hide=hide_extra)
     angle_bisector(internal, B, C, A, hide_extra=True)
 
-    external = orthogonal_line(A, internal, length=100, hide_extra=True)
+    orthogonal_line(external, A, internal, hide_extra=True)
 
