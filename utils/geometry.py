@@ -20,7 +20,8 @@ def align_to_plane_of(obj, A, B, C):
 def track_to_angle_between(obj, A, B, axes='XYZ', influence=0.5):
     '''
     Make the given axis of the object point towards the bisector (or other
-    intermediary angle) of the angle formed by the lines to A and B.
+    intermediary angle) of the angle formed by the lines from the object
+    to A and B.
 
     obj:        Source object   (Blender Object)
     A, B:       2 Objects       (Blender Objects)
