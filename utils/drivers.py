@@ -61,7 +61,8 @@ def add_driver(obj, prop, fields=None, vars_def={}, expr="1.0"):
         prop: 'scale', 'location' or 'rotation'
         field: 'X', 'Y', 'Z', 'W', '-'
             - Note: if this value is `-`, then the corresponding destination
-                field is used. (from `driver.array_index`)
+                field is used from the fields of the driven quantity. 
+                (from `driver.array_index`)
 
     For example, to represent `x = Cube.scale[1]`,
     {

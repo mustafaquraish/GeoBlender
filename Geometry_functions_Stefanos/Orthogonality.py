@@ -25,13 +25,17 @@ def orthogonal_projection(obj, A, line, hide_extra=True):
     project_nearest(obj, target=pr_plane)
     locked_track(obj, lock='Z', axis='X', target=B)
     locked_track(obj, lock='Z', axis='-X', target=C)
-
     
+
 def orthogonal_line(perp_line, A, line,  hide_extra=True):
 
    ''' 
     This function moves perp_line so that it is the normal line of
-     length to a line through a point A. 
+    length to a line through a point A. 
+
+    The midpoint of the constructed orthogonal line is always placed
+    at the foot of the orthogonality (so line is symmetric relative
+    to the line it is orthogonal to)
     '''
 
     B = new_empty(hide=hide_extra)
@@ -50,7 +54,8 @@ def orthogonal_line(perp_line, A, line,  hide_extra=True):
     
 
     # This line is normal to BC and parallel to its Y axis. So we need to change 
-    # this to Z. We do this by creating a new line. 
+    # this to Z because by convention we assume that all line are parallel to their
+    # local Z axis. We do this by creating a new line. 
 
     point0 = new_empty(hide=hide_extra)
     position_on_curve(point, line0, position=1, influence=1)
@@ -82,10 +87,12 @@ def perpendicular_bisector_of_2points(line, A, B, hide_extra = True):
     bisector.
     '''
 
-    mid_point=new_empty(hide=hide_extra)
-    seg=new_line(hide=hide_extra)
-    segment(seg, A,B)
-    orthogonal_projection(mid_point, seg) # Y axis of mid_point is perp to line
+    mid_point = new_empty(hide=hide_extra)
+    put_in_between(mid_point, A, B, influence=0.5)
+
+
+    seg = new_line(hide=hide_extra)
+    segment(seg, A, B)
 
     orthogonal_line(line, mid_point, seg)
 
@@ -96,8 +103,15 @@ def perpendicular_bisector_of_line(perp, line,  hide_extra = True):
     bisector (line).
     '''
 
+    B = new_empty(hide=hide_extra)
+    position_on_curve(B, line, 0)
+
+    C = new_empty(hide=hide_extra)
+    position_on_curve(C, line, 1)
+
     mid_point=new_empty(hide=hide_extra)
-    orthogonal_projection(mid_point, line) # Y axis of mid_point is perp to line
+    put_in_between(mid_point, B, C, influence=0.5)
+
 
     orthogonal_line(perp, mid_point, line)
 

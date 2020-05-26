@@ -68,3 +68,23 @@ def gb_drive_angle_bevel(start, ax, ay, az, bx, by, bz, cx, cy, cz):
             factor = angle / math.tau   # End factor
 
     return factor
+
+
+def gb_polar_intersection(d, r, o1, o2):
+    '''
+    Function to be used in the driver to help compute the intersection point of
+    the polar line of a point A relative to a circle and the line connecting the
+    point with the center.
+
+    d:      Distance b/w center of circle and point           (float)
+    r:      Radii of circles                                  (float)
+    o1:     X,Y or Z positions of center of circle            (float)
+    o2:     X,Y or Z positions of the point A                 (float)
+
+    Return: Returns the X, Y or Z position of the intersection point when the
+            corresponding X, Y and Z positions are passed in as `o1` and `o2`
+    '''
+    frac = (r * r) / (d * d)
+    return (1 - frac) * o1 + frac * o2
+
+

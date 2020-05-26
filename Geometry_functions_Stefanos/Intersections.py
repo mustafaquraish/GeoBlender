@@ -1,8 +1,11 @@
-''' 
-This function moves intersection to the intersection of two lines.
-'''
 
 def line_line_inteserction(intersection, line1, line2, hide_extra=True):
+
+    ''' 
+    This function moves intersection to the intersection of two lines.
+    We need to re-orient appropriately intersection after using this
+    function. 
+    '''
 
     a_start = new_empty(hide=hide_extra)
     position_on_curve(a_start, line1, 0)
@@ -15,6 +18,8 @@ def line_line_inteserction(intersection, line1, line2, hide_extra=True):
 
     copy_transforms(intersection, line2 , transforms='LR')
     project_along_axis(intersection, 'Z', target=pr_plane, opposite=True)
+    
+    
 
 
 
@@ -22,7 +27,8 @@ def line_line_inteserction(intersection, line1, line2, hide_extra=True):
 def line_circle_intersections(inter1, inter2, line, circle, hide_extra=True):
     '''
     This function moves  inter1 and inter2 to the intersection points of a 
-    line and a circle.
+    line and a circle. Intersections have same orientation as circle.  
+    (see the extra copy rotation constraint at the end).
     '''
 
     line2 = new_line(hide=hide_extra)
@@ -35,17 +41,22 @@ def line_circle_intersections(inter1, inter2, line, circle, hide_extra=True):
     copy_transforms(pr_cyl, circle, transforms='LR')
     copy_scale(pr_cyl, target=circle, axes='XY')  # Don't copy Z scale
 
-        inter_1 = new_empty()
-        position_on_curve(inter_1, line2, position=0)
-        copy_rotation(inter_1, line2)
-        project_along_axis(inter_1, 'Z', target=pr_cyl, opposite=True)
-        inter_1.name = "Intersection 1"
+    inter_1 = new_empty()
+    position_on_curve(inter_1, line2, position=0)
+    copy_rotation(inter_1, line2)
+    project_along_axis(inter_1, 'Z', target=pr_cyl, opposite=True)
+    copy_rotation(inter_1, circle)
+    inter_1.name = "Intersection 1"
 
-        inter_2 = new_empty()
-        position_on_curve(inter_2, line2, position=1)
-        copy_rotation(inter_2, line2)
-        project_along_axis(inter_2, 'Z', target=pr_cyl, opposite=True)
-        inter_2.name = "Intersection 2"
+    inter_2 = new_empty()
+    position_on_curve(inter_2, line2, position=1)
+    copy_rotation(inter_2, line2)
+    project_along_axis(inter_2, 'Z', target=pr_cyl, opposite=True)
+    copy_rotation(inter_2, circle)
+    inter_2.name = "Intersection 2"
+
+    
+
     
 
 
@@ -55,6 +66,7 @@ def circle_circle_intersection(int_1, int_2, A, B, hide_extra=True):
     Finds the intersections of two circles, A, B. It first places a hidden empty
     at the intersection of the radical axis and the line through the centers of 
     the circles A, B and then projects that empty to the circle A orthogonally.
+    Intersections have same orientation as circle A.  
 
     A, B:       2 circles        (Blender Objects; circle curves)
     puts at the intersection the two objects int_1, int_2
