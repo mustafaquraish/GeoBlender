@@ -32,15 +32,15 @@ def track_to_angle_between(obj, A, B, axes='XYZ', influence=0.5):
     '''
     constraints.damped_track(obj, axis=axes[0].upper(), target=A)
     constraints.locked_track(
-        obj=obj, 
-        axis=axes[1].upper(), 
-        lock=axes[0].upper(), 
+        obj=obj,
+        axis=axes[1].upper(),
+        lock=axes[0].upper(),
         target=B
     )
     constraints.locked_track(
-        obj=obj, 
-        axis=axes[0].upper(), 
-        lock=axes[2].upper(), 
+        obj=obj,
+        axis=axes[0].upper(),
+        lock=axes[2].upper(),
         target=B,
         influence=influence
     )
@@ -48,7 +48,7 @@ def track_to_angle_between(obj, A, B, axes='XYZ', influence=0.5):
 
 def make_orthogonal_to(obj, A, B, C):
     '''
-    Locates the object at A, aligns X axis with AB and Z axis to AC as much as 
+    Locates the object at A, aligns X axis with AB and Z axis to AC as much as
     possible.
 
     obj:        Source Object       (Blender object)

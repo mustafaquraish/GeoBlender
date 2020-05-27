@@ -2,6 +2,7 @@ import bpy
 from ..utils.objects import new_plane
 from ..geometry.planes import make_bisecting_plane
 
+
 class BisectPlane(bpy.types.Operator):
     bl_label = "Bisecting Plane"
     bl_idname = "geometry.bisect_plane"

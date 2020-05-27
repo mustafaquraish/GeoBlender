@@ -34,7 +34,7 @@ def make_circle_center_point(circle, A, B):
 
 def circle_center_radius_distance(circle, A, X, Y, hide_extra=True):
     '''
-    Given the center A, and the radius defined by the distance between the 
+    Given the center A, and the radius defined by the distance between the
     2 objects X, Y, forms the circle.
 
     circle:     Circle to align         (Blender Object)
@@ -44,7 +44,6 @@ def circle_center_radius_distance(circle, A, X, Y, hide_extra=True):
     constraints.copy_rotation(circle, target=A)
     constraints.copy_location(circle, target=A)
     drivers.add_driver_distance(circle, 'scale', 'XYZ', X, Y)
-
 
 
 def make_circle_center_radius(circle, A, radius):
@@ -63,10 +62,10 @@ def make_circle_center_radius(circle, A, radius):
 def put_at_radical_intercept(obj, A, B):
     '''
     Place the given object at the intersection point of the radical axis of 2
-    given circles and the line connecting their centers. It also aligns the 
+    given circles and the line connecting their centers. It also aligns the
     'Y' axis of the object with the line AB.
-    
-    - Note that the last point is useful since lines are defined on the X axis. 
+
+    - Note that the last point is useful since lines are defined on the X axis.
     Using this function with a line gives us the radical axis.
 
     obj:        Source object   (Blender Object)
@@ -94,8 +93,8 @@ def put_circle_tangent_points(tan1, tan2, circle, point, hide_extra=True):
     the tangents on the circle from these two points intersect at `point`
 
     tan1, tan2:     Objects to be placed    (Blender Objects)
-    circle:         The circle              (Blender Object; Curve; Circle)   
-    point:          The point               (Blender Object)   
+    circle:         The circle              (Blender Object; Curve; Circle)
+    point:          The point               (Blender Object)
     '''
 
     # General idea here:
@@ -119,8 +118,8 @@ def make_circle_tangent_lines(line1, line2, circle, point, hide_extra=True):
     Forms the tangent line (segments) to the circle from the given point.
 
     line1, line2:   Lines to make tangent  (Blender Objects; Curve; Line)
-    circle:         The circle              (Blender Object; Curve; Circle)   
-    point:          The point               (Blender Object)  
+    circle:         The circle              (Blender Object; Curve; Circle)
+    point:          The point               (Blender Object)
     '''
 
     tan1 = objects.new_point(hide=hide_extra)
@@ -133,13 +132,13 @@ def make_circle_tangent_lines(line1, line2, circle, point, hide_extra=True):
 
 def circle_tangent_line(line1, circle, point, hide_extra=True):
     '''
-    Forms the tangent to the circle at the given point. 
-    
+    Forms the tangent to the circle at the given point.
+
     NOTE: This function assumes the given point is constrained to the circle.
 
     line1:          Line to make tangent    (Blender Objects; Curve; Line)
-    circle:         The circle              (Blender Object; Curve; Circle)   
-    point:          The point               (Blender Object)  
+    circle:         The circle              (Blender Object; Curve; Circle)
+    point:          The point               (Blender Object)
     '''
 
     radius = objects.new_line(hide=hide_extra)

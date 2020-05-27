@@ -60,7 +60,6 @@ class GeoBlenderSettings(bpy.types.PropertyGroup):
     )
 
 
-
 class GeoBlenderMeasurements(bpy.types.PropertyGroup):
     angle: bpy.props.FloatProperty(
         name="Measured angle",

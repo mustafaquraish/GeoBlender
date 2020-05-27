@@ -35,7 +35,7 @@ def line_circle_intersections(inter1, inter2, line, circle, hide_extra=True):
 
     line2 = objects.new_line(hide=hide_extra)
     objects.move_origin_center(line2, center='MEDIAN')
-    
+
     # Make the line really large to ensure it encompasses the circle
     objects.uniform_scale(line2, 10e4)
     constraints.copy_transforms(line2, line, transforms='LR')
@@ -44,7 +44,7 @@ def line_circle_intersections(inter1, inter2, line, circle, hide_extra=True):
     constraints.copy_transforms(pr_cyl, circle)
 
     lines.put_at_line_ends(inter1, inter2, line2)
-    
+
     constraints.project_along_axis(inter1, 'X', target=pr_cyl, opposite=True)
     constraints.copy_rotation(inter1, circle)
     inter1.name = "Intersection 1"
@@ -52,7 +52,6 @@ def line_circle_intersections(inter1, inter2, line, circle, hide_extra=True):
     constraints.project_along_axis(inter2, 'X', target=pr_cyl, opposite=True)
     constraints.copy_rotation(inter2, circle)
     inter2.name = "Intersection 2"
-
 
 
 def circle_circle_intersection(inter1, inter2, A, B, hide_extra=True):
@@ -74,7 +73,7 @@ def circle_circle_intersection(inter1, inter2, A, B, hide_extra=True):
     int_center = objects.new_empty(hide=hide_extra)
     circles.put_at_radical_intercept(int_center, A, B)
 
-    # Create a hidden cylinder whose Z axis coincides, in particular, with the 
+    # Create a hidden cylinder whose Z axis coincides, in particular, with the
     # Z axis of the circle A
     pr_cyl = objects.new_cylinder(hide=hide_extra)
     constraints.copy_transforms(pr_cyl, target=A)
