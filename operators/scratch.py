@@ -4,6 +4,7 @@ from ..utils.objects import *
 from ..utils.geometry import *
 from ..utils.drivers import add_driver
 from ..utils.constraints import *
+from ..stefanos.orthogonality import *
 
 
 class Scratch(bpy.types.Operator):
@@ -12,6 +13,9 @@ class Scratch(bpy.types.Operator):
     bl_description = "Add an empty in the middle of objects"
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
+    # GeoBlender Panel Type
+    gb_panel = 'Triangle Constructions'
+
     hide: bpy.props.BoolProperty(
         name="Hide:",
         description="hide",
@@ -19,37 +23,14 @@ class Scratch(bpy.types.Operator):
     )
 
     def execute(self, context):
+        (X, Y) = context.selected_objects[-2:]
+        A = context.active_object
 
-        A, B = context.selected_objects[-2:]
+        others = [X, Y]
+        others.remove(A)
+        line = others[0]
 
-        add_driver(
-            obj=A,
-            prop='scale',
-            fields='XYZ',
-            vars_def={
-                'x': ('transform', B, 'position', 'X'),
-                'y': ('transform', B, 'position', 'Y')
-            },
-            expr='lmaoplswork(x,y)'
-        )
-
-        return {'FINISHED'}
-
-        if (len(context.selected_objects) != 3):
-            return {'CANCELLED'}
-
-        (A, B, C) = context.selected_objects[-3:]
-        add_driver(
-            obj=A,
-            prop='scale',
-            fields='XZ',
-            vars_def={
-                'x': ('transform', B, 'scale', 'X'),
-                'y': ('transform', B, 'scale', 'Y'),
-                'z': ('transform', C, 'rotation', 'W'),
-                'c': ('distance', C, B)
-            },
-            expr='sqrt(x**2 + y**2) + z'
-        )
+        obj = new_empty()
+        orthogonal_projection(obj, A, line, hide_extra=True):
 
         return {'FINISHED'}
