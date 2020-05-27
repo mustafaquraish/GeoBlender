@@ -1,8 +1,8 @@
 
-def line_line_inteserction(intersection, line1, line2, hide_extra=True):
+def line_line_inteserction(obj, line1, line2, hide_extra=True):
 
     ''' 
-    This function moves intersection to the intersection of two lines.
+    This function moves obj to the intersection of two lines.
     We need to re-orient appropriately intersection after using this
     function. 
     '''
@@ -16,8 +16,8 @@ def line_line_inteserction(intersection, line1, line2, hide_extra=True):
     pr_plane = new_plane(hide=hide_extra)
     make_orthogonal_to(pr_plane, a_start, a_end, line2)
 
-    copy_transforms(intersection, line2 , transforms='LR')
-    project_along_axis(intersection, 'Z', target=pr_plane, opposite=True)
+    copy_transforms(obj, line2 , transforms='LR')
+    project_along_axis(obj, 'Z', target=pr_plane, opposite=True)
     
     
 

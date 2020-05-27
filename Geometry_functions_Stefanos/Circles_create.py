@@ -2,16 +2,14 @@ def circle_from_diameter(circle, A, B, hide_extra=True):
     
     '''
     Finds the circle with diameter AB. It first puts an empty O at the midpoint
-    of AB and     then draws the circle with center O and radius equal to half AB. 
+    of AB and  then draws the circle with center O and radius equal to half AB. 
+    The circle has the same orientation as A.
 
     A, B:       2 POINTS        (Blender Objects; circle curves)
-
-    Note: This method creates additional objects that are needed to help find
-          the intersections. These are hidden by default
     '''
    
     # Place the circle obj with center at the midpoint
-
+    copy_rotation(circle, A)
     put_in_between(circle, A, B, 0.5)
     add_driver_distance(circle, scale, 'XYZ', A, B, 0.5)
 
@@ -25,7 +23,6 @@ def circle_center_point(circle, center, point,  hide_extra=True):
 
     center, point:       2 POINTS        (Blender Objects)
     '''
-    
     copy_location(circle, center)
     copy_rotation(circle, center)
     # damped_track(circle, axis='X', target=B) 
@@ -43,7 +40,6 @@ def circle_center_radius_distance(circle, center, A, B, hide_extra=True):
 
     center, A, B:       3 POINTS        (Blender Objects)
     '''
-
     copy_location(circle, center)
     copy_rotation(circle, center)
     
@@ -58,7 +54,6 @@ def circle_center_radius_number(circle, center, number, hide_extra=True):
     center       1 POINTS        (Blender Objects)
     number        radius         (float)
     '''
-
     copy_location(circle, center)
     copy_rotation(circle, center)
     
