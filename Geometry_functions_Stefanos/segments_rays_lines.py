@@ -39,3 +39,19 @@ def full_line(line, A, B):
     damped_track(line, axis=Z, target=B)
     add_driver(line, 'scale', fields='XYZ', vars_def={}, expr="1000")
 
+def midpoint(obj, A, B, influence=0.5):
+    '''
+    Positions an object on the line between two other objects, such that
+        (distance to A)/(distance to B) = influence
+
+    obj:        Source object   (Blender Object)
+    A, B:       2 points        (Blender Objects)
+    influence:  Influence       (float, 0-1)
+    Midpoint takes the orientation of A
+    '''
+
+    # Note that location of B is copied first to make influence consistent
+    copy_location(obj, target=B)
+    copy_location(obj, target=A, influence=influence)
+    copy_rotation(obj, A)
+
