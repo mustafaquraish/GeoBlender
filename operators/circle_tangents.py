@@ -66,7 +66,7 @@ class CircleTangents(bpy.types.Operator):
         line2.name = "Tangent 2 from point"
 
         make_circle_tangent_lines(line1, line2, circle, point)
-        
+
         add_abs_bevel(line1, self.bevel_depth)
         add_abs_bevel(line2, self.bevel_depth)
 
