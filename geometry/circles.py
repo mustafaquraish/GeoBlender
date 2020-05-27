@@ -19,6 +19,21 @@ def make_circle_from_diameter(circle, A, B):
     drivers.add_driver_distance(circle, 'scale', 'XYZ', A, B, scale=0.5)
 
 
+def make_semicircle_from_diameter(semicircle, A, B, other=False):
+    '''
+    Given the points A, B on the diameter, forms the semicircle.
+
+    semicircle:     Circle to align         (Blender Object)
+    A, B:           Points on diameter      (Blender Objects)
+    other:          S.C. on other side?     (Boolean)
+    '''
+    constraints.copy_rotation(semicircle, target=A)
+    core.put_in_between(semicircle, A, B)
+    axis = 'X' if other else '-X'
+    constraints.locked_track(semicircle, lock='Z', axis=axis, target=A)
+    drivers.add_driver_distance(semicircle, 'scale', 'XYZ', A, B, scale=0.5)
+
+
 def make_circle_from_center_point(circle, A, B):
     '''
     Given the center A and a point on the circle B, forms the circle.
