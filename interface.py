@@ -89,6 +89,18 @@ class GeoBlenderPropertiesPanel(bpy.types.Panel):
         row = layout.row()
         row.prop(settings, 'collection_name', expand=True)
 
+        layout.row().separator()
+
+        row = layout.row()
+        row.prop(settings, 'use_spheres', expand=True)
+
+        if settings.use_spheres:
+            row = layout.row()
+            row.prop(settings, 'sphere_radius', expand=True)
+
+            row = layout.row()
+            row.prop(settings, 'sphere_subdivisions', expand=True)
+
 
 ###############################################################################
 

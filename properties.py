@@ -34,6 +34,32 @@ class GeoBlenderSettings(bpy.types.PropertyGroup):
         options={'HIDDEN'},
     )
 
+    use_spheres: bpy.props.BoolProperty(
+        name="Spheres for points:",
+        description="Use (ico)spheres for points instead of empties",
+        default=True,
+        options={'HIDDEN'},
+    )
+
+    sphere_radius: bpy.props.FloatProperty(
+        name="Radius:",
+        description="Radius of spheres drawn for points",
+        soft_min=0.01,
+        soft_max=2,
+        default=0.1,
+        options={'HIDDEN'},
+    )
+
+    sphere_subdivisions: bpy.props.IntProperty(
+        name="Subdivisions:",
+        description="Subdivisions to use for the spheres for points",
+        min=1,
+        max=10,
+        default=2,
+        options={'HIDDEN'},
+    )
+
+
 
 class GeoBlenderMeasurements(bpy.types.PropertyGroup):
     angle: bpy.props.FloatProperty(

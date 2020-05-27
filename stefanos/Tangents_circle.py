@@ -18,7 +18,7 @@ def tangent_lines_to_circle(line1, line2, A, C, hide_extra=True):
     tan1 = new_empty(hide=hide_extra)
     tan2 = new_empty(hide=hide_extra)
 
-    tangent_points_to_circle(tan1, tan2, A, C):
+    tangent_points_to_circle(tan1, tan2, A, C)
 
     stretch_between_points(line1, A, tan1)
     stretch_between_points(line2, A, tan2)

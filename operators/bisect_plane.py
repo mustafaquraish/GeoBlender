@@ -1,8 +1,6 @@
 import bpy
 from ..utils.objects import new_plane
-from ..utils.geometry import put_in_between
-from ..utils.constraints import damped_track
-
+from ..geometry.planes import make_bisecting_plane
 
 class BisectPlane(bpy.types.Operator):
     bl_label = "Bisecting Plane"
@@ -38,8 +36,7 @@ class BisectPlane(bpy.types.Operator):
         (A, B) = context.selected_objects[-2:]
 
         plane = new_plane(size=self.size)
-        put_in_between(plane, A, B, influence=self.influence)
-        damped_track(plane, axis='Z', target=A)
+        make_bisecting_plane(plane, A, B)
         plane.name = "Perp. Bisector Plane"
 
         return {'FINISHED'}

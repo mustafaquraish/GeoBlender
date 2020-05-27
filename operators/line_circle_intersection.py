@@ -1,9 +1,6 @@
 import bpy
-from ..utils.objects import new_empty, new_cylinder, new_line
-from ..utils.objects import move_origin_center
-from ..utils.constraints import position_on_curve, copy_transforms
-from ..utils.constraints import project_along_axis, copy_scale, copy_rotation
-
+from ..utils.objects import new_point
+from ..geometry.intersections import line_circle_intersections
 
 class LineCircleIntersection(bpy.types.Operator):
     bl_label = "Line-Circle Intersection"
@@ -52,26 +49,10 @@ class LineCircleIntersection(bpy.types.Operator):
             self.report({'ERROR'}, 'Need to select a line and a circle')
             return {'CANCELLED'}  # Shouldn't get here...
 
-        line2 = new_line(hide=self.hide_extra)
-        move_origin_center(line2, center='MEDIAN')
-        # Make the line really large to ensure it encompasses the circle
-        line2.scale.z = 10e4
-        copy_transforms(line2, line, transforms='LR')
+        (A, B) = context.selected_objects[-2:]
 
-        pr_cyl = new_cylinder(vert=1000, hide=self.hide_extra)
-        copy_transforms(pr_cyl, circle, transforms='LR')
-        copy_scale(pr_cyl, target=circle, axes='XY')  # Don't copy Z scale
-
-        intersection_1 = new_empty()
-        position_on_curve(intersection_1, line2, position=0)
-        copy_rotation(intersection_1, line2)
-        project_along_axis(intersection_1, 'Z', target=pr_cyl, opposite=True)
-        intersection_1.name = "Intersection 1"
-
-        intersection_2 = new_empty()
-        position_on_curve(intersection_2, line2, position=1)
-        copy_rotation(intersection_2, line2)
-        project_along_axis(intersection_2, 'Z', target=pr_cyl, opposite=True)
-        intersection_2.name = "Intersection 2"
+        X = new_point()
+        Y = new_point()
+        line_circle_intersections(X, Y, line, circle, hide_extra=self.hide_extra)
 
         return {'FINISHED'}
