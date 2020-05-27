@@ -2,12 +2,13 @@
 ##############################################################################
 # Median, barycenter of triangle
 
-def median(line, point, A, B, C, hide_extra=True):
+def median(line, A, B, C, hide_extra=True):
     '''
     Places the median (line) and the midpoint (point) of the 
     triangle ABC from A. A is the active point.
     '''
-    put_in_between(point, B, C, influence=0.5)
+    mid_point = new_empty(hide=hide_extra)
+    put_in_between(mid_point, B, C, influence=0.5)
     segment(line, A, point)
 
 
@@ -32,13 +33,14 @@ def barycenter(point, A, B, C, hide_extra=True):
 ##############################################################################
 # Altitude, orthocenter of triangle
 
-def altitude(line, point, A, B, C, hide_extra=True):
+def altitude(line, A, B, C, hide_extra=True):
     '''
     Places the altitude (line) and its foot (point) of the 
     triangle ABC from A. A is the active point.
     '''
     side_bc = new_line(hide=hide_extra)
     segment(side_bc, B, C)
+    point = new_empty(hide=hide_extra)
     orthogonal_projection(point, A, side_bc)   
     segment(line, A, point)
 
@@ -143,27 +145,6 @@ def euler_circle(circle, A, B, C, hide_extra=True):
 # Angle bisectors (internal and external), 
 # incenter, inscribed circle, exscribed circle
 
-def angle_bisector(bisector, B, A, C, hide_extra=True):
-    '''
-    Places the angle bisector of the angle BAC, A is the active point.
-    '''
-
-    pr_plane = new_plane(hide=hide_extra)
-    make_orthogonal_to(pr_plane, B, C, A, axis='Z')
-
-    bisector_point = new_empty(hide=hide_extra)
-    copy_location(bisector_point, A)
-    track_to_angle_between(bisector_point, B, C)
-    project_along_axis(
-        bisector_point,
-        axis='X',
-        target=pr_plane,
-        opposite=True
-        )
-
-        line = new_line()
-        stretch_between_points(line, A, bisector_point, axis='Z')
-
 def angle_bisector_foot(bisector_foot, B, A, C, hide_extra=True):
     
     '''
@@ -183,6 +164,18 @@ def angle_bisector_foot(bisector_foot, B, A, C, hide_extra=True):
         target=pr_plane,
         opposite=True
         )
+
+def angle_bisector(bisector, B, A, C, hide_extra=True):
+    '''
+    Places the angle bisector of the angle BAC, A is the active point.
+    '''
+
+    bisector_point = new_empty(hide=hide_extra)
+    angle_bisector_foot(bisector_foot, B, A, C)
+
+    line = new_line()
+    stretch_between_points(line, A, bisector_point, axis='Z')
+
 
 def external_bisector(external, B, A, C, hide_extra= True):
     
