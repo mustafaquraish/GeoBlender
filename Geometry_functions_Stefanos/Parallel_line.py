@@ -1,5 +1,4 @@
 def parallel_line(A, line, length, hide_extra=True):
-
     '''
     This function creates a line of length through a point A and
     parallel to a line.
@@ -18,6 +17,3 @@ def parallel_line(A, line, length, hide_extra=True):
     stretch_between_points(perp_line, A, proj_a, axis='Z')
 
     orthogonal_line(A, perp_line, length)
-
-
-

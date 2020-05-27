@@ -1,7 +1,7 @@
 def put_at_polar_intersection(obj, A, circle):
     '''
     Place the given object at the  intersection point of the polar axis
-    of a point A relative to a circle. 
+    of a point A relative to a circle.
 
     obj:        Source object   (Blender Object)
     A:          Point           (Blender Objects)
@@ -27,8 +27,8 @@ def polar_line(line, circle, A, hide_extra=True):
     relative to the circle and returns it as the line argument.
     '''
     foot_polar = new_empty(hide=hide_extra)
-    put_at_polar_intersection(foot_polar, A, circle)    
-      
+    put_at_polar_intersection(foot_polar, A, circle)
+
     # We next construct the line connecting the point and the center
     connecting_line = new_line(hide=hide_extra)
     segment(connecting_line, circle, A)
