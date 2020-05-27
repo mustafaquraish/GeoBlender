@@ -20,7 +20,8 @@ def align_to_plane_of(obj, A, B, C):
 def track_to_angle_between(obj, A, B, axes='XYZ', influence=0.5):
     '''
     Make the given axis of the object point towards the bisector (or other
-    intermediary angle) of the angle formed by the lines to A and B.
+    intermediary angle) of the angle formed by the lines from the object
+    to A and B.
 
     obj:        Source object   (Blender Object)
     A, B:       2 Objects       (Blender Objects)
@@ -35,8 +36,7 @@ def track_to_angle_between(obj, A, B, axes='XYZ', influence=0.5):
 
 def make_orthogonal_to(obj, A, B, C, axis='Z'):
     '''
-    Aligns the object so that the object is on the line AB, and the given
-    axis points towards C.
+    Locates the object at A, aligns X axis with AB and Z axis to AC as much as possible.
 
     obj:        Source Object       (Blender object)
     A, B, C:    3 points            (Blender Objects)
@@ -171,7 +171,7 @@ def put_at_incenter(obj, A, B, C, hide_extra=True):
     pr_plane = new_plane(hide=hide_extra)
     pr_plane.name = "projection plane"
     copy_location(pr_plane, target=A)
-    # Using axes="XZY" here since we the plane to be orth. to the
+    # Using axes="XZY" here since we the pr_plane to be orthogonal to the plane of A, B, C.
     track_to_angle_between(pr_plane, B, C, axes='XZY')
 
     copy_location(obj, target=C)

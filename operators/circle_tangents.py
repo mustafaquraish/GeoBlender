@@ -69,7 +69,7 @@ class CircleTangents(bpy.types.Operator):
         - Have a point at point B
         - Let M be the midpoint of A-B
         - Consider the circle C' centered at M, with radius len(A-B)/2
-        - The tangents from C to B touch the circle at the intersection
+        - The tangents from B to C touch the circle at the intersection
             points of the circles C' and C.
         '''
 
