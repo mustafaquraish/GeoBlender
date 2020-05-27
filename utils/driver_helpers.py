@@ -86,5 +86,3 @@ def gb_polar_intersection(d, r, o1, o2):
     '''
     frac = (r * r) / (d * d)
     return (1 - frac) * o1 + frac * o2
-
-
