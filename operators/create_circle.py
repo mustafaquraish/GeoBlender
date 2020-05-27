@@ -1,7 +1,6 @@
 import bpy
 from ..utils.objects import new_circle, add_abs_bevel
-from ..utils.constraints import damped_track, copy_location
-from ..utils.drivers import add_driver_distance
+from ..geometry.circles import make_circle_from_center_point
 
 
 class CreateCircle(bpy.types.Operator):
@@ -38,10 +37,8 @@ class CreateCircle(bpy.types.Operator):
         A = others[0]
 
         circ = new_circle()
-        copy_location(circ, A)
-        damped_track(circ, axis='X', target=B)
-
-        add_driver_distance(circ, 'scale', 'XYZ', A, B)
+        
+        make_circle_from_center_point(circ, A, B)
 
         add_abs_bevel(circ, self.bevel_depth)
         circ.name = "Circle"

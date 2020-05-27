@@ -71,11 +71,13 @@ def circle_circle_intersection(inter1, inter2, A, B, hide_extra=True):
     # Place a hidden empty at the radical axis and the line connecting the
     # centers
     int_center = objects.new_empty(hide=hide_extra)
+    int_center.name = "radical axis intercept"
     circles.put_at_radical_intercept(int_center, A, B)
 
     # Create a hidden cylinder whose Z axis coincides, in particular, with the
     # Z axis of the circle A
     pr_cyl = objects.new_cylinder(hide=hide_extra)
+    pr_cyl.name = "projection cylinder"
     constraints.copy_transforms(pr_cyl, target=A)
 
     # Project hidden empty on the mesh cylinder (projection points are on the

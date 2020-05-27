@@ -7,7 +7,7 @@ from . import core
 from . import lines
 
 
-def make_circle_diameter(circle, A, B):
+def make_circle_from_diameter(circle, A, B):
     '''
     Given the points A, B on the diameter, forms the circle.
 
@@ -19,7 +19,7 @@ def make_circle_diameter(circle, A, B):
     drivers.add_driver_distance(circle, 'scale', 'XYZ', A, B, scale=0.5)
 
 
-def make_circle_center_point(circle, A, B):
+def make_circle_from_center_point(circle, A, B):
     '''
     Given the center A and a point on the circle B, forms the circle.
 
@@ -32,7 +32,7 @@ def make_circle_center_point(circle, A, B):
     drivers.add_driver_distance(circle, 'scale', 'XYZ', A, B)
 
 
-def circle_center_radius_distance(circle, A, X, Y, hide_extra=True):
+def make_circle_from_center_distance(circle, A, X, Y, hide_extra=True):
     '''
     Given the center A, and the radius defined by the distance between the
     2 objects X, Y, forms the circle.
@@ -46,7 +46,7 @@ def circle_center_radius_distance(circle, A, X, Y, hide_extra=True):
     drivers.add_driver_distance(circle, 'scale', 'XYZ', X, Y)
 
 
-def make_circle_center_radius(circle, A, radius):
+def make_circle_from_center_radius(circle, A, radius):
     '''
     Given the center A and fixed radius, forms the circle.
 
@@ -106,8 +106,9 @@ def put_circle_tangent_points(tan1, tan2, circle, point, hide_extra=True):
     #     points of the circles C' and C.
     from .intersections import circle_circle_intersection
 
-    mid_circ = objects.new_circle()
-    make_circle_diameter(mid_circ, circle, point)
+    mid_circ = objects.new_circle(hide=hide_extra)
+    mid_circ.name = "tangent circle helper"
+    make_circle_from_diameter(mid_circ, circle, point)
 
     # We next compute the intersection points of the two circles
     circle_circle_intersection(tan1, tan2, mid_circ, circle, hide_extra=True)
@@ -123,24 +124,28 @@ def make_circle_tangent_lines(line1, line2, circle, point, hide_extra=True):
     '''
 
     tan1 = objects.new_point(hide=hide_extra)
+    tan1.name = "tangent pt 1"
     tan2 = objects.new_point(hide=hide_extra)
+    tan2.name = "tangent pt 2"
 
     put_circle_tangent_points(tan1, tan2, circle, point)
     lines.make_segment(line1, tan1, point)
-    lines.make_segment(line1, tan2, point)
+    lines.make_segment(line2, tan2, point)
 
 
-def circle_tangent_line(line1, circle, point, hide_extra=True):
+def make_circle_tangent_line(line, circle, point, length=100):
     '''
     Forms the tangent to the circle at the given point.
 
     NOTE: This function assumes the given point is constrained to the circle.
 
-    line1:          Line to make tangent    (Blender Objects; Curve; Line)
+    line:           Line to make tangent    (Blender Objects; Curve; Line)
     circle:         The circle              (Blender Object; Curve; Circle)
     point:          The point               (Blender Object)
     '''
-
-    radius = objects.new_line(hide=hide_extra)
-    stretch_between_points(radius, A, C, axis='Z')
-    orthogonal_line(A, radius, length)
+    objects.move_origin_center(line)
+    constraints.copy_location(line, point)
+    constraints.copy_rotation(line, circle)
+    # Lines are along the X axis, so tracking the Y to center does the job.
+    constraints.locked_track(line, lock='Z', axis='Y', target=circle)
+    objects.uniform_scale(line, length)
