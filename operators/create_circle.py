@@ -37,7 +37,7 @@ class CreateCircle(bpy.types.Operator):
         A = others[0]
 
         circ = new_circle()
-        
+
         make_circle_from_center_point(circ, A, B)
 
         add_abs_bevel(circ, self.bevel_depth)
