@@ -228,7 +228,7 @@ def new_mesh_circle(radius=1, vert=100, location=(0, 0, 0), hide=False):
 @preserve_selection
 def new_line(length=1, axis='X', hide=False):
     '''
-    It is highly recommended that this function only be called with axis='X' 
+    It is highly recommended that this function only be called with axis='X'
     for the sake of consistency with the rest of the addon.
     '''
     end_loc = (
@@ -294,10 +294,11 @@ def new_sphere(radius=1, segments=32, location=(0, 0, 0), hide=False):
 
 # ----------------------------------------------------------------------------
 
+
 def new_point(hide=False, plane=None):
     '''
-    Specific to the GeoBlender addon. We want to be able to make points as 
-    spheres or empties based on the global settings. 
+    Specific to the GeoBlender addon. We want to be able to make points as
+    spheres or empties based on the global settings.
     '''
     # Check the global settings to see if we're making a sphere
     use_sphere = bpy.context.scene.geoblender_settings.use_spheres
@@ -307,8 +308,8 @@ def new_point(hide=False, plane=None):
         radius = bpy.context.scene.geoblender_settings.sphere_radius
         subdivs = bpy.context.scene.geoblender_settings.sphere_subdivisions
         point = new_icosphere(
-            radius=radius, 
-            subdivisions=subdivs, 
+            radius=radius,
+            subdivisions=subdivs,
             hide=hide
         )
     else:

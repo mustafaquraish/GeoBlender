@@ -46,5 +46,3 @@ def make_bisecting_plane(plane, A, B):
     '''
     core.put_in_between(plane, A, B)
     constraints.damped_track(plane, axis='Z', target=A)
-    
-
