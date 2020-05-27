@@ -115,3 +115,21 @@ def perpendicular_bisector_of_line(perp, line,  hide_extra = True):
 
     orthogonal_line(perp, mid_point, line)
 
+def reflection_across_line(point, line, A, hide_extra = True):
+    '''Places a point to the relection of another point A relative
+    to a given line (line).
+    '''
+    proje = new_empty(hide=hide_extra)
+    orthogonal_projection(proje, A, line)
+
+    copy_rotation(point, A)
+    add_driver(
+        obj=point,
+        prop='location',
+        fields='XYZ',
+        vars_def={
+            'o1': ('transform', A, 'location', '-'),
+            'o2': ('transform', proje, 'location', '-'),
+        },
+        expr='gb_reflect(o1, o2)'
+    )
