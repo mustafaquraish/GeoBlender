@@ -79,13 +79,17 @@ def locked_track(obj, lock, axis, target, influence=1):
 
     obj:        Source object   (Blender Object)
     target:     Target object   (Blender Object)
-    lock:       Locked Axis     ('X', 'Y' or 'Z')
+    lock:       Locked Axis     ('X', '-X', and similar for 'Y' or 'Z')
     axis:       Tracked Axis    ('X', 'Y' or 'Z')
     influence:  Influence       (float, 0-1)
     '''
+    track_axis = 'TRACK_'
+    track_axis += ('NEGATIVE_' if axis[0] == '-' else '')
+    track_axis += axis[-1].upper()
+
     obj.constraints.new(type='LOCKED_TRACK')
     obj.constraints[-1].lock_axis = 'LOCK_' + lock.upper()
-    obj.constraints[-1].track_axis = 'TRACK_' + axis.upper()
+    obj.constraints[-1].track_axis = track_axis
     obj.constraints[-1].target = target
     obj.constraints[-1].influence = influence
 
@@ -96,7 +100,7 @@ def damped_track(obj, axis, target, influence=1):
 
     obj:        Source object   (Blender Object)
     target:     Target object   (Blender Object)
-    axis:       Tracked Axis    ('+X', 'Y' or 'Z')
+    axis:       Tracked Axis    ('X', '-X', and similar for 'Y' or 'Z')
     influence:  Influence       (float, 0-1)
     '''
     track_axis = 'TRACK_'
@@ -115,7 +119,7 @@ def track_to(obj, axis, target, up='Z', target_z=False, influence=1):
 
     obj:        Source object   (Blender Object)
     target:     Target object   (Blender Object)
-    axis:       Tracked Axis    ('X', 'Y' or 'Z')
+    axis:       Tracked Axis    ('X', '-X', and similar for 'Y' or 'Z')
     influence:  Influence       (float, 0-1)
     '''
     track_axis = 'TRACK_'
