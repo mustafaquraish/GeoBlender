@@ -37,16 +37,16 @@ def line_circle_intersections(inter1, inter2, line, circle, hide_extra=True):
     '''
     This function moves  inter1 and inter2 to the intersection points of a 
     line and a circle. Intersections have same orientation as circle.  
-    (see the extra copy rotation constraint at the end).
+    (see the extra copy rotation constraint at the end). Line active.
     '''
 
     line2 = new_line(hide=hide_extra)
     move_origin_center(line2, center='MEDIAN')
     # Make the line really large to ensure it encompasses the circle
-    line2.scale.z = 10e4
+    line2.scale.x = 100
     copy_transforms(line2, line, transforms='LR')
 
-    pr_cyl = new_cylinder(vert=1000, hide=self.hide_extra)
+    pr_cyl = new_cylinder(vert=1000, hide=hide_extra)
     copy_transforms(pr_cyl, circle, transforms='LR')
     copy_scale(pr_cyl, target=circle, axes='XY')  # Don't copy Z scale
 
