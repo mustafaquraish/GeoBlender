@@ -19,6 +19,7 @@ def put_at_polar_intersection(obj, A, circle):
         },
         expr='gb_polar_intersection(d, r, o1, o2)'
     )
+    copy_rotation(obj, A)
 
 
 def polar_line(line, circle, A, hide_extra=True):

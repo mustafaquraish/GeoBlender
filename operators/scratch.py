@@ -23,14 +23,21 @@ class Scratch(bpy.types.Operator):
     )
 
     def execute(self, context):
-        (X, Y) = context.selected_objects[-2:]
+        (A, line) = context.selected_objects[-2:]
         A = context.active_object
-
-        others = [X, Y]
+        others = [A, line]
         others.remove(A)
         line = others[0]
 
-        obj = new_empty()
-        orthogonal_projection(obj, A, line, hide_extra=True):
+        
+        #perp = new_line()
+        #perpendicular_bisector_of_line(perp, line)
+
+        proje = new_empty()
+        orthogonal_projection(proje, A, line)
+
+        point = new_empty()
+        reflection_across_line(point, line, A)
+
 
         return {'FINISHED'}

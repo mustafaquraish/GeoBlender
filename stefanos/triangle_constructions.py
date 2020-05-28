@@ -2,14 +2,14 @@
 ##############################################################################
 # Median, barycenter of triangle
 
-def median(line, A, B, C, hide_extra=True):
+def median(line, mid_point, A, B, C, hide_extra=True):
     '''
     Places the median (line) and the midpoint (point) of the 
     triangle ABC from A. A is the active point.
     '''
-    mid_point = new_empty(hide=hide_extra)
     put_in_between(mid_point, B, C, influence=0.5)
-    segment(line, A, point)
+    copy_rotation(mid_point, A)
+    segment(line, A, mid_point)
 
 
 def barycenter(point, A, B, C, hide_extra=True):
@@ -33,14 +33,13 @@ def barycenter(point, A, B, C, hide_extra=True):
 ##############################################################################
 # Altitude, orthocenter of triangle
 
-def altitude(line, A, B, C, hide_extra=True):
+def altitude(line, point, A, B, C, hide_extra=True):
     '''
     Places the altitude (line) and its foot (point) of the 
     triangle ABC from A. A is the active point.
     '''
     side_bc = new_line(hide=hide_extra)
     segment(side_bc, B, C)
-    point = new_empty(hide=hide_extra)
     orthogonal_projection(point, A, side_bc)   
     segment(line, A, point)
 
@@ -80,12 +79,11 @@ def circumcenter(point, A, B, C, hide_extra=True):
     copy_rotation(point, A) # To make sure point has the correct Z axis
 
 
-def circumcircle(circle, A, B, C, hide_extra=True):
+def circumcircle(circle, center_point, A, B, C, hide_extra=True):
     '''
     Places the circumcircle (circle) of the triangle ABC. It has the same 
-    orientation as A. 
+    orientation as A. It also places its centre (optionally).
     '''
-    center_point = new_empty(hide=hide_extra)
     circumcenter(center_point, A, B, C)
     circle_center_radius_distance(circle, center_point, center_point, A)
 
@@ -124,17 +122,16 @@ def euler_line(line, A, B, C, hide_extra=True):
     full_line(line, circum, ortho)
 
 
-def euler_circle(circle, A, B, C, hide_extra=True):
+def euler_circle(circle, center_point, A, B, C, hide_extra=True):
     '''
     Places the Euler circle (circle) of the triangle ABC.
-    It has the same orientation as A.
+    It has the same orientation as A. Places its center (optionally).
     '''
-        
-    center_point = new_empty(hide=hide_extra)
     euler_center(center_point, A, B, C)
 
     mid_point = new_empty(hide=hide_extra)
     put_in_between(mid_point, B, C, influence=0.5)
+    copy_rotation(mid_point, B)
 
     circle_center_radius_distance(circle, center_point, center_point, mid_point)
 
@@ -155,9 +152,9 @@ def angle_bisector_foot(bisector_foot, B, A, C, hide_extra=True):
     pr_plane = new_plane(hide=hide_extra)
     make_orthogonal_to(pr_plane, B, C, A, axis='Z')
 
-    bisector_point = new_empty()
-    copy_location(bisector_point, A)
-    track_to_angle_between(bisector_point, B, C)
+    
+    copy_location(bisector_foot, A)
+    track_to_angle_between(bisector_foot, B, C)
     project_along_axis(
         bisector_foot,
         axis='X',
@@ -165,28 +162,23 @@ def angle_bisector_foot(bisector_foot, B, A, C, hide_extra=True):
         opposite=True
         )
 
-def angle_bisector(bisector, B, A, C, hide_extra=True):
+def angle_bisector(bisector, bisector_foot, B, A, C, hide_extra=True):
     '''
     Places the angle bisector of the angle BAC, A is the active point.
     '''
-
-    bisector_point = new_empty(hide=hide_extra)
     angle_bisector_foot(bisector_foot, B, A, C)
-
-    line = new_line()
-    stretch_between_points(line, A, bisector_point, axis='Z')
+    segment(bisector, A, bisector_foot)
 
 
 def external_bisector(external, B, A, C, hide_extra= True):
     
     '''
-    Places the external angle bisector of the angle BAC,
+    Places the external angle bisector (line) of the angle BAC.
     A is the active point.
     '''
     internal = new_line(hide=hide_extra)
-    angle_bisector(internal, B, A, C, hide_extra=True)
-
-    orthogonal_line(external, A, internal, hide_extra=True)
+    angle_bisector(internal, B, A, C)
+    orthogonal_line(external, A, internal)
 
 
 def incenter(point, A, B, C, hide_extra=True):
@@ -204,12 +196,12 @@ def incenter(point, A, B, C, hide_extra=True):
     copy_rotation(point, A) # To make sure point has the correct Z axis
 
 
-def incircle(circle, A, B, C, hide_extra=True):
+def incircle(circle, center_point, A, B, C, hide_extra=True):
     '''
     Places the incircle (circle) of the triangle ABC. It has the same orientation
-    as A.  
+    as A.  Places also the center (optionally).
     '''
-    center_point = new_empty(hide=hide_extra)
+   
     incenter(center_point, A, B, C)
 
     side_bc = new_line(hide=hide_extra)
@@ -235,12 +227,11 @@ def excenter(point, A, B, C, hide_extra=True):
     copy_rotation(point, A) # To make sure point has the correct Z axis
 
 
-def excircle(circle, A, B, C, hide_extra=True):
+def excircle(circle, center_point, A, B, C, hide_extra=True):
     '''
-    Places the excircle (circle) of the triangle ABC opposite to A. It has the same orientation
-    as A.  
+    Places the excircle (circle) of the triangle ABC opposite to A.
+    It has the same orientation as A.  Places its center (optionally).
     '''
-    center_point = new_empty(hide=hide_extra)
     excenter(center_point, A, B, C)
 
     side_bc = new_line(hide=hide_extra)

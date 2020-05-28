@@ -17,7 +17,7 @@ def line_line_inteserction(obj, line1, line2, hide_extra=True):
     make_orthogonal_to(pr_plane, a_start, a_end, line2)
 
     copy_transforms(obj, line2 , transforms='LR')
-    project_along_axis(obj, 'Z', target=pr_plane, opposite=True)
+    project_along_axis(obj, 'X', target=pr_plane, opposite=True)
     
     
 
@@ -44,14 +44,14 @@ def line_circle_intersections(inter1, inter2, line, circle, hide_extra=True):
     inter_1 = new_empty()
     position_on_curve(inter_1, line2, position=0)
     copy_rotation(inter_1, line2)
-    project_along_axis(inter_1, 'Z', target=pr_cyl, opposite=True)
+    project_along_axis(inter_1, 'X', target=pr_cyl, opposite=True)
     copy_rotation(inter_1, circle)
     inter_1.name = "Intersection 1"
 
     inter_2 = new_empty()
     position_on_curve(inter_2, line2, position=1)
     copy_rotation(inter_2, line2)
-    project_along_axis(inter_2, 'Z', target=pr_cyl, opposite=True)
+    project_along_axis(inter_2, 'X', target=pr_cyl, opposite=True)
     copy_rotation(inter_2, circle)
     inter_2.name = "Intersection 2"
 

@@ -89,17 +89,17 @@ def inversion_cicle_not_on(inverted_circle, inverted_center, circle,
     circle_from_diameter(inverted_circle, inter1_inverted, inter2_inverted)
     midpoint(inverted_center, inter1_inverted, inter2_inverted)
 
-    def inversion_line_on(inverted_line, line, circle_of_inversion,
-        hide_extra = True):
-        a_start = new_empty(hide=hide_extra)
-        position_on_curve(a_start, line, 0)
-        copy_rotation(a_start,circle_of_inversion)
+def inversion_line_on(inverted_line, line, circle_of_inversion,
+    hide_extra = True):
+    a_start = new_empty(hide=hide_extra)
+    position_on_curve(a_start, line, 0)
+    copy_rotation(a_start,circle_of_inversion)
 
-        a_end = new_empty(hide=hide_extra)
-        position_on_curve(a_end, line, 1)
-        copy_rotation(a_end,circle_of_inversion)
+    a_end = new_empty(hide=hide_extra)
+    position_on_curve(a_end, line, 1)
+    copy_rotation(a_end,circle_of_inversion)
 
-        full_line(interted_line,a_start, a_end)
+    full_line(interted_line,a_start, a_end)
         '''
         Places a line (inverted_circle) to the inversion defined by the 
         circle_of_inversion. The origin of the inversion should be
@@ -128,7 +128,7 @@ def inversion_cicle_not_on(inverted_circle, inverted_center, circle,
 
     def inversion_line_not_on(inverted_line, line, circle_of_inversion
         hide_extra = True):
-        '''
+    '''
     Places a circle (inverted_line) to the inversion of a line (line) defined 
     by the circle_of_inversion. The origin of the inversion should not be
     constrained on the line. The active object is the circle_of_inversion. 

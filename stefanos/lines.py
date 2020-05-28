@@ -1,9 +1,26 @@
+from ..utils.objects import *
+from ..utils.geometry import *
+from ..utils.drivers import add_driver
+from ..utils.constraints import *
+
 def segment(line, A, B):
     '''
     This function returns line to the segment defined by 
     the points A, B.
     '''
-    stretch_between_points(line, A, B, axis='Z')
+    copy_location(obj, target=A)
+    copy_rotation(obj, A)
+    locked_track(obj, lock='Z', axis='X', target=B)
+
+    add_driver_distance(
+        obj=obj,
+        prop='scale',
+        fields='XYZ',
+        A=A,
+        B=B,
+        scale=scale
+    )
+
 
 
 def ray(line, A, B):
@@ -17,8 +34,9 @@ def ray(line, A, B):
     A, B:       2 points        (Blender Objects)
     scale:      stretch scale   (float)
     '''
-    copy_location(line, target=A)
-    damped_track(line, axis=Z, target=B)
+    copy_location(obj, target=A)
+    copy_rotation(obj, A)
+    locked_track(obj, lock='Z', axis='X', target=B)
     add_driver(line, 'scale', fields='XYZ', vars_def={}, expr="1000")
     
 
@@ -35,8 +53,9 @@ def full_line(line, A, B):
     scale:      stretch scale   (float)
     '''
     move_origin_center(line, center='MEDIAN')
-    copy_location(line, target=A)
-    damped_track(line, axis=Z, target=B)
+    copy_location(obj, target=A)
+    copy_rotation(obj, A)
+    locked_track(obj, lock='Z', axis='X', target=B)
     add_driver(line, 'scale', fields='XYZ', vars_def={}, expr="1000")
 
 def midpoint(obj, A, B, influence=0.5):

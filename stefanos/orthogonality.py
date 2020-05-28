@@ -1,12 +1,19 @@
+from ..utils.objects import *
+from ..utils.geometry import *
+from ..utils.drivers import add_driver
+from ..utils.constraints import *
+from ..stefanos.lines import segment
+
 # The next two functions heavily use that the Z axis of points is 
 # normal to the parent plane.
 
 def orthogonal_projection(obj, A, line, hide_extra=True):
 
-   ''' 
+    ''' 
     This function moves obj to the orthogonal projection in 2D of A on 
     the line. The X axis  of obj is aligned with BC and the Y axis
-    is alighned with the perpendicular direction. A must be the active object.
+    is aligned with the perpendicular direction and the Z axis is the same
+    as that of A. A must be the active object.
     '''
 
     B = new_empty(hide=hide_extra)
@@ -29,9 +36,10 @@ def orthogonal_projection(obj, A, line, hide_extra=True):
 
 def orthogonal_line(perp_line, A, line,  hide_extra=True):
 
-   ''' 
-    This function moves perp_line so that it is the normal line of
-    length to a line through a point A. 
+    ''' 
+    This function moves perp_line so that it is the normal to line 
+    through the point A. It is placed on the XY plane of the point A.
+    perp_line and A have the same Z axis.
 
     The midpoint of the constructed orthogonal line is always placed
     at the foot of the orthogonality (so line is symmetric relative
@@ -51,18 +59,19 @@ def orthogonal_line(perp_line, A, line,  hide_extra=True):
     move_origin_center(line0)
     copy_location(line0, proje)
     copy_rotation(line0, proje)
-    
-
+ 
     # This line is normal to BC and parallel to its Y axis. So we need to change 
-    # this to Z because by convention we assume that all line are parallel to their
-    # local Z axis. We do this by creating a new line. 
+    # this to X because by convention we assume that all line are parallel to their
+    # local X axis. We do this by creating a new line. 
 
     point0 = new_empty(hide=hide_extra)
-    position_on_curve(point, line0, position=1, influence=1)
+    position_on_curve(point0, line0, position=1, influence=1)
 
     move_origin_center(perp_line)
     copy_location(perp_line, proje)
-    damped_track(perp_line, 'Z', point0)
+    copy_rotation(perp_line, A)
+    locked_track(perp_line, lock='Z', axis='X', target=point0)
+    
 
 
 
@@ -89,7 +98,7 @@ def perpendicular_bisector_of_2points(line, A, B, hide_extra = True):
 
     mid_point = new_empty(hide=hide_extra)
     put_in_between(mid_point, A, B, influence=0.5)
-
+    copy_rotation(mid_point, A)
 
     seg = new_line(hide=hide_extra)
     segment(seg, A, B)
@@ -98,7 +107,7 @@ def perpendicular_bisector_of_2points(line, A, B, hide_extra = True):
 
 
 def perpendicular_bisector_of_line(perp, line,  hide_extra = True):
-     '''
+    '''
     Given a line on a 2D plane, construct the 2D perpendicular 
     bisector (line).
     '''
@@ -110,19 +119,22 @@ def perpendicular_bisector_of_line(perp, line,  hide_extra = True):
     position_on_curve(C, line, 1)
 
     mid_point=new_empty(hide=hide_extra)
+    copy_rotation(mid_point, line)
     put_in_between(mid_point, B, C, influence=0.5)
 
+    orthogonal_line(perp, mid_point, line) #midpoing and line have same Z
 
-    orthogonal_line(perp, mid_point, line)
+
+    
+
 
 def reflection_across_line(point, line, A, hide_extra = True):
     '''Places a point to the relection of another point A relative
-    to a given line (line).
+    to a given line (line). A should be active.
     '''
     proje = new_empty(hide=hide_extra)
     orthogonal_projection(proje, A, line)
 
-    copy_rotation(point, A)
     add_driver(
         obj=point,
         prop='location',
@@ -133,3 +145,5 @@ def reflection_across_line(point, line, A, hide_extra = True):
         },
         expr='gb_reflect(o1, o2)'
     )
+    copy_rotation(point, A)
+
