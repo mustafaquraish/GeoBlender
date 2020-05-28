@@ -4,6 +4,7 @@ from ..utils.objects import *
 from ..utils.geometry import *
 from ..utils.drivers import add_driver
 from ..utils.constraints import *
+from ..utils.objects import set_parent
 
 
 from ..stefanos.circles import *
@@ -29,6 +30,7 @@ class Scratch(bpy.types.Operator):
     )
 
     def execute(self, context):
+
         (A, B) = context.selected_objects[-2:]
         #A = context.active_object
         #others = [A, line]
@@ -38,5 +40,6 @@ class Scratch(bpy.types.Operator):
         
         line= new_line()
         segment(line, A, B)
+
 
         return {'FINISHED'}

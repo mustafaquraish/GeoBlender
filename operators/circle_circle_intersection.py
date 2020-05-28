@@ -1,8 +1,6 @@
 import bpy
-from ..utils.objects import new_empty, new_cylinder
-from ..utils.constraints import copy_transforms, copy_location
-from ..utils.geometry import put_at_radical_intercept
-from ..utils.constraints import project_along_axis, copy_rotation, locked_track
+from ..utils.objects import new_point
+from ..geometry.intersections import circle_circle_intersection
 
 
 class CircleCircleIntersection(bpy.types.Operator):
@@ -45,22 +43,8 @@ class CircleCircleIntersection(bpy.types.Operator):
 
         (A, B) = context.selected_objects[-2:]
 
-        int_center = new_empty(hide=self.hide_extra)
-        put_at_radical_intercept(int_center, A, B)
-
-        pr_cyl = new_cylinder(hide=self.hide_extra)
-        copy_transforms(pr_cyl, target=A)
-
-        int_1 = new_empty()
-        copy_location(int_1, int_center)
-        copy_rotation(int_1, A)
-        locked_track(int_1, lock='Z', axis='X', target=B)
-        project_along_axis(int_1, axis='Y', target=pr_cyl)
-
-        int_2 = new_empty()
-        copy_location(int_2, int_center)
-        copy_rotation(int_2, A)
-        locked_track(int_2, lock='Z', axis='X', target=B)
-        project_along_axis(int_2, axis='-Y', target=pr_cyl)
+        X = new_point()
+        Y = new_point()
+        circle_circle_intersection(X, Y, A, B, hide_extra=self.hide_extra)
 
         return {'FINISHED'}

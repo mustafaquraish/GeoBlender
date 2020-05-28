@@ -134,7 +134,24 @@ def add_abs_bevel(obj, bevel_depth):
         expr=f'{bevel_depth} / max(sx, sy, sz)'
     )
 
-###############################################################################
+
+def uniform_scale(obj, scale):
+    for i in range(3):
+        obj.scale[i] = scale
+
+
+@preserve_selection
+def set_parent(obj, parent):
+    '''
+    Using parenting without inverse.
+    '''
+    bpy.ops.object.select_all(action='DESELECT')
+    obj.select_set(True)
+    parent.select_set(True)
+    bpy.context.view_layer.objects.active = parent
+    bpy.ops.object.parent_no_inverse_set()
+
+# ----------------------------------------------------------------------------
 
 
 @preserve_selection
@@ -209,7 +226,11 @@ def new_mesh_circle(radius=1, vert=100, location=(0, 0, 0), hide=False):
 
 
 @preserve_selection
-def new_line(length=1, axis='Z', hide=False):
+def new_line(length=1, axis='X', hide=False):
+    '''
+    It is highly recommended that this function only be called with axis='X'
+    for the sake of consistency with the rest of the addon.
+    '''
     end_loc = (
         length if axis == 'X' else 0,
         length if axis == 'Y' else 0,
@@ -270,3 +291,28 @@ def new_sphere(radius=1, segments=32, location=(0, 0, 0), hide=False):
     )
     set_hidden(bpy.context.object, hide)
     return bpy.context.object
+
+# ----------------------------------------------------------------------------
+
+
+def new_point(hide=False, plane=None):
+    '''
+    Specific to the GeoBlender addon. We want to be able to make points as
+    spheres or empties based on the global settings.
+    '''
+    # Check the global settings to see if we're making a sphere
+    use_sphere = bpy.context.scene.geoblender_settings.use_spheres
+
+    if use_sphere:
+        # Get the sphere properties from the global settings
+        radius = bpy.context.scene.geoblender_settings.sphere_radius
+        subdivs = bpy.context.scene.geoblender_settings.sphere_subdivisions
+        point = new_icosphere(
+            radius=radius,
+            subdivisions=subdivs,
+            hide=hide
+        )
+    else:
+        point = new_empty(hide=hide)
+
+    return point

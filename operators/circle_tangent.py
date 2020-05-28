@@ -1,12 +1,12 @@
 import bpy
 from ..utils.objects import new_line, add_abs_bevel
-from ..geometry.circles import make_circle_tangent_lines
+from ..geometry.circles import make_circle_tangent_line
 
 
-class CircleTangents(bpy.types.Operator):
-    bl_label = "Circle Tangents"
-    bl_idname = "geometry.circle_tangents"
-    bl_description = "Form the tangents from a circle to a point"
+class CircleTangent(bpy.types.Operator):
+    bl_label = "Circle Tangent"
+    bl_idname = "geometry.circle_tangent"
+    bl_description = "Form the tangent to a circle at a point"
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     # GeoBlender Panel Type
@@ -60,14 +60,9 @@ class CircleTangents(bpy.types.Operator):
             self.report({'ERROR'}, 'Need to select at least one circle')
             return {'CANCELLED'}  # Shouldn't get here...
 
-        line1 = new_line()
-        line1.name = "Tangent 1 from point"
-        line2 = new_line()
-        line2.name = "Tangent 2 from point"
-
-        make_circle_tangent_lines(line1, line2, circle, point)
-
-        add_abs_bevel(line1, self.bevel_depth)
-        add_abs_bevel(line2, self.bevel_depth)
+        line = new_line()
+        line.name = "Circle Tangent"
+        make_circle_tangent_line(line, circle, point)
+        add_abs_bevel(line, self.bevel_depth)
 
         return {'FINISHED'}

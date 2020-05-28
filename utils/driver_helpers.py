@@ -89,6 +89,7 @@ def gb_polar_intersection(d, r, o1, o2):
 
 
 
+
 def gb_reflect(o1, o2):
     '''
     Function to be used in the driver to help compute the reflection of a point A
@@ -139,3 +140,4 @@ def gb_inversion_expres(d, r, o1, o2):
     return (1 - frac) * o1 + frac * o2
 
     
+
