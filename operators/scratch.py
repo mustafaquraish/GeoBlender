@@ -34,12 +34,10 @@ class Scratch(bpy.types.Operator):
         (A, B) = context.selected_objects[-2:]
         #A = context.active_object
         #others = [A, line]
-        #others.remove(A)
+        # others.remove(A)
         #line = others[0]
 
-        
-        line= new_line()
+        line = new_line()
         segment(line, A, B)
-
 
         return {'FINISHED'}

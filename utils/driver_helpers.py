@@ -88,8 +88,6 @@ def gb_polar_intersection(d, r, o1, o2):
     return (1 - frac) * o1 + frac * o2
 
 
-
-
 def gb_reflect(o1, o2):
     '''
     Function to be used in the driver to help compute the reflection of a point A
@@ -108,36 +106,34 @@ def gb_reflect(o1, o2):
 def gb_inv_circle_on(d, r, o1, o2):
     '''
     Function to be used in the driver to help compute the intersection point of
-    the inversion of a circle (origin on) and the axis connecting the center of 
-    the circle and the origin of the inversion. 
-    
+    the inversion of a circle (origin on) and the axis connecting the center of
+    the circle and the origin of the inversion.
+
     d:      power of inversion                                 (float)
     r:      radius of circle                                   (float)
     o1:     X,Y or Z positions of origin                       (float)
     o2:     X,Y or Z positions of antipodal of origin          (float)
- 
+
     Return: Returns the X, Y or Z position of the intersection point when the
             corresponding X, Y and Z positions are passed in as `o1` and `o2`
     '''
     frac = (d * d) / (4 * r * r)
     return (1 - frac) * o1 + frac * o2
 
+
 def gb_inversion_expres(d, r, o1, o2):
     '''
     Function to be used in the driver to help compute the intersection point of
-    the inversion of a circle (origin on) and the axis connecting the center of 
-    the circle and the origin of the inversion. 
-    
+    the inversion of a circle (origin on) and the axis connecting the center of
+    the circle and the origin of the inversion.
+
     d:      power of inversion                                 (float)
     r:      distance of origin from point                      (float)
     o1:     X,Y or Z positions of origin                       (float)
     o2:     X,Y or Z positions of origin                       (float)
- 
+
     Return: Returns the X, Y or Z position of the intersection point when the
             corresponding X, Y and Z positions are passed in as `o1` and `o2`
     '''
     frac = (d * d) / (r * r)
     return (1 - frac) * o1 + frac * o2
-
-    
-
