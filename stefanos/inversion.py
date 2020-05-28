@@ -1,4 +1,10 @@
-# Before we can invert points, lines and circles, the user will have to 
+from ..utils.objects import *
+from ..utils.geometry import *
+from ..utils.drivers import add_driver
+from ..utils.constraints import *
+
+
+# Before they invert points, lines and circles, the user will have to 
 # introduce the circle_of_inversion. The origin of this circle is the origin
 # of inversion and the squared of the radius is the power of the inversion.
 
