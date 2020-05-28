@@ -4,7 +4,13 @@ from ..utils.objects import *
 from ..utils.geometry import *
 from ..utils.drivers import add_driver
 from ..utils.constraints import *
-from ..stefanos.orthogonality import *
+
+
+from ..stefanos.circles import *
+from ..stefanos.intersections import *
+from ..stefanos.inversion import *
+from ..stefanos.lines import *
+from ..stefanos.triangle_constructions import *
 
 
 class Scratch(bpy.types.Operator):
@@ -23,21 +29,14 @@ class Scratch(bpy.types.Operator):
     )
 
     def execute(self, context):
-        (A, line) = context.selected_objects[-2:]
-        A = context.active_object
-        others = [A, line]
-        others.remove(A)
-        line = others[0]
-
-        
-        #perp = new_line()
-        #perpendicular_bisector_of_line(perp, line)
-
-        proje = new_empty()
-        orthogonal_projection(proje, A, line)
+        (A, B, C) = context.selected_objects[-3:]
+        #A = context.active_object
+        #others = [A, line]
+        #others.remove(A)
+        #line = others[0]
 
         point = new_empty()
-        reflection_across_line(point, line, A)
+        barycenter(point, A, B, C)
 
 
         return {'FINISHED'}

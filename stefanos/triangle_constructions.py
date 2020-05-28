@@ -3,10 +3,10 @@ from ..utils.geometry import *
 from ..utils.drivers import add_driver
 from ..utils.constraints import *
 
-from ..stefanos.circles import *
-from ..stefanos.intersections import *
-from ..stefanos.inversion import *
-from ..stefanos.lines import *
+from .circles import *
+from .intersections import *
+from .inversion import *
+from .lines import *
 
 ##############################################################################
 # Median, barycenter of triangle

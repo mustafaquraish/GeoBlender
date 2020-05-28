@@ -3,10 +3,10 @@ from ..utils.geometry import *
 from ..utils.drivers import add_driver
 from ..utils.constraints import *
 
-from ..stefanos.circles import *
-from ..stefanos.intersections import *
-from ..stefanos.lines import *
-from ..stefanos.triangle_constructions import *
+from .circles import *
+from .intersections import *
+from .lines import *
+from .triangle_constructions import *
 
 # Before they invert points, lines and circles, the user will have to 
 # introduce the circle_of_inversion. The origin of this circle is the origin
@@ -110,34 +110,11 @@ def inversion_line_on(inverted_line, line, circle_of_inversion,
     copy_rotation(a_end,circle_of_inversion)
 
     full_line(interted_line,a_start, a_end)
-        '''
-        Places a line (inverted_circle) to the inversion defined by the 
-        circle_of_inversion. The origin of the inversion should be
-        constrained on the line. The active object is the circle_of_inversion. 
-        
-        a_start = new_empty(hide=hide_extra)
-        position_on_curve(a_start, line, 0)
-        copy_rotation(a_start,circle_of_inversion)
+      
 
-        a_end = new_empty(hide=hide_extra)
-        position_on_curve(a_end, line, 1)
-        copy_rotation(a_end,circle_of_inversion)
 
-        b_start = new_empty(hide=hide_extra)
-        b_end = new_empty(hide=hide_extra)
-
-        inversion_point(b_start, a_start, circle_of_inversion)
-        inversion_point(b_end, a_end, circle_of_inversion)
-
-        segment(inverted_line, b_start, b_end)
-
-        #this construction works if the center of inversion is not between  a start and a end.
-         if the center is between the line then the inversion is the full line
-                if it is, then inversion is a full line!
-        '''
-
-    def inversion_line_not_on(inverted_line, line, circle_of_inversion
-        hide_extra = True):
+def inversion_line_not_on(inverted_line, line, circle_of_inversion,
+    hide_extra = True):
     '''
     Places a circle (inverted_line) to the inversion of a line (line) defined 
     by the circle_of_inversion. The origin of the inversion should not be
@@ -146,8 +123,7 @@ def inversion_line_on(inverted_line, line, circle_of_inversion,
     proje = new_empty(hide=hide_extra)
     inverted_point = new_empty(hide=hide_extra)
 
-
-    orthogonal_projection(proje, circle of inversion, line)
+    orthogonal_projection(proje, circle_of_inversion, line)
     inversion_point(inverted_point, proje, circle_of_inversion)
     circle_from_diameter(interted_line, circle_of_inversion, inverted_point)
    

@@ -3,10 +3,10 @@ from ..utils.geometry import *
 from ..utils.drivers import add_driver
 from ..utils.constraints import *
 
-from ..stefanos.intersections import *
-from ..stefanos.inversion import *
-from ..stefanos.lines import *
-from ..stefanos.triangle_constructions import *
+from .intersections import *
+from .inversion import *
+from .lines import *
+from .triangle_constructions import *
 
 
 def circle_from_diameter(circle, A, B, hide_extra=True):
@@ -73,7 +73,7 @@ def circle_center_radius_number(circle, center, number, hide_extra=True):
  #############################################################################
  # Polar lines
 
- def put_at_polar_intersection(obj, A, circle):
+def put_at_polar_intersection(obj, A, circle):
     '''
     Place the given object at the  intersection point of the polar axis
     of a point A relative to a circle. 
@@ -110,20 +110,19 @@ def polar_line(line, circle, A, hide_extra=True):
     segment(connecting_line, circle, A)
 
     # Finally we place line to the polar line
-    orthogonal_line(line, foot_polar, connecting line)
+    orthogonal_line(line, foot_polar, connecting_line)
 
 ###############################################################################
 # Tangent lines
 
 def tangent_points_to_circle(tan1, tan2, A, C, hide_extra=True):
-    # This function computes the tangent points tan1 and tan2 where the tangents
+    # This function computes the tang points tan1 and tan2 where the tangents
     # from a point A outside a cicle C intersect C. Point A should be active.
 
     circle_help= new_circle()
-    circle_from_diameter(circle_help, A, B, hide_extra=True)
+    circle_from_diameter(circle_help, A, C, hide_extra=True)
 
     # We next compute the intersection points of the two circles
-
     circle_circle_intersection(tan1, tan2, circle_help, C, hide_extra=True)
 
     
@@ -136,7 +135,7 @@ def tangent_lines_to_circle(line1, line2, A, C, hide_extra=True):
     tan1=new_empty(hide=hide_extra)
     tan2=new_empty(hide=hide_extra)
 
-    tangent_points_to_circle(tan1, tan2, A, C):
+    tangent_points_to_circle(tan1, tan2, A, C)
 
     segment(line1, A, tan1)
     segment(line2, A, tan2)
