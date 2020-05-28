@@ -13,17 +13,17 @@ def segment(line, A, B):
     This function returns line to the segment defined by 
     the points A, B.
     '''
-    copy_location(obj, target=A)
-    copy_rotation(obj, A)
-    locked_track(obj, lock='Z', axis='X', target=B)
+    copy_location(line, target=A)
+    copy_rotation(line, A)
+    locked_track(line, lock='Z', axis='X', target=B)
 
     add_driver_distance(
-        obj=obj,
+        obj=line,
         prop='scale',
         fields='XYZ',
         A=A,
         B=B,
-        scale=scale
+        scale=1
     )
 
 

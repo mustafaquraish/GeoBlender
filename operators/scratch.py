@@ -29,14 +29,14 @@ class Scratch(bpy.types.Operator):
     )
 
     def execute(self, context):
-        (A, B, C) = context.selected_objects[-3:]
+        (A, B) = context.selected_objects[-2:]
         #A = context.active_object
         #others = [A, line]
         #others.remove(A)
         #line = others[0]
 
-        point = new_empty()
-        barycenter(point, A, B, C)
-
+        
+        line= new_line()
+        segment(line, A, B)
 
         return {'FINISHED'}
