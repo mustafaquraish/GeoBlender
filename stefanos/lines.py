@@ -3,6 +3,11 @@ from ..utils.geometry import *
 from ..utils.drivers import add_driver
 from ..utils.constraints import *
 
+from ..stefanos.circles import *
+from ..stefanos.intersections import *
+from ..stefanos.inversion import *
+from ..stefanos.triangle_constructions import *
+
 def segment(line, A, B):
     '''
     This function returns line to the segment defined by 

@@ -3,6 +3,12 @@ from ..utils.geometry import *
 from ..utils.drivers import add_driver
 from ..utils.constraints import *
 
+from ..stefanos.intersections import *
+from ..stefanos.inversion import *
+from ..stefanos.lines import *
+from ..stefanos.triangle_constructions import *
+
+
 def circle_from_diameter(circle, A, B, hide_extra=True):
     
     '''

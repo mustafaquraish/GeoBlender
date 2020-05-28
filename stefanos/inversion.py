@@ -3,6 +3,10 @@ from ..utils.geometry import *
 from ..utils.drivers import add_driver
 from ..utils.constraints import *
 
+from ..stefanos.circles import *
+from ..stefanos.intersections import *
+from ..stefanos.lines import *
+from ..stefanos.triangle_constructions import *
 
 # Before they invert points, lines and circles, the user will have to 
 # introduce the circle_of_inversion. The origin of this circle is the origin
