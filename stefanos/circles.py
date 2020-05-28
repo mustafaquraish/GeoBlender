@@ -141,7 +141,6 @@ def tangent_lines_to_circle(line1, line2, A, C, hide_extra=True):
     segment(line2, A, tan2)
     
 
-
 def tangent_line_to_circle(line1, A, C, hide_extra=True):
 
     # This function computes the tangent line line1  
