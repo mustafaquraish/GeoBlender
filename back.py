@@ -9,9 +9,9 @@ core.make_orthogonal_to(pr_plane, mid1, A, B)
 constraints.copy_transforms(point, C, transforms='LR')
 constraints.locked_track(point, lock='Z', axis='X', target=mid2)
 constraints.project_along_axis(
-    obj=point, 
-    axis='X', 
-    target=pr_plane, 
+    obj=point,
+    axis='X',
+    target=pr_plane,
     opposite=True
 )
 

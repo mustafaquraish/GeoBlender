@@ -52,9 +52,9 @@ def barycenter(point, A, B, C, hide_extra=True):
     median(median1, mid1, A, B, C)
     median(median2, mid2, A, B, C)
     intersections.line_line_inteserction(
-        inter=point, 
-        line1=median1, 
-        line2=median2, 
+        inter=point,
+        line1=median1,
+        line2=median2,
         hide_extra=hide_extra
     )
 
@@ -93,9 +93,9 @@ def orthocenter(point, A, B, C, hide_extra=True):
     lines.orthogonal_line_to_points(altitude2, B, A, C, hide_extra=hide_extra)
 
     intersections.line_line_inteserction(
-        inter=point, 
-        line1=altitude1, 
-        line2=altitude2, 
+        inter=point,
+        line1=altitude1,
+        line2=altitude2,
         hide_extra=hide_extra
     )
 
@@ -120,9 +120,9 @@ def circumcenter(point, A, B, C, hide_extra=True):
     lines.bisecting_line_of_points(perp1, A, C)
 
     intersections.line_line_inteserction(
-        inter=point, 
-        line1=perp1, 
-        line2=perp2, 
+        inter=point,
+        line1=perp1,
+        line2=perp2,
         hide_extra=hide_extra
     )
 
@@ -240,7 +240,7 @@ def angle_bisector(line, point, A, B, C, hide_extra=True):
 def external_bisector(line, A, B, C, hide_extra=True):
     '''
     Places the external angle bisector (line) of the angle BAC.
-    
+
     line:       Line to make bisector       (Blender Object; Curve; Line)
     A, B, C:    Points of triangle          (Blender Objects)
     '''
@@ -277,16 +277,16 @@ def incenter(point, A, B, C, hide_extra=True):
     angle_bisector(bisec2, foot2, B, A, C)
 
     intersections.line_line_inteserction(
-        inter=point, 
-        line1=bisec1, 
-        line2=bisec2, 
+        inter=point,
+        line1=bisec1,
+        line2=bisec2,
         hide_extra=hide_extra
     )
 
 
 def incircle(circle, center, A, B, C, hide_extra=True):
     '''
-    Places the incircle (circle) of the triangle ABC. It has the same 
+    Places the incircle (circle) of the triangle ABC. It has the same
     orientation as A.  Places also the center (optionally).
 
     circle:     Circle to place             (Blender Object; Curve; Circle)
@@ -320,9 +320,9 @@ def excenter(point, A, B, C, hide_extra=True):
     external_bisector(bisec2, B, A, C)
 
     intersections.line_line_inteserction(
-        inter=point, 
-        line1=bisec1, 
-        line2=bisec2, 
+        inter=point,
+        line1=bisec1,
+        line2=bisec2,
         hide_extra=hide_extra
     )
 
