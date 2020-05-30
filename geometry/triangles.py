@@ -17,7 +17,6 @@ def median(line, mid_point, A, B, C, hide_extra=True):
     '''
     Places the median (line) and the midpoint (point) of the
     triangle ABC from A.
-
     line:       Line to make median         (Blender Object; Curve; Line)
     mid_point:  Point to place at foot      (Blender Object)
     A, B, C:    Points of triangle          (Blender Objects)
@@ -36,7 +35,6 @@ def median(line, mid_point, A, B, C, hide_extra=True):
 def barycenter(point, A, B, C, hide_extra=True):
     '''
     Places the barycenter (point) of the triangle ABC.
-
     point;      Point to place              (Blender Object)
     A, B, C:    Points of triangle          (Blender Objects)
     '''
@@ -68,7 +66,6 @@ def altitude(line, point, A, B, C, hide_extra=True):
     '''
     Places the altitude (line) and its foot (point) of the
     triangle ABC from A.
-
     line:       Line to make altitude       (Blender Object; Curve; Line)
     point:      Point to place at foot      (Blender Object)
     A, B, C:    Points of triangle          (Blender Objects)
@@ -80,7 +77,6 @@ def altitude(line, point, A, B, C, hide_extra=True):
 def orthocenter(point, A, B, C, hide_extra=True):
     '''
     Places the orthocenter (point) of the triangle ABC.
-
     point;      Point to place              (Blender Object)
     A, B, C:    Points of triangle          (Blender Objects)
     '''
@@ -108,7 +104,6 @@ def circumcenter(point, A, B, C, hide_extra=True):
     '''
     Places the circumcenter (point) of the triangle ABC. It has the same
     orientation as A.
-
     point;      Point to place              (Blender Object)
     A, B, C:    Points of triangle          (Blender Objects)
     '''
@@ -131,7 +126,6 @@ def circumcircle(circle, center, A, B, C, hide_extra=True):
     '''
     Places the circumcircle (circle) of the triangle ABC. It has the same
     orientation as A. It also places its centre (optionally).
-
     circle:     Circle to place             (Blender Object; Curve; Circle)
     center:     Point to place              (Blender Object)
     A, B, C:    Points of triangle          (Blender Objects)
@@ -148,7 +142,6 @@ def euler_center(point, A, B, C, hide_extra=True):
     '''
     Places the Euler center (point) of the triangle ABC. It is
     returned with the same orientation as the point A.
-
     point;      Point to place              (Blender Object)
     A, B, C:    Points of triangle          (Blender Objects)
     '''
@@ -166,7 +159,6 @@ def euler_center(point, A, B, C, hide_extra=True):
 def euler_line(line, A, B, C, hide_extra=True):
     '''
     Places the Euler line (line) of the triangle ABC.
-
     line:       Line to place           (Blender Object; Curve; Line)
     A, B, C:    Points of triangle      (Blender Objects)
     '''
@@ -186,7 +178,6 @@ def euler_circle(circle, center, A, B, C, hide_extra=True):
     '''
     Places the Euler circle (circle) of the triangle ABC.
     It has the same orientation as A. Places its center (optionally).
-
     circle:     Circle to place             (Blender Object; Curve; Circle)
     center:     Point to place              (Blender Object)
     A, B, C:    Points of triangle          (Blender Objects)
@@ -206,7 +197,6 @@ def euler_circle(circle, center, A, B, C, hide_extra=True):
 def angle_bisector_foot(point, A, B, C, hide_extra=True):
     '''
     Places the angle bisector foot on BC of the angle BAC.
-
     point:      Point to place              (Blender Object)
     A, B, C:    Points of triangle          (Blender Objects)
     '''
@@ -228,7 +218,6 @@ def angle_bisector_foot(point, A, B, C, hide_extra=True):
 def angle_bisector(line, point, A, B, C, hide_extra=True):
     '''
     Places the angle bisector of the angle BAC.
-
     line:       Line to make bisector       (Blender Object; Curve; Line)
     point:      Point to place at foot      (Blender Object)
     A, B, C:    Points of triangle          (Blender Objects)
@@ -260,7 +249,6 @@ def incenter(point, A, B, C, hide_extra=True):
     '''
     Places the incenter  (point) of the triangle ABC. It has the
     same orientation as A.
-
     point:      Point to place at incenter      (Blender Object)
     A, B, C:    Points of triangle              (Blender Objects)
     '''
@@ -288,7 +276,6 @@ def incircle(circle, center, A, B, C, hide_extra=True):
     '''
     Places the incircle (circle) of the triangle ABC. It has the same 
     orientation as A.  Places also the center (optionally).
-
     circle:     Circle to place             (Blender Object; Curve; Circle)
     center:     Point to place              (Blender Object)
     A, B, C:    Points of triangle          (Blender Objects)
@@ -307,7 +294,6 @@ def excenter(point, A, B, C, hide_extra=True):
     '''
     Places the excenter (point) of the triangle ABC opposite to A. It has the
     same orientation as A.
-
     point:      Point to place at incenter      (Blender Object)
     A, B, C:    Points of triangle              (Blender Objects)
     '''
@@ -331,7 +317,6 @@ def excircle(circle, center, A, B, C, hide_extra=True):
     '''
     Places the excircle (circle) of the triangle ABC opposite to A.
     It has the same orientation as A.  Places its center (optionally).
-
     circle:     Circle to place             (Blender Object; Curve; Circle)
     center:     Point to place              (Blender Object)
     A, B, C:    Points of triangle          (Blender Objects)
