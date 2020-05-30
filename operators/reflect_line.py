@@ -2,6 +2,7 @@ import bpy
 from ..utils.objects import new_point
 from ..geometry.lines import reflect_across_line
 
+
 class ReflectAboutLine(bpy.types.Operator):
     bl_label = "Reflect about line"
     bl_idname = "geometry.reflect_about_line"
@@ -16,7 +17,6 @@ class ReflectAboutLine(bpy.types.Operator):
         description="Hide extra objects needed for reflection",
         default=True,
     )
-
 
     @classmethod
     def poll(cls, context):
