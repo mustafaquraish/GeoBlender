@@ -3,7 +3,7 @@ from ..utils.objects import new_empty
 from ..utils.geometry import put_in_between
 
 
-class EmptyAtMiddle(bpy.types.Operator):
+class Midpoint(bpy.types.Operator):
     bl_label = "Empty between objects"
     bl_idname = "geometry.empty_middle"
     bl_description = "Add an empty in the middle of objects"
