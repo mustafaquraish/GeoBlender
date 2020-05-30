@@ -1,12 +1,12 @@
 import bpy
-from ..utils.objects import new_line, add_abs_bevel
-from ..geometry.circles import circle_tangent_lines
+from ..utils.objects import new_line, add_abs_bevel, uniform_scale
+from ..geometry.circles import polar_line, polar_intersection
 
 
-class CircleTangents(bpy.types.Operator):
-    bl_label = "Circle Tangents"
-    bl_idname = "geometry.circle_tangents"
-    bl_description = "Form the tangents from a circle to a point"
+class CircleTangent(bpy.types.Operator):
+    bl_label = "Circle Polar Line"
+    bl_idname = "geometry.circle_pline"
+    bl_description = "Form the Polar Line for a circle and a point"
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     # GeoBlender Panel Type
@@ -14,16 +14,24 @@ class CircleTangents(bpy.types.Operator):
 
     hide_extra: bpy.props.BoolProperty(
         name="Hide Extra Objects:",
-        description="Hide extra objects needed for orthocenter",
+        description="Hide extra objects needed for Polar Line",
         default=True,
     )
 
     bevel_depth: bpy.props.FloatProperty(
         name="Bevel Depth:",
-        description="Depth for tangents bevel",
+        description="Depth for polar line bevel",
         soft_min=0.0,
         soft_max=0.5,
         default=0.0,
+    )
+
+    length: bpy.props.FloatProperty(
+        name="Length:",
+        description="Length of line",
+        soft_min=0.1,
+        soft_max=1000,
+        default=100,
     )
 
     @classmethod
@@ -50,7 +58,7 @@ class CircleTangents(bpy.types.Operator):
 
     def execute(self, context):
 
-        A, B = context.selected_objects
+        (A, B) = context.selected_objects[-2:]
 
         if A.data is not None and 'Circle' in A.data.name:
             circle, point = A, B
@@ -60,14 +68,10 @@ class CircleTangents(bpy.types.Operator):
             self.report({'ERROR'}, 'Need to select at least one circle')
             return {'CANCELLED'}  # Shouldn't get here...
 
-        line1 = new_line()
-        line1.name = "Tangent 1 from point"
-        line2 = new_line()
-        line2.name = "Tangent 2 from point"
-
-        circle_tangent_lines(line1, line2, circle, point)
-
-        add_abs_bevel(line1, self.bevel_depth)
-        add_abs_bevel(line2, self.bevel_depth)
+        line = new_line()
+        line.name = "Polar Line"
+        polar_line(line, point, circle)
+        add_abs_bevel(line, self.bevel_depth)
+        uniform_scale(line, self.length)
 
         return {'FINISHED'}

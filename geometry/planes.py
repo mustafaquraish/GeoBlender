@@ -4,6 +4,7 @@ from ..utils import drivers
 from ..utils import objects
 
 from . import core
+from . import lines
 
 
 def constraint_to_plane(obj, plane):
@@ -37,12 +38,33 @@ def align_to_plane_of(obj, A, B, C):
     constraints.locked_track(obj, axis='Y', lock='X', target=C)
 
 
-def make_bisecting_plane(plane, A, B):
+def bisecting_plane_of_points(plane, A, B, hide_extra=True):
     '''
-    Makes the bisecting plane of the line segment defined by AB
+    Align the obj (a plane) to the perpendicular bisector plane of
+    the segment AB. The Z axis of the returned obj is parallel to AB.
+    The X, Y axis are not determined.
 
     plane:   Source plane  (Blender Object)
     A, B:    2 points      (Blender Objects)
     '''
-    core.put_in_between(plane, A, B)
+    lines.midpoint(plane, A, B)
     constraints.damped_track(plane, axis='Z', target=A)
+    plane.name = "Perp. Bisector Plane"
+
+
+def bisecting_plane_of_line(plane, line, hide_extra=True):
+    '''
+    Align the obj (a plane) to the perpendicular bisector plane of
+    the segment AB. The Z axis of the returned obj is parallel to AB.
+    The X, Y axis are not determined.
+
+    plane:   Source plane       (Blender Object)
+    line:    Line Segment       (Blender Object; Curve; Line)
+    '''
+    A = objects.new_point(hide=hide_extra)
+    B = objects.new_point(hide=hide_extra)
+    A.name = "line start"
+    B.name = "line end"
+    lines.line_ends(A, B, line)
+
+    bisecting_plane_of_points(plane, A, B, hide_extra)

@@ -8,15 +8,16 @@ from .intersections import *
 from .lines import *
 from .triangle_constructions import *
 
-# Before they invert points, lines and circles, the user will have to 
+# Before they invert points, lines and circles, the user will have to
 # introduce the circle_of_inversion. The origin of this circle is the origin
 # of inversion and the squared of the radius is the power of the inversion.
 
+
 def inversion_point(inverted_point, point,
-    circle_of_inversion, hide_extra = True):
+                    circle_of_inversion, hide_extra=True):
     '''
-    Places a point (inverted_point) to the inversion defined by the 
-    circle_of_inversion (see also comments above). The active object 
+    Places a point (inverted_point) to the inversion defined by the
+    circle_of_inversion (see also comments above). The active object
     is the circle_of_inversion.
     '''
     copy_rotation(inverted_point, point)
@@ -35,11 +36,11 @@ def inversion_point(inverted_point, point,
 
 
 def inversion_cicle_yes_on(inverted_circle, circle,
-    circle_of_inversion, hide_extra = True):
+                           circle_of_inversion, hide_extra=True):
     '''
-    Places a line (inverted_circle) to the inversion defined by the 
+    Places a line (inverted_circle) to the inversion defined by the
     circle_of_inversion. The origin of the inversion should be
-    constrained on the circle. The active object is the circle_of_inversion. 
+    constrained on the circle. The active object is the circle_of_inversion.
     '''
     connecting_line = new_line(hide=hide_extra)
     segment(connecting_line, circle_of_inversion, circle)
@@ -49,15 +50,15 @@ def inversion_cicle_yes_on(inverted_circle, circle,
 
     antipodal = new_empty(hide=hide_extra)
     add_driver(
-            obj=antipodal,
-            prop='location',
-            fields='XYZ',
-            vars_def={
-                'o': ('transform', circle_of_inversion, 'location', '-'),
-                'a': ('transform', circle, 'location', '-'),
-            },
-            expr='o + (a-o)*2'
-        )
+        obj=antipodal,
+        prop='location',
+        fields='XYZ',
+        vars_def={
+            'o': ('transform', circle_of_inversion, 'location', '-'),
+            'a': ('transform', circle, 'location', '-'),
+        },
+        expr='o + (a-o)*2'
+    )
 
     add_driver(
         obj=inversion_inter,
@@ -75,19 +76,19 @@ def inversion_cicle_yes_on(inverted_circle, circle,
 
 
 def inversion_cicle_not_on(inverted_circle, inverted_center, circle,
-    circle_of_inversion, hide_extra = True):
+                           circle_of_inversion, hide_extra=True):
     '''
-    Places a circle (inverted_circle), with center the inverted_center, 
+    Places a circle (inverted_circle), with center the inverted_center,
     to the inversion of a given circle (circle). The inversion is defined
     by the circle_of_inversion. The origin of the inversion should not be
-    constrained on the circle. The active object is the circle_of_inversion. 
+    constrained on the circle. The active object is the circle_of_inversion.
     '''
     connecting_line = new_line(hide=hide_extra)
     segment(connecting_line, circle_of_inversion, circle)
 
     inter1 = new_empty(hide=hide_extra)
     inter2 = new_empty(hide=hide_extra)
-    line_circle_intersections(inter1, inter2, connecting_line, circle) 
+    line_circle_intersections(inter1, inter2, connecting_line, circle)
     # inter1 and inter2 have the orientation of the circle
 
     inter1_inverted = new_empty(hide=hide_extra)
@@ -99,26 +100,26 @@ def inversion_cicle_not_on(inverted_circle, inverted_center, circle,
     circle_from_diameter(inverted_circle, inter1_inverted, inter2_inverted)
     midpoint(inverted_center, inter1_inverted, inter2_inverted)
 
+
 def inversion_line_on(inverted_line, line, circle_of_inversion,
-    hide_extra = True):
+                      hide_extra=True):
     a_start = new_empty(hide=hide_extra)
     position_on_curve(a_start, line, 0)
-    copy_rotation(a_start,circle_of_inversion)
+    copy_rotation(a_start, circle_of_inversion)
 
     a_end = new_empty(hide=hide_extra)
     position_on_curve(a_end, line, 1)
-    copy_rotation(a_end,circle_of_inversion)
+    copy_rotation(a_end, circle_of_inversion)
 
-    full_line(interted_line,a_start, a_end)
-      
+    full_line(interted_line, a_start, a_end)
 
 
 def inversion_line_not_on(inverted_line, line, circle_of_inversion,
-    hide_extra = True):
+                          hide_extra=True):
     '''
-    Places a circle (inverted_line) to the inversion of a line (line) defined 
+    Places a circle (inverted_line) to the inversion of a line (line) defined
     by the circle_of_inversion. The origin of the inversion should not be
-    constrained on the line. The active object is the circle_of_inversion. 
+    constrained on the line. The active object is the circle_of_inversion.
     '''
     proje = new_empty(hide=hide_extra)
     inverted_point = new_empty(hide=hide_extra)
@@ -126,7 +127,3 @@ def inversion_line_not_on(inverted_line, line, circle_of_inversion,
     orthogonal_projection(proje, circle_of_inversion, line)
     inversion_point(inverted_point, proje, circle_of_inversion)
     circle_from_diameter(interted_line, circle_of_inversion, inverted_point)
-   
-
-        
-    

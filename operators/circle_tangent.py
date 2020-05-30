@@ -1,6 +1,6 @@
 import bpy
 from ..utils.objects import new_line, add_abs_bevel
-from ..geometry.circles import make_circle_tangent_line
+from ..geometry.circles import circle_tangent_line
 
 
 class CircleTangent(bpy.types.Operator):
@@ -62,7 +62,7 @@ class CircleTangent(bpy.types.Operator):
 
         line = new_line()
         line.name = "Circle Tangent"
-        make_circle_tangent_line(line, circle, point)
+        circle_tangent_line(line, circle, point)
         add_abs_bevel(line, self.bevel_depth)
 
         return {'FINISHED'}
