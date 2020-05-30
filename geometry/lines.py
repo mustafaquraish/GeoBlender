@@ -9,6 +9,7 @@ from . import core
 #                               CONSTRUCTIONS                                 #
 # --------------------------------------------------------------------------- #
 
+
 def segment(line, A, B, axis='X'):
     '''
     This function creates the line to the segment defined by the points A, B.
@@ -139,15 +140,16 @@ def parallel_line(parallel_line, A, line, hide_extra=True):
 # --------------------------------------------------------------------------- #
 
 '''
-- The next functions heavily rely on the property that the Z axis of points 
+- The next functions heavily rely on the property that the Z axis of points
   is normal to the parent plane.
 '''
+
 
 def orthogonal_proj_to_points(obj, A, B, C, hide_extra=True):
     '''
     This function moves obj to the orthogonal projection in 2D of A on
-    the line defined by the points B, C. The Y axis of obj is aligned with 
-    BC and the X axis is aligned with the perpendicular direction and the Z 
+    the line defined by the points B, C. The Y axis of obj is aligned with
+    BC and the X axis is aligned with the perpendicular direction and the Z
     axis is the same as that of A.
 
     obj:      The object                (Blender Object)
@@ -178,7 +180,7 @@ def orthogonal_proj_to_line(obj, A, line, hide_extra=True):
     A:        Point to project from     (Blender Object)
     line:     line to project to        (Blender Object; Curve; Line)
     '''
-    B = objects.new_point(hide=hide_extra) 
+    B = objects.new_point(hide=hide_extra)
     C = objects.new_point(hide=hide_extra)
     B.name = "line start"
     C.name = "line end"
@@ -211,7 +213,7 @@ def orthogonal_line_to_line(perp_line, A, line, hide_extra=True):
 def orthogonal_line_to_points(perp_line, A, B, C, hide_extra=True):
     '''
     This function moves perp_line so that it is the normal to line defined
-    by the points B, C and goes through the point A. It is placed on the XY 
+    by the points B, C and goes through the point A. It is placed on the XY
     plane of the point A. perp_line and A have the same Z axis.
 
     The midpoint of the constructed orthogonal line is always placed
@@ -227,7 +229,6 @@ def orthogonal_line_to_points(perp_line, A, B, C, hide_extra=True):
     # The orthogonally_project already aligns everything for us. This function
     # is defined just for clear naming.
     orthogonal_proj_to_points(perp_line, A, B, C, hide_extra)
-
 
 
 def bisecting_line_of_points(line, A, B, hide_extra=True):
@@ -253,8 +254,8 @@ def bisecting_line_of_line(line, other_line, hide_extra=True):
     '''
     mid_point = objects.new_point(hide=hide_extra)
     mid_point.name = "midpoint"
-    constraints.position_on_curve(mid_point, other_line, position=0.5)  
-    constraints.copy_rotation(mid_point, other_line)  
+    constraints.position_on_curve(mid_point, other_line, position=0.5)
+    constraints.copy_rotation(mid_point, other_line)
 
     orthogonal_line_to_line(line, midpoint, other_line, hide_extra=hide_extra)
 
@@ -265,9 +266,9 @@ def bisecting_line_of_line(line, other_line, hide_extra=True):
 
 def reflect_across_point(obj, A, point, hide_extra=True):
     '''
-    Places an object to the relection of another point A relative to a given 
+    Places an object to the relection of another point A relative to a given
     point.
-    
+
     obj:        Object to place             (Blender Object)
     A:          Object to reflect           (Blender Object)
     B:          Point to reflect across     (Blender Object)
@@ -287,7 +288,7 @@ def reflect_across_point(obj, A, point, hide_extra=True):
 
 def reflect_across_line(obj, A, line, hide_extra=True):
     '''
-    Places the object to the relection of another point A relative to a given 
+    Places the object to the relection of another point A relative to a given
     line.
 
     obj:        Object to place             (Blender Object)
@@ -315,5 +316,3 @@ def reflect_across_line_of_points(obj, A, B, C, hide_extra=True):
     orthogonal_proj_to_points(proje, A, B, C, hide_extra=hide_extra)
 
     reflect_across_point(obj, proje, A, hide_extra=hide_extra)
-
-

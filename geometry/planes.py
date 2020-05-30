@@ -6,6 +6,7 @@ from ..utils import objects
 from . import core
 from . import lines
 
+
 def constraint_to_plane(obj, plane):
     '''
     Takes an object and constraints it to be on the plane. Uses parenting
@@ -60,10 +61,10 @@ def bisecting_plane_of_line(plane, line, hide_extra=True):
     plane:   Source plane       (Blender Object)
     line:    Line Segment       (Blender Object; Curve; Line)
     '''
-    A = objects.new_point(hide=hide_extra) 
+    A = objects.new_point(hide=hide_extra)
     B = objects.new_point(hide=hide_extra)
     A.name = "line start"
     B.name = "line end"
     lines.line_ends(A, B, line)
-    
+
     bisecting_plane_of_points(plane, A, B, hide_extra)
