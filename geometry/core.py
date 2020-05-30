@@ -19,28 +19,26 @@ def put_in_between(obj, A, B, influence=0.5):
     constraints.copy_location(obj, target=A, influence=influence)
 
 
-def track_to_angle_between(obj, A, B, axes='XYZ', influence=0.5):
+def track_to_angle_between(obj, A, B, influence=0.5):
     '''
-    Make the given axis of the object point towards the bisector (or other
+    Make the X axis of the object point towards the bisector (or other
     intermediary angle) of the angle formed by the lines from the object
     to A and B.
 
     obj:        Source object   (Blender Object)
     A, B:       2 Objects       (Blender Objects)
-    axes:       Axes (in order) ('XYZ', 'XZY', 'YZX', ...)
     influence   Influence       (float, 0-1)
     '''
-    constraints.damped_track(obj, axis=axes[0].upper(), target=A)
     constraints.locked_track(
         obj=obj,
-        axis=axes[1].upper(),
-        lock=axes[0].upper(),
-        target=B
+        lock='Z',
+        axis='X',
+        target=A
     )
     constraints.locked_track(
         obj=obj,
-        axis=axes[0].upper(),
-        lock=axes[2].upper(),
+        lock='Z',
+        axis='X',
         target=B,
         influence=influence
     )
