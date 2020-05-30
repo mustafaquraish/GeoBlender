@@ -9,6 +9,13 @@ class GeoBlenderSettings(bpy.types.PropertyGroup):
         options={'HIDDEN'},
     )
 
+    shade_smooth: bpy.props.BoolProperty(
+        name="Shade Smooth:",
+        description="Shade objects smooth",
+        default=True,
+        options={'HIDDEN'},
+    )
+
     bevel_depth: bpy.props.FloatProperty(
         name="Bevel Depth:",
         description="Bevel depth for curves",
@@ -36,7 +43,7 @@ class GeoBlenderSettings(bpy.types.PropertyGroup):
 
     use_spheres: bpy.props.BoolProperty(
         name="Spheres for points:",
-        description="Use (ico)spheres for points instead of empties",
+        description="Use spheres for points instead of empties",
         default=True,
         options={'HIDDEN'},
     )
@@ -51,11 +58,11 @@ class GeoBlenderSettings(bpy.types.PropertyGroup):
     )
 
     sphere_subdivisions: bpy.props.IntProperty(
-        name="Subdivisions:",
-        description="Subdivisions to use for the spheres for points",
+        name="Segments:",
+        description="Segments to use for the spheres for points",
         min=1,
-        max=10,
-        default=2,
+        max=100,
+        default=32,
         options={'HIDDEN'},
     )
 

@@ -76,7 +76,8 @@ def circle_center_radius_number(circle, center, number, hide_extra=True):
 def put_at_polar_intersection(obj, A, circle):
     '''
     Place the given object at the  intersection point of the polar axis
-    of a point A relative to a circle. 
+    of a point A relative to a circle and the line connecting A to the 
+    center of the circle. 
 
     obj:        Source object   (Blender Object)
     A:          Point           (Blender Objects)
@@ -87,7 +88,7 @@ def put_at_polar_intersection(obj, A, circle):
         prop='location',
         fields='XYZ',
         vars_def={
-            'd': ('distance', A, B),
+            'd': ('distance', A, circle),
             'r': ('transform', circle, 'scale', 'X'),
             'o1': ('transform', circle, 'location', '-'),
             'o2': ('transform', A, 'location', '-'),

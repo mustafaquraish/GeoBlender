@@ -12,8 +12,6 @@ def line_line_inteserction(obj, line1, line2, hide_extra=True):
 
     ''' 
     This function moves obj to the intersection of two lines.
-    We need to re-orient appropriately intersection after using this
-    function. 
     '''
 
     a_start = new_empty(hide=hide_extra)

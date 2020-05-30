@@ -35,6 +35,24 @@ def preserve_selection(func):
     return new_func
 
 
+def shade_smooth_option(func):
+    
+    def new_func(*args, **kwargs):
+        
+
+        # Call the original functions
+        ret = func(*args, **kwargs)
+
+        # Shade smooth
+        if bpy.context.scene.geoblender_settings.shade_smooth:
+            bpy.ops.object.shade_smooth()
+
+        return ret
+
+    # Return the wrapped function
+    return new_func
+
+
 def set_hidden(obj, hide=True):
     '''
     Simple function to hide / unhide objects from the viewport and render.
@@ -152,6 +170,7 @@ def set_parent(obj, parent):
     bpy.ops.object.parent_no_inverse_set()
 
 # ----------------------------------------------------------------------------
+
 
 
 @preserve_selection
@@ -307,10 +326,10 @@ def new_point(hide=False, plane=None):
         # Get the sphere properties from the global settings
         radius = bpy.context.scene.geoblender_settings.sphere_radius
         subdivs = bpy.context.scene.geoblender_settings.sphere_subdivisions
-        point = new_icosphere(
-            radius=radius,
-            subdivisions=subdivs,
-            hide=hide
+        point = new_sphere(
+        radius=radius,
+        segments=subdivs,
+        hide=hide,
         )
     else:
         point = new_empty(hide=hide)
