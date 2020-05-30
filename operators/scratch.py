@@ -34,19 +34,18 @@ class Scratch(bpy.types.Operator):
         #(A, B) = context.selected_objects[-2:]
         A = context.active_object
         #others = [A, B]
-        #others.remove(A)
+        # others.remove(A)
         #B = others[0]
 
-        
         #inverted_circle = new_circle()
         #center = new_empty()
         #inversion_cicle_not_on(inverted_circle, center, B, A)
-        #inter1=new_empty()
-        #inter2=new_empty()
+        # inter1=new_empty()
+        # inter2=new_empty()
         #line_circle_intersections(inter1, inter2, A, B)
 
-        c=new_empty()
-        copy_location(c,A)
+        c = new_empty()
+        copy_location(c, A)
         c.name = "AAAAAAAAAAAAAAA"
         '''
         line2 = new_line()
