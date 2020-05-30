@@ -94,4 +94,3 @@ def parallel_line(parallel_line, A, line, hide_extra=True):
 
 ###############################################################################
 # Orthogonality
-

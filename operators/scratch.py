@@ -43,7 +43,6 @@ class Scratch(bpy.types.Operator):
         #line = others[0]
 
         circ = new_circle()
-        circle_from_diameter(circ,A,B)
+        circle_from_diameter(circ, A, B)
 
         return {'FINISHED'}
-
