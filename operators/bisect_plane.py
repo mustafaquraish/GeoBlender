@@ -1,6 +1,6 @@
 import bpy
-from ..utils.objects import new_plane
-from ..geometry.planes import make_bisecting_plane
+from ..utils.objects import new_plane, uniform_scale
+from ..geometry.planes import bisecting_plane_of_points
 
 
 class BisectPlane(bpy.types.Operator):
@@ -11,14 +11,6 @@ class BisectPlane(bpy.types.Operator):
 
     # GeoBlender Panel Type
     gb_panel = '3D Constructions'
-
-    influence: bpy.props.FloatProperty(
-        name="Position:",
-        description="Influence",
-        max=1.0,
-        min=0.0,
-        default=0.5,
-    )
 
     size: bpy.props.FloatProperty(
         name="Size:",
@@ -37,7 +29,8 @@ class BisectPlane(bpy.types.Operator):
         (A, B) = context.selected_objects[-2:]
 
         plane = new_plane(size=self.size)
-        make_bisecting_plane(plane, A, B)
+        bisecting_plane_of_points(plane, A, B)
         plane.name = "Perp. Bisector Plane"
+        uniform_scale(plane, self.size)
 
         return {'FINISHED'}

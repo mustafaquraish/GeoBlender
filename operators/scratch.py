@@ -6,12 +6,17 @@ from ..utils.drivers import add_driver
 from ..utils.constraints import *
 from ..utils.objects import set_parent
 
+from ..geometry.lines import *
+from ..geometry.circles import *
+from ..geometry.intersections import *
+from ..geometry.planes import *
+from ..geometry.core import *
 
-from ..stefanos.circles import *
-from ..stefanos.intersections import *
-from ..stefanos.inversion import *
-from ..stefanos.lines import *
-from ..stefanos.triangle_constructions import *
+# from ..stefanos.circles import *
+# from ..stefanos.intersections import *
+# from ..stefanos.inversion import *
+# from ..stefanos.lines import *
+# from ..stefanos.triangle_constructions import *
 
 
 class Scratch(bpy.types.Operator):
@@ -37,7 +42,8 @@ class Scratch(bpy.types.Operator):
         # others.remove(A)
         #line = others[0]
 
-        line = new_line()
-        segment(line, A, B)
+        circ = new_circle()
+        circle_from_diameter(circ,A,B)
 
         return {'FINISHED'}
+

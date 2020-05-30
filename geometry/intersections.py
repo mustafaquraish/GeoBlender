@@ -17,7 +17,7 @@ def line_line_inteserction(inter, line1, line2, hide_extra=True):
 
     A = objects.new_empty(hide=hide_extra)
     B = objects.new_empty(hide=hide_extra)
-    lines.put_at_line_ends(A, B, line1)
+    lines.line_ends(A, B, line1)
 
     pr_plane = objects.new_plane(hide=hide_extra)
     core.make_orthogonal_to(pr_plane, A, B, line2)
@@ -43,7 +43,7 @@ def line_circle_intersections(inter1, inter2, line, circle, hide_extra=True):
     pr_cyl = objects.new_cylinder(vert=1000, hide=hide_extra)
     constraints.copy_transforms(pr_cyl, circle)
 
-    lines.put_at_line_ends(inter1, inter2, line2)
+    lines.line_ends(inter1, inter2, line2)
 
     constraints.project_along_axis(inter1, 'X', target=pr_cyl, opposite=True)
     constraints.copy_rotation(inter1, circle)
@@ -72,7 +72,7 @@ def circle_circle_intersection(inter1, inter2, A, B, hide_extra=True):
     # centers
     int_center = objects.new_empty(hide=hide_extra)
     int_center.name = "radical axis intercept"
-    circles.put_at_radical_intercept(int_center, A, B)
+    circles.radical_intercept(int_center, A, B)
 
     # Create a hidden cylinder whose Z axis coincides, in particular, with the
     # Z axis of the circle A

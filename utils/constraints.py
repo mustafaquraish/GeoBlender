@@ -184,7 +184,7 @@ def project_nearest(obj, target, align_to_normal=None, influence=1):
         obj.constraints[-1].influence = True
         align_axis = 'TRACK_'
         align_axis += ('' if align_to_normal[0] == '+' else 'NEGATIVE_')
-        align_axis += align_to_normal[1].upper()
+        align_axis += align_to_normal[-1].upper()
         obj.constraints[-1].use_track_normal = True
         obj.constraints[-1].track_axis = align_axis
 

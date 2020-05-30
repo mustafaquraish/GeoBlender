@@ -1,6 +1,6 @@
 import bpy
 from ..utils.objects import new_line, add_abs_bevel
-from ..geometry.lines import make_segment
+from ..geometry.lines import segment
 
 
 class CreateLineSegment(bpy.types.Operator):
@@ -32,7 +32,7 @@ class CreateLineSegment(bpy.types.Operator):
         (A, B) = context.selected_objects[-2:]
 
         line = new_line()
-        make_segment(line, A, B)
+        segment(line, A, B)
         add_abs_bevel(line, self.bevel_depth)
         line.name = "Line Segment"
 

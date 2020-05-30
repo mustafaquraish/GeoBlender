@@ -7,19 +7,23 @@ from . import core
 from . import lines
 
 
-def make_circle_from_diameter(circle, A, B):
+# --------------------------------------------------------------------------- #
+#                               CONSTRUCTIONS                                 #
+# --------------------------------------------------------------------------- #
+
+
+def circle_from_diameter(circle, A, B):
     '''
     Given the points A, B on the diameter, forms the circle.
 
     circle:     Circle to align         (Blender Object)
     A, B:       Points on diameter      (Blender Objects)
     '''
-    constraints.copy_rotation(circle, target=A)
-    core.put_in_between(circle, A, B)
+    lines.midpoint(circle, A, B)
     drivers.add_driver_distance(circle, 'scale', 'XYZ', A, B, scale=0.5)
 
 
-def make_semicircle_from_diameter(semicircle, A, B, other=False):
+def semicircle_from_diameter(semicircle, A, B, other=False):
     '''
     Given the points A, B on the diameter, forms the semicircle.
 
@@ -34,7 +38,7 @@ def make_semicircle_from_diameter(semicircle, A, B, other=False):
     drivers.add_driver_distance(semicircle, 'scale', 'XYZ', A, B, scale=0.5)
 
 
-def make_circle_from_center_point(circle, A, B):
+def circle_from_center_point(circle, A, B):
     '''
     Given the center A and a point on the circle B, forms the circle.
 
@@ -47,7 +51,7 @@ def make_circle_from_center_point(circle, A, B):
     drivers.add_driver_distance(circle, 'scale', 'XYZ', A, B)
 
 
-def make_circle_from_center_distance(circle, A, X, Y, hide_extra=True):
+def circle_from_center_distance(circle, A, X, Y, hide_extra=True):
     '''
     Given the center A, and the radius defined by the distance between the
     2 objects X, Y, forms the circle.
@@ -61,7 +65,7 @@ def make_circle_from_center_distance(circle, A, X, Y, hide_extra=True):
     drivers.add_driver_distance(circle, 'scale', 'XYZ', X, Y)
 
 
-def make_circle_from_center_radius(circle, A, radius):
+def circle_from_center_radius(circle, A, radius):
     '''
     Given the center A and fixed radius, forms the circle.
 
@@ -74,7 +78,12 @@ def make_circle_from_center_radius(circle, A, radius):
     objects.uniform_scale(circle, radius)
 
 
-def put_at_radical_intercept(obj, A, B):
+# --------------------------------------------------------------------------- #
+#                               RADICAL AXIS                                  #
+# --------------------------------------------------------------------------- #
+
+
+def radical_intercept(obj, A, B):
     '''
     Place the given object at the intersection point of the radical axis of 2
     given circles and the line connecting their centers. It also aligns the
@@ -102,7 +111,12 @@ def put_at_radical_intercept(obj, A, B):
     )
 
 
-def put_circle_tangent_points(tan1, tan2, circle, point, hide_extra=True):
+# --------------------------------------------------------------------------- #
+#                                 TANGENTS                                    #
+# --------------------------------------------------------------------------- #
+
+
+def circle_tangent_points(tan1, tan2, circle, point, hide_extra=True):
     '''
     Places (and aligns) tan1 and tan2 at two points on `circle` such that
     the tangents on the circle from these two points intersect at `point`
@@ -123,13 +137,13 @@ def put_circle_tangent_points(tan1, tan2, circle, point, hide_extra=True):
 
     mid_circ = objects.new_circle(hide=hide_extra)
     mid_circ.name = "tangent circle helper"
-    make_circle_from_diameter(mid_circ, circle, point)
+    circle_from_diameter(mid_circ, circle, point)
 
     # We next compute the intersection points of the two circles
     circle_circle_intersection(tan1, tan2, mid_circ, circle, hide_extra=True)
 
 
-def make_circle_tangent_lines(line1, line2, circle, point, hide_extra=True):
+def circle_tangent_lines(line1, line2, circle, point, hide_extra=True):
     '''
     Forms the tangent line (segments) to the circle from the given point.
 
@@ -143,12 +157,12 @@ def make_circle_tangent_lines(line1, line2, circle, point, hide_extra=True):
     tan2 = objects.new_point(hide=hide_extra)
     tan2.name = "tangent pt 2"
 
-    put_circle_tangent_points(tan1, tan2, circle, point)
-    lines.make_segment(line1, tan1, point)
-    lines.make_segment(line2, tan2, point)
+    circle_tangent_points(tan1, tan2, circle, point)
+    lines.segment(line1, tan1, point)
+    lines.segment(line2, tan2, point)
 
 
-def make_circle_tangent_line(line, circle, point, length=100):
+def circle_tangent_line(line, circle, point):
     '''
     Forms the tangent to the circle at the given point.
 
@@ -161,6 +175,50 @@ def make_circle_tangent_line(line, circle, point, length=100):
     objects.move_origin_center(line)
     constraints.copy_location(line, point)
     constraints.copy_rotation(line, circle)
+
     # Lines are along the X axis, so tracking the Y to center does the job.
     constraints.locked_track(line, lock='Z', axis='Y', target=circle)
-    objects.uniform_scale(line, length)
+
+
+# --------------------------------------------------------------------------- #
+#                               POLAR LINES                                   #
+# --------------------------------------------------------------------------- #
+
+def polar_intersection(obj, A, circle):
+    '''
+    Place the given object at the intersection point of the polar axis
+    of a point A relative to a circle.
+
+    obj:        Source object   (Blender Object)
+    A:          Point           (Blender Objects)
+    circle:     Circle          (Blender Objects)
+    '''
+    drivers.add_driver(
+        obj=obj,
+        prop='location',
+        fields='XYZ',
+        vars_def={
+            'd': ('distance', A, circle),
+            'r': ('transform', circle, 'scale', 'X'),
+            'o1': ('transform', circle, 'location', '-'),
+            'o2': ('transform', A, 'location', '-'),
+        },
+        expr='gb_polar_intersection(d, r, o1, o2)'
+    )
+    constraints.copy_rotation(obj, A)
+
+
+def polar_line(line, A, circle, hide_extra=True):
+    '''
+    This function places a line to be the polar of the point A (active)
+    relative to the circle and returns it as the line argument.
+
+    line:       Line to place   (Blender Object)
+    A:          Point           (Blender Objects)
+    circle:     Circle          (Blender Objects)
+    '''
+    foot_polar = objects.new_point(hide=hide_extra)
+    polar_intersection(foot_polar, A, circle)
+
+    # Finally we place line to the polar line
+    lines.orthogonal_line_to_points(line, foot_polar, A, circle)

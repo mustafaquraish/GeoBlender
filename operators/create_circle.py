@@ -1,6 +1,6 @@
 import bpy
 from ..utils.objects import new_circle, add_abs_bevel
-from ..geometry.circles import make_circle_from_center_point
+from ..geometry.circles import circle_from_center_point
 
 
 class CreateCircle(bpy.types.Operator):
@@ -38,7 +38,7 @@ class CreateCircle(bpy.types.Operator):
 
         circ = new_circle()
 
-        make_circle_from_center_point(circ, A, B)
+        circle_from_center_point(circ, A, B)
 
         add_abs_bevel(circ, self.bevel_depth)
         circ.name = "Circle"

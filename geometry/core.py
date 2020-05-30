@@ -57,3 +57,5 @@ def make_orthogonal_to(obj, A, B, C):
     constraints.copy_location(obj, target=A)
     constraints.damped_track(obj, axis='X', target=B)
     constraints.locked_track(obj, axis='Z', lock='X', target=C)
+
+

@@ -88,21 +88,6 @@ def gb_polar_intersection(d, r, o1, o2):
     return (1 - frac) * o1 + frac * o2
 
 
-def gb_reflect(o1, o2):
-    '''
-    Function to be used in the driver to help compute the reflection of a point A
-    about a line.
-
-    o1:     X,Y or Z positions of A                           (float)
-    o2:     X,Y or Z positions of the projec point            (float)
-
-    Return: Returns the X, Y or Z position of the intersection point when the
-            corresponding X, Y and Z positions are passed in as `o1` and `o2`
-    '''
-    frac = 2
-    return (1 - frac) * o1 + frac * o2
-
-
 def gb_inv_circle_on(d, r, o1, o2):
     '''
     Function to be used in the driver to help compute the intersection point of
