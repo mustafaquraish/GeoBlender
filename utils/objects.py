@@ -299,6 +299,7 @@ def new_icosphere(radius=1.0, subdivisions=2, location=(0, 0, 0), hide=False):
 
 
 @preserve_selection
+@shade_smooth_option
 def new_sphere(radius=1, segments=32, location=(0, 0, 0), hide=False):
     bpy.ops.mesh.primitive_uv_sphere_add(
         segments=segments,

@@ -18,7 +18,7 @@ class GeoBlenderSettings(bpy.types.PropertyGroup):
 
     bevel_depth: bpy.props.FloatProperty(
         name="Bevel Depth:",
-        description="Bevel depth for curves",
+        description="Thickness of curves",
         soft_min=0.0,
         soft_max=0.5,
         default=0.0,
