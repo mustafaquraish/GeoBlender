@@ -315,23 +315,28 @@ def new_sphere(radius=1, segments=32, location=(0, 0, 0), hide=False):
 # ----------------------------------------------------------------------------
 
 
-def new_point(hide=False):
+def new_point(use_spheres=None, radius=None, segments=None, hide=False):
     '''
     Specific to the GeoBlender addon. We want to be able to make points as
     spheres or empties based on the global settings.
     '''
     # Check the global settings to see if we're making a sphere
-    use_sphere = bpy.context.scene.geoblender_settings.use_spheres
-
-    if use_sphere:
+    if use_spheres is None:
+        use_spheres = bpy.context.scene.geoblender_settings.use_spheres
+    
+    if use_spheres:
         # Get the sphere properties from the global settings
-        radius = bpy.context.scene.geoblender_settings.sphere_radius
-        subdivs = bpy.context.scene.geoblender_settings.sphere_subdivisions
+        if radius is None:
+            radius = bpy.context.scene.geoblender_settings.sphere_radius
+        if segments is None:
+            subdivs = bpy.context.scene.geoblender_settings.sphere_subdivisions
         point = new_sphere(
         radius=radius,
         segments=subdivs,
         hide=hide,
         )
+
+    
     else:
         point = new_empty(hide=hide)
 

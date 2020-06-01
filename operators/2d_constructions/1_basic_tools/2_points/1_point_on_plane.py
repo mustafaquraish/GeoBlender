@@ -59,7 +59,9 @@ class PointOnPlane(bpy.types.Operator):
     def execute(self, context):
         plane = context.active_object
 
-        created_point = new_point()
+        created_point = new_point(use_spheres=self.use_spheres,
+                                  radius=self.sphere_radius, 
+                                  segments=self.sphere_subdivisions)
         created_point.name = ''Point''
 
         constraint_to_plane(created_point, plane)
