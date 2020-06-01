@@ -24,12 +24,6 @@ def median(line, mid_point, A, B, C, hide_extra=True):
     lines.midpoint(mid_point, B, C, influence=0.5)
     lines.segment(line, A, mid_point)
 
-# STEFANOS:
-# While i like the idea of using the intersection functions here...
-# I think it is unnecessarily overkill. We add so many more objects and
-# complexity to the scene when doing it this way. Doing it directly
-# like in ..utils.geometry.put_at_barycenter() would be a lot more
-# efficient, no? Same for the other centers...
 
 
 def barycenter(point, A, B, C, hide_extra=True):
