@@ -35,6 +35,23 @@ def preserve_selection(func):
     return new_func
 
 
+def shade_smooth_option(func):
+
+    def new_func(*args, **kwargs):
+
+        # Call the original functions
+        ret = func(*args, **kwargs)
+
+        # Shade smooth
+        if bpy.context.scene.geoblender_settings.shade_smooth:
+            bpy.ops.object.shade_smooth()
+
+        return ret
+
+    # Return the wrapped function
+    return new_func
+
+
 def set_hidden(obj, hide=True):
     '''
     Simple function to hide / unhide objects from the viewport and render.
@@ -144,7 +161,7 @@ def uniform_scale(obj, scale):
 def set_parent(obj, parent):
     '''
     Using parenting without inverse.
-    
+
     ---------------------------------------------------------------------------
     ------------------------------ DEPRECATED CODE ----------------------------
     ---------------------------------------------------------------------------
@@ -287,6 +304,7 @@ def new_icosphere(radius=1.0, subdivisions=2, location=(0, 0, 0), hide=False):
 
 
 @preserve_selection
+@shade_smooth_option
 def new_sphere(radius=1, segments=32, location=(0, 0, 0), hide=False):
     bpy.ops.mesh.primitive_uv_sphere_add(
         segments=segments,
@@ -299,28 +317,30 @@ def new_sphere(radius=1, segments=32, location=(0, 0, 0), hide=False):
     set_hidden(bpy.context.object, hide)
     return bpy.context.object
 
+
 # ----------------------------------------------------------------------------
 
-
-def new_point(hide=False, radius=None, subdivs=None):
+def new_point(use_spheres=None, radius=None, segments=None, hide=False):
     '''
     Specific to the GeoBlender addon. We want to be able to make points as
     spheres or empties based on the global settings.
     '''
     # Check the global settings to see if we're making a sphere
-    use_sphere = bpy.context.scene.geoblender_settings.use_spheres
+    if use_spheres is None:
+        use_spheres = bpy.context.scene.geoblender_settings.use_spheres
 
-    if use_sphere:
+    if use_spheres:
         # Get the sphere properties from the global settings
         if radius is None:
             radius = bpy.context.scene.geoblender_settings.sphere_radius
-        if subdivs is None:
+        if segments is None:
             subdivs = bpy.context.scene.geoblender_settings.sphere_subdivisions
-        point = new_icosphere(
+        point = new_sphere(
             radius=radius,
-            subdivisions=subdivs,
-            hide=hide
+            segments=subdivs,
+            hide=hide,
         )
+
     else:
         point = new_empty(hide=hide)
 

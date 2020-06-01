@@ -26,7 +26,7 @@ class Scratch(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     # GeoBlender Panel Type
-    gb_panel = 'Triangle Constructions'
+    gb_panel = 'Triangle Constructions > New sub Panel'
 
     hide: bpy.props.BoolProperty(
         name="Hide:",

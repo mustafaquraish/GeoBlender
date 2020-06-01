@@ -81,6 +81,9 @@ class GeoBlenderPropertiesPanel(bpy.types.Panel):
         row.prop(settings, 'hide_extra')
 
         row = layout.row()
+        row.prop(settings, 'shade_smooth')
+
+        row = layout.row()
         row.prop(settings, "plane_size", expand=True)
 
         row = layout.row()

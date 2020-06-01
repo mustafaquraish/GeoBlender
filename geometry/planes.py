@@ -16,7 +16,7 @@ def constraint_to_plane(obj, plane):
     plane:      Plane to constrain to     (Blender Objects)
     '''
     obj.parent = plane
-    # Drive location to 0 to avoid changing
+    # Drive Z location to 0 to avoid changing
     drivers.add_driver(
         obj=obj,
         prop='location',
@@ -27,8 +27,8 @@ def constraint_to_plane(obj, plane):
 
 def align_to_plane_of(obj, A, B, C):
     '''
-    Aligns the X-Y axes of the object with the plane defined by the 3
-    given points.
+    Place obj at A. Then ligns the X-Y axes of the object with the 
+    plane defined by the 3 given points.
 
     obj:        Source object (Blender Object)
     A, B, C:    3 points      (Blender Objects)
