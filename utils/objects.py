@@ -144,6 +144,13 @@ def uniform_scale(obj, scale):
 def set_parent(obj, parent):
     '''
     Using parenting without inverse.
+    
+    ---------------------------------------------------------------------------
+    ------------------------------ DEPRECATED CODE ----------------------------
+    ---------------------------------------------------------------------------
+
+        Just do `obj.parent = parent` in the calling function instead.
+
     '''
     bpy.ops.object.select_all(action='DESELECT')
     obj.select_set(True)
@@ -295,7 +302,7 @@ def new_sphere(radius=1, segments=32, location=(0, 0, 0), hide=False):
 # ----------------------------------------------------------------------------
 
 
-def new_point(hide=False, plane=None):
+def new_point(hide=False, radius=None, subdivs=None):
     '''
     Specific to the GeoBlender addon. We want to be able to make points as
     spheres or empties based on the global settings.
@@ -305,8 +312,10 @@ def new_point(hide=False, plane=None):
 
     if use_sphere:
         # Get the sphere properties from the global settings
-        radius = bpy.context.scene.geoblender_settings.sphere_radius
-        subdivs = bpy.context.scene.geoblender_settings.sphere_subdivisions
+        if radius is None:
+            radius = bpy.context.scene.geoblender_settings.sphere_radius
+        if subdivs is None:
+            subdivs = bpy.context.scene.geoblender_settings.sphere_subdivisions
         point = new_icosphere(
             radius=radius,
             subdivisions=subdivs,

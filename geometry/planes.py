@@ -15,7 +15,7 @@ def constraint_to_plane(obj, plane):
     obj:        Source object             (Blender Object)
     plane:      Plane to constrain to     (Blender Objects)
     '''
-    objects.set_parent(obj, plane)
+    obj.parent = plane
     # Drive location to 0 to avoid changing
     drivers.add_driver(
         obj=obj,
