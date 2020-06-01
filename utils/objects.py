@@ -315,7 +315,7 @@ def new_sphere(radius=1, segments=32, location=(0, 0, 0), hide=False):
 # ----------------------------------------------------------------------------
 
 
-def new_point(hide=False, plane=None):
+def new_point(hide=False):
     '''
     Specific to the GeoBlender addon. We want to be able to make points as
     spheres or empties based on the global settings.

@@ -1,5 +1,5 @@
 import bpy
-
+from ..utils.objects import new_point
 
 
 class PointOnPlane(bpy.types.Operator):
@@ -42,7 +42,7 @@ class PointOnPlane(bpy.types.Operator):
         
         A = context.active_object
 
-        if not (isinstance(A.data, bpy.types.Mesh):
+        if not (isinstance(A.data, bpy.types.Mesh)):
             return False
 
         if 'Plane' not in A.data.name:
@@ -53,13 +53,13 @@ class PointOnPlane(bpy.types.Operator):
     def invoke(self, context, event):
         self.use_spheres = context.scene.geoblender_settings.use_spheres
         self.sphere_radius = context.scene.geoblender_settings.sphere_radius
-        ???self.sphere_subdivisions = context.scene.geoblender_settings.sphere_subdivisions
+        self.sphere_subdivisions = context.scene.geoblender_settings.sphere_subdivisions
         return self.execute(context)
 
     def execute(self, context):
         plane = context.active_object
 
-        ???created_point = new_point(self.use_spheres, self.sphere_radius, self.sphere_subdivisions)
+        created_point = new_point()
         created_point.name = ''Point''
 
         constraint_to_plane(created_point, plane)
