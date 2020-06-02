@@ -9,35 +9,25 @@ from GeoBlender.utils.drivers import add_driver
 class PointOnLine(bpy.types.Operator):
     bl_label = "Point on line"
     bl_idname = "geometry.point_on_line"
-    bl_description = "Add a point constrained on a line"
+    bl_description = "Add a point constrained on a line. Select a line"
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
 
     use_spheres: bpy.props.BoolProperty(
         name="Spheres for points:",
         description="Use spheres for points. Otherwise use empties.",
-        default=True,
-        options={'HIDDEN'},
-    )
+        default=True
+        )
 
     sphere_radius: bpy.props.FloatProperty(
         name="Radius:",
         description="Radius of spheres drawn for points",
         soft_min=0.01,
         soft_max=2,
-        default=0.5,
-        options={'HIDDEN'},
-    )
+        default=0.5
+        )
 
-    sphere_subdivisions: bpy.props.IntProperty(
-        name="Segments:",
-        description="Segments to use for the spheres for points",
-        min=1,
-        max=100,
-        default=32,
-        options={'HIDDEN'},
-    )
-
+    
     @classmethod
     def poll(cls, context):
 
@@ -52,20 +42,20 @@ class PointOnLine(bpy.types.Operator):
         if 'Circle' in B.data.name:
             return False
 
+        if 'Arc' in B.data.name:
+            return False
+
         return True
 
     def invoke(self, context, event):
         self.use_spheres = context.scene.geoblender_settings.use_spheres
         self.sphere_radius = context.scene.geoblender_settings.sphere_radius
-        self.sphere_subdivisions = context.scene.geoblender_settings.sphere_subdivisions
         return self.execute(context)
 
     def execute(self, context):
         line = context.active_object
 
-        A = new_point(use_spheres=self.use_spheres,
-                                  radius=self.sphere_radius,
-                                  segments=self.sphere_subdivisions)
+        A = new_point(use_spheres=self.use_spheres, radius=self.sphere_radius)
         A.name = 'Point'
 
         add_driver(

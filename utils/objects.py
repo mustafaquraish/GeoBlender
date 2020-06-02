@@ -231,6 +231,7 @@ def new_arc(radius=1, location=(0, 0, 0), angle=180, sides=40, hide=False):
         shape='3D',
         edit_mode=False
     )
+    bpy.context.object.data.resolution_u = 64
     set_hidden(bpy.context.object, hide)
     return bpy.context.object
 

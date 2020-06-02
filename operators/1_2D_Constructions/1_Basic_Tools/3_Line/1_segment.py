@@ -5,7 +5,7 @@ from GeoBlender.geometry.lines import segment
 class Segment(bpy.types.Operator):
     bl_label = "Segment"
     bl_idname = "geometry.segment"
-    bl_description = "Add a segment between 2 points"
+    bl_description = "Add a segment between 2 points. Select two points"
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     # GeoBlender Panel Type

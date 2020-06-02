@@ -8,7 +8,7 @@ from GeoBlender.utils.drivers import add_driver
 class PointOnCircle(bpy.types.Operator):
     bl_label = "Point on circle"
     bl_idname = "geometry.point_on_circle"
-    bl_description = "Add a point constrained on a circle"
+    bl_description = "Add a point constrained on a circle. Select a circle"
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     # GeoBlender Panel Type
@@ -51,7 +51,7 @@ class PointOnCircle(bpy.types.Operator):
         if not (isinstance(B.data, bpy.types.Curve)):
             return False
 
-        if 'Circle' not in B.data.name:
+        if 'Line' in B.data.name:
             return False
 
         return True

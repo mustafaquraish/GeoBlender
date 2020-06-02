@@ -5,7 +5,7 @@ from GeoBlender.geometry.lines import line
 class Line(bpy.types.Operator):
     bl_label = "Line"
     bl_idname = "geometry.line"
-    bl_description = "Add a line through 2 points"
+    bl_description = "Add a line through 2 points. Select two points"
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     # GeoBlender Panel Type

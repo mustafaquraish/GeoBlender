@@ -42,6 +42,15 @@ class GeoBlenderSettings(bpy.types.PropertyGroup):
         default=100,
     )
 
+    circle_radius: bpy.props.FloatProperty(
+        name="Radius:",
+        description="Radius of sphere",
+        soft_min=0.01,
+        soft_max=200,
+        default=5,
+        options={'HIDDEN'},
+    )
+
     collection_name: bpy.props.StringProperty(
         name="Collection:",
         description="Extra objects needed for operators will be put here",

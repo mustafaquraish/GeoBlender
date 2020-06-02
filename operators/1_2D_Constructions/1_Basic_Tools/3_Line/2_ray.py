@@ -5,7 +5,8 @@ from GeoBlender.geometry.lines import ray
 class Ray(bpy.types.Operator):
     bl_label = "Ray"
     bl_idname = "geometry.ray"
-    bl_description = "Add a ray from a point (active point) to another point"
+    bl_description = ("Add a ray from a point to another point. Select two "
+                       "points. The origin of the ray should be active")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     # GeoBlender Panel Type
@@ -43,7 +44,7 @@ class Ray(bpy.types.Operator):
         others.remove(A)
         B = others[0]
 
-        #B IS A LIST, NOT AN OBJECT?!
+        
 
         line = new_line()
         ray(line, A, B, length=self.length)

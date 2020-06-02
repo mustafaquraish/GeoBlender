@@ -1,24 +1,28 @@
 import bpy
-from GeoBlender.utils.objects import new_arc
+from GeoBlender.utils.objects import new_arc, add_abs_bevel
 from GeoBlender.utils.geometry import align_to_plane_of
-from GeoBlender.utils.drivers import add_driver
+from GeoBlender.utils.drivers import add_driver, add_driver_distance
+from GeoBlender.utils.constraints import copy_location, copy_rotation
+from GeoBlender.utils.constraints import locked_track
 
 
-class CreateAngleArc(bpy.types.Operator):
-    bl_label = "Create Angle Arc"
+
+class AngleArcTwoPoints(bpy.types.Operator):
+    bl_label = "Arc with center and two endpoints"
     bl_idname = "geometry.create_angle_arc"
-    bl_description = 'To display the angle between two points from the '\
-                     'active object'
+    bl_description = ("Arc with given center and the two points. The"
+                     " center should be the active object")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
-
+    '''
     hide: bpy.props.BoolProperty(
         name="Hide:",
         description="hide",
         default=True,
     )
+    '''
 
     other_angle: bpy.props.BoolProperty(
-        name="Use other side:",
+        name="Display the outer angle:",
         description="Display the outer angle",
         default=True,
     )
@@ -31,15 +35,8 @@ class CreateAngleArc(bpy.types.Operator):
         default=0.0,
     )
 
-    radius: bpy.props.FloatProperty(
-        name="Radius:",
-        description="Radius of Arc",
-        min=0.01,
-        soft_max=20,
-        default=1,
-    )
-
-    gb_panel = '2D Constructions'
+   
+  
 
     @classmethod
     def poll(cls, context):
@@ -56,11 +53,22 @@ class CreateAngleArc(bpy.types.Operator):
         others = context.selected_objects[-3:]
         others.remove(A)
         B, C = others
+     
 
         arc = new_arc(angle=360, sides=64)
-        for i in range(3):
-            arc.scale[i] = self.radius
-        arc.data.bevel_depth = self.bevel_depth / self.radius
+
+        add_driver_distance(
+            obj=arc,
+            prop= 'scale',
+            fields= 'XYZ', 
+            A=A, 
+            B=B, 
+            scale=1
+            )
+
+
+        
+        add_abs_bevel(arc, self.bevel_depth)
         align_to_plane_of(arc, A, B, C)
 
         if self.other_angle:

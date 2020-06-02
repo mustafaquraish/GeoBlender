@@ -5,7 +5,7 @@ from GeoBlender.geometry.triangles import circumcircle
 class CircleThrough3Points(bpy.types.Operator):
     bl_label = "Circle through 3 points"
     bl_idname = "geometry.circle_through_3_points"
-    bl_description = "Add a circle through 3 points"
+    bl_description = "Add a circle through three points. Select three points"
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     # GeoBlender Panel Type
@@ -23,16 +23,14 @@ class CircleThrough3Points(bpy.types.Operator):
     hide_center: bpy.props.BoolProperty(
         name="Hide center:",
         description="Hide the center of the circle.",
-        default=False,
-        options={'HIDDEN'},
-    )
+        default=False
+        )
     
 
     use_spheres: bpy.props.BoolProperty(
         name="Spheres for points:",
         description="Use spheres for points. Otherwise use empties.",
-        default=True,
-        options={'HIDDEN'},
+        default=True
     )
 
     sphere_radius: bpy.props.FloatProperty(
@@ -40,8 +38,7 @@ class CircleThrough3Points(bpy.types.Operator):
         description="Radius of spheres drawn for points",
         soft_min=0.01,
         soft_max=2,
-        default=0.5,
-        options={'HIDDEN'},
+        default=0.5
     )
 
     
