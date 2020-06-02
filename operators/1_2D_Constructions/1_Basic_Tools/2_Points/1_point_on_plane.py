@@ -1,5 +1,5 @@
 import bpy
-from ..utils.objects import new_point
+from GeoBlender.utils.objects import new_point
 
 
 class PointOnPlane(bpy.types.Operator):
@@ -62,7 +62,7 @@ class PointOnPlane(bpy.types.Operator):
         created_point = new_point(use_spheres=self.use_spheres,
                                   radius=self.sphere_radius, 
                                   segments=self.sphere_subdivisions)
-        created_point.name = ''Point''
+        created_point.name = 'Point'
 
         constraint_to_plane(created_point, plane)
 

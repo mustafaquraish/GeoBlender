@@ -1,6 +1,6 @@
 import bpy
 from collections import defaultdict
-from .operators import operator_list
+from .operators import operators_dict
 
 
 '''
@@ -178,12 +178,11 @@ top_level_panel_dict = {
     'subpanels': {}
 }
 
-for op in operator_list:
+for op, path in operators_dict.items():
     try:
-        # Get a list containing the panel hierarchy for the operator
-        panel_loc = op.gb_panel
-        panel_hierarchy = panel_loc.split(">")
-        panel_hierarchy = [p.strip() for p in panel_hierarchy]
+        # Get the list containing the panel hierarchy for the operator, and
+        # Remove any unnecessary white space
+        panel_hierarchy = [ p.strip() for p in path]
 
         # Find the correct subpanel dict to actually insert the operator
         current_dict = top_level_panel_dict

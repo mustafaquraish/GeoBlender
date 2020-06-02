@@ -1,7 +1,5 @@
 import bpy
 
-
-
 class Plane(bpy.types.Operator):
     bl_label = "Plane"
     bl_idname = "geometry.plane"
