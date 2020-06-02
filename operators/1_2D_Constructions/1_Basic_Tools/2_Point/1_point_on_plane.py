@@ -6,7 +6,7 @@ from GeoBlender.geometry.planes import constraint_to_plane
 class PointOnPlane(bpy.types.Operator):
     bl_label = "Point on plane"
     bl_idname = "geometry.point_on_plane"
-    bl_description = ("Add a point constrained on a plane. "  
+    bl_description = ("Add a point constrained on a plane. "
                       "Select a plane")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
@@ -17,7 +17,7 @@ class PointOnPlane(bpy.types.Operator):
         name="Spheres for points:",
         description="Use spheres for points. Otherwise use empties.",
         default=True,
-        )
+    )
 
     sphere_radius: bpy.props.FloatProperty(
         name="Radius:",
@@ -25,9 +25,7 @@ class PointOnPlane(bpy.types.Operator):
         soft_min=0.01,
         soft_max=2,
         default=0.5,
-        )
-
-    
+    )
 
     @classmethod
     def poll(cls, context):
