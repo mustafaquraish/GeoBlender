@@ -1,11 +1,13 @@
 import bpy
 from GeoBlender.utils.objects import new_point
+from GeoBlender.geometry.planes import constraint_to_plane
 
 
 class PointOnPlane(bpy.types.Operator):
-    bl_label = "Point on Plane (active)"
+    bl_label = "Point on Plane"
     bl_idname = "geometry.point_on_plane"
-    bl_description = "Add a point constrained on a plane"
+    bl_description = ("Add a point constrained on a plane. "  
+                      "Plane should be active")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     # GeoBlender Panel Type

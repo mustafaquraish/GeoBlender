@@ -334,10 +334,10 @@ def new_point(use_spheres=None, radius=None, segments=None, hide=False):
         if radius is None:
             radius = bpy.context.scene.geoblender_settings.sphere_radius
         if segments is None:
-            subdivs = bpy.context.scene.geoblender_settings.sphere_subdivisions
+            segments = bpy.context.scene.geoblender_settings.sphere_subdivisions
         point = new_sphere(
             radius=radius,
-            segments=subdivs,
+            segments=segments,
             hide=hide,
         )
 
