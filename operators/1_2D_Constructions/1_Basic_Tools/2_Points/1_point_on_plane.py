@@ -36,10 +36,9 @@ class PointOnPlane(bpy.types.Operator):
         options={'HIDDEN'},
     )
 
-
     @classmethod
     def poll(cls, context):
-        
+
         A = context.active_object
 
         if not (isinstance(A.data, bpy.types.Mesh)):
@@ -60,7 +59,7 @@ class PointOnPlane(bpy.types.Operator):
         plane = context.active_object
 
         created_point = new_point(use_spheres=self.use_spheres,
-                                  radius=self.sphere_radius, 
+                                  radius=self.sphere_radius,
                                   segments=self.sphere_subdivisions)
         created_point.name = 'Point'
 

@@ -25,7 +25,6 @@ def median(line, mid_point, A, B, C, hide_extra=True):
     lines.segment(line, A, mid_point)
 
 
-
 def barycenter(point, A, B, C, hide_extra=True):
     '''
     Places the barycenter (point) of the triangle ABC.

@@ -1,7 +1,6 @@
 import bpy
 
 
-
 class CircleThrough3Points(bpy.types.Operator):
     bl_label = "Circle through 3 points"
     bl_idname = "geometry.circle_through_3_points"

@@ -27,7 +27,7 @@ def constraint_to_plane(obj, plane):
 
 def align_to_plane_of(obj, A, B, C):
     '''
-    Place obj at A. Then ligns the X-Y axes of the object with the 
+    Place obj at A. Then ligns the X-Y axes of the object with the
     plane defined by the 3 given points.
 
     obj:        Source object (Blender Object)

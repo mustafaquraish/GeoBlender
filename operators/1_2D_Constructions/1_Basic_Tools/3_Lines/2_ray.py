@@ -1,7 +1,6 @@
 import bpy
 
 
-
 class Ray(bpy.types.Operator):
     bl_label = "Ray"
     bl_idname = "geometry.ray"

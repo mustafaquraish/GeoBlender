@@ -80,7 +80,7 @@ def load_post_handler(dummy):
 classes = [
     GeoBlenderSettings,
     GeoBlenderMeasurements,
-] + [ op for op in operators_dict ] + panel_list
+] + [op for op in operators_dict] + panel_list
 
 
 def register():

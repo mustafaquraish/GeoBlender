@@ -182,7 +182,7 @@ for op, path in operators_dict.items():
     try:
         # Get the list containing the panel hierarchy for the operator, and
         # Remove any unnecessary white space
-        panel_hierarchy = [ p.strip() for p in path]
+        panel_hierarchy = [p.strip() for p in path]
 
         # Find the correct subpanel dict to actually insert the operator
         current_dict = top_level_panel_dict
