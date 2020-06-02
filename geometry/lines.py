@@ -242,7 +242,7 @@ def bisecting_line_of_points(line, A, B, hide_extra=True):
     mid_point = objects.new_point(hide=hide_extra)
     mid_point.name = "midpoint"
     midpoint(mid_point, A, B)
-    orthogonal_line_to_points(line, midpoint, A, B, hide_extra=hide_extra)
+    orthogonal_line_to_points(line, mid_point, A, B, hide_extra=hide_extra)
 
 
 def bisecting_line_of_line(line, other_line, hide_extra=True):

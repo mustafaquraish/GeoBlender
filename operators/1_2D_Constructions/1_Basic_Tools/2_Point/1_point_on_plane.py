@@ -4,7 +4,7 @@ from GeoBlender.geometry.planes import constraint_to_plane
 
 
 class PointOnPlane(bpy.types.Operator):
-    bl_label = "Point on Plane"
+    bl_label = "Point on plane"
     bl_idname = "geometry.point_on_plane"
     bl_description = ("Add a point constrained on a plane. "  
                       "Plane should be active")
@@ -25,7 +25,7 @@ class PointOnPlane(bpy.types.Operator):
         description="Radius of spheres drawn for points",
         soft_min=0.01,
         soft_max=2,
-        default=0.1,
+        default=0.5,
         options={'HIDDEN'},
     )
 
@@ -40,6 +40,9 @@ class PointOnPlane(bpy.types.Operator):
 
     @classmethod
     def poll(cls, context):
+
+        if (len(context.selected_objects) != 1):
+            return False
 
         A = context.active_object
 

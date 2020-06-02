@@ -97,7 +97,7 @@ def circumcenter(point, A, B, C, hide_extra=True):
     '''
     Places the circumcenter (point) of the triangle ABC. It has the same
     orientation as A.
-    point;      Point to place              (Blender Object)
+    point:      Point to place              (Blender Object)
     A, B, C:    Points of triangle          (Blender Objects)
     '''
     perp1 = objects.new_line(hide=hide_extra)
@@ -105,7 +105,7 @@ def circumcenter(point, A, B, C, hide_extra=True):
     perp1.name = "perp. bisector 1"
     perp2.name = "perp. bisector 2"
     lines.bisecting_line_of_points(perp1, A, B)
-    lines.bisecting_line_of_points(perp1, A, C)
+    lines.bisecting_line_of_points(perp2, A, C)
 
     intersections.line_line_inteserction(
         inter=point,

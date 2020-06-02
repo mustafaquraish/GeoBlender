@@ -21,7 +21,7 @@ class GeoBlenderSettings(bpy.types.PropertyGroup):
         description="Thickness of curves",
         soft_min=0.0,
         soft_max=0.5,
-        default=0.0,
+        default=0.2,
         options={'HIDDEN'},
     )
 
@@ -32,6 +32,14 @@ class GeoBlenderSettings(bpy.types.PropertyGroup):
         soft_max=1000,
         default=300,
         options={'HIDDEN'},
+    )
+
+    length: bpy.props.FloatProperty(
+        name="Length:",
+        description="Length of lines",
+        min=0,
+        soft_max=300,
+        default=100,
     )
 
     collection_name: bpy.props.StringProperty(
@@ -53,7 +61,7 @@ class GeoBlenderSettings(bpy.types.PropertyGroup):
         description="Radius of spheres drawn for points",
         soft_min=0.01,
         soft_max=2,
-        default=0.1,
+        default=0.5,
         options={'HIDDEN'},
     )
 
