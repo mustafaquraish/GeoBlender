@@ -2,6 +2,7 @@ import bpy
 from GeoBlender.utils.objects import new_line, add_abs_bevel
 from GeoBlender.geometry.lines import segment
 
+
 class Segment(bpy.types.Operator):
     bl_label = "Segment"
     bl_idname = "geometry.segment"
@@ -19,19 +20,17 @@ class Segment(bpy.types.Operator):
         default=0.2,
     )
 
-  
     @classmethod
     def poll(cls, context):
         return (len(context.selected_objects) == 2)
 
-        
     def invoke(self, context, event):
         self.bevel_depth = context.scene.geoblender_settings.bevel_depth
         return self.execute(context)
 
     def execute(self, context):
         (A, B) = context.selected_objects[-2:]
-        
+
         line = new_line()
         segment(line, A, B)
         add_abs_bevel(line, self.bevel_depth)

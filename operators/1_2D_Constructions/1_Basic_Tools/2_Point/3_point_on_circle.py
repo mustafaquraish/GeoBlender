@@ -14,7 +14,6 @@ class PointOnCircle(bpy.types.Operator):
     # GeoBlender Panel Type
     gb_panel = '2D Constructions > Basic Tools > Points'
 
-    
     use_spheres: bpy.props.BoolProperty(
         name="Spheres for points:",
         description="Use spheres for points. Otherwise use empties.",
@@ -66,21 +65,18 @@ class PointOnCircle(bpy.types.Operator):
         circle = context.active_object
 
         A = new_point(use_spheres=self.use_spheres,
-                                  radius=self.sphere_radius,
-                                  segments=self.sphere_subdivisions)
+                      radius=self.sphere_radius,
+                      segments=self.sphere_subdivisions)
         A.name = 'Point'
 
         add_driver(
-        obj=A,
-        prop='location',
-        fields='XYZ',
-        expr="0"
+            obj=A,
+            prop='location',
+            fields='XYZ',
+            expr="0"
         )
 
         position_on_curve(A, circle, position=0)
         copy_rotation(A, circle)
 
-
         return {'FINISHED'}
-
-

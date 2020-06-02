@@ -2,6 +2,7 @@ import bpy
 from GeoBlender.utils.objects import new_point, new_circle, add_abs_bevel
 from GeoBlender.geometry.triangles import circumcircle
 
+
 class CircleThrough3Points(bpy.types.Operator):
     bl_label = "Circle through 3 points"
     bl_idname = "geometry.circle_through_3_points"
@@ -18,14 +19,12 @@ class CircleThrough3Points(bpy.types.Operator):
         soft_max=0.5,
         default=0.2,
     )
-      
-    
+
     hide_center: bpy.props.BoolProperty(
         name="Hide center:",
         description="Hide the center of the circle.",
         default=False
-        )
-    
+    )
 
     use_spheres: bpy.props.BoolProperty(
         name="Spheres for points:",
@@ -41,7 +40,6 @@ class CircleThrough3Points(bpy.types.Operator):
         default=0.5
     )
 
-    
     @classmethod
     def poll(cls, context):
         return (len(context.selected_objects) == 3)
@@ -61,7 +59,6 @@ class CircleThrough3Points(bpy.types.Operator):
 
         # Local properties are not available for when creating points! Here for the center
         # in previously for simply adding points (on plane, lines, etc.)
-
 
         circle = new_circle()
         circumcircle(circle, center, A, B, C)

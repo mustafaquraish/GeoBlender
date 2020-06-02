@@ -2,6 +2,7 @@ import bpy
 from GeoBlender.utils.objects import new_line, add_abs_bevel
 from GeoBlender.geometry.lines import line
 
+
 class Line(bpy.types.Operator):
     bl_label = "Line"
     bl_idname = "geometry.line"
@@ -37,9 +38,8 @@ class Line(bpy.types.Operator):
         return self.execute(context)
 
     def execute(self, context):
-        (A, B) = context.selected_objects[-2:]   
-       
-       
+        (A, B) = context.selected_objects[-2:]
+
         newline = new_line()
         line(newline, A, B, length=self.length)
         add_abs_bevel(newline, self.bevel_depth)

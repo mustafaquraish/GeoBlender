@@ -39,8 +39,6 @@ class Scratch(bpy.types.Operator):
         default=1,
     )
 
-    
-
     @classmethod
     def poll(cls, context):
         return (len(context.selected_objects) == 3 and
