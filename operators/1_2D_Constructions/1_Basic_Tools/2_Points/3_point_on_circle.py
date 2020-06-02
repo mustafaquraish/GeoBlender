@@ -1,7 +1,6 @@
 import bpy
 
 
-
 class PointOnCircle(bpy.types.Operator):
     bl_label = "Point on circle"
     bl_idname = "geometry.point_on_circle"

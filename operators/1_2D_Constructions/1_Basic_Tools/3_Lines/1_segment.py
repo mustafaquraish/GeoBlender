@@ -1,7 +1,6 @@
 import bpy
 
 
-
 class Segment(bpy.types.Operator):
     bl_label = "Segment"
     bl_idname = "geometry.segment"

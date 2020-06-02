@@ -7,7 +7,7 @@ import os
 
 ###############################################################################
 
-# This dictionary stores a mapping between the operator classes and their 
+# This dictionary stores a mapping between the operator classes and their
 # corresponding panel hierarchy based on the directory structure in `operators`
 # directory
 operators_dict = {}
@@ -17,6 +17,7 @@ operators_dict = {}
 
 files = []
 
+
 def file_number(f1):
     '''
     This function just serves as a way to extract the initial number in front
@@ -24,12 +25,13 @@ def file_number(f1):
     '''
     try:
         return int(f1.split("_")[0])
-    except:
+    except BaseException:
         return 0
+
 
 def get_files(folder, accum=None):
     '''
-    Recursive find all of the files in the given folder, and construct the 
+    Recursive find all of the files in the given folder, and construct the
     import path for them. `accum` is the accumulated import path.
     '''
     # For all directory elements
@@ -42,6 +44,7 @@ def get_files(folder, accum=None):
         # If this is a directory, recurse
         elif os.path.isdir(itempath) and item != "__pycache__":
             get_files(itempath, new_accum)
+
 
 # Get the directory of this folder (`operators`) and get all files.
 path = os.path.dirname(os.path.abspath(__file__))

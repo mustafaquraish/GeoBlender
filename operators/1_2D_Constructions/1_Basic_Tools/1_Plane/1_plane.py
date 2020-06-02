@@ -1,5 +1,6 @@
 import bpy
 
+
 class Plane(bpy.types.Operator):
     bl_label = "Plane"
     bl_idname = "geometry.plane"
@@ -9,7 +10,6 @@ class Plane(bpy.types.Operator):
     # GeoBlender Panel Type
     gb_panel = '2D Constructions > Basic Tools > Planes'
 
-    
     @classmethod
     def poll(cls, context):
         # return False

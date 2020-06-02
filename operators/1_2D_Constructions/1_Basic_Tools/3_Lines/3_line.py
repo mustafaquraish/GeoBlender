@@ -1,7 +1,6 @@
 import bpy
 
 
-
 class Line(bpy.types.Operator):
     bl_label = "Line"
     bl_idname = "geometry.line"

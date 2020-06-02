@@ -1,7 +1,6 @@
 import bpy
 
 
-
 class PointOnLine(bpy.types.Operator):
     bl_label = "Point on line"
     bl_idname = "geometry.point_on_line"
