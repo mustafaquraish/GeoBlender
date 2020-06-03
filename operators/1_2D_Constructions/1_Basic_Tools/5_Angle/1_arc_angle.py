@@ -7,11 +7,13 @@ from GeoBlender.utils.constraints import locked_track
 
 
 
-class AngleArcTwoPoints(bpy.types.Operator):
-    bl_label = "Arc with center and two endpoints"
-    bl_idname = "geometry.create_angle_arc"
-    bl_description = ("Arc with given center and the two points. The"
-                     " center should be the active object")
+class AngleArcTwoPointsFree(bpy.types.Operator):
+    bl_label = "Arc for angle"
+    bl_idname = "geometry.create_angle_arc_free"
+    bl_description = ("Add the arc of an angle with given center" 
+                      " and one point on each of the two sides of the angle."
+                      "Select three points. The center should "
+                      "be the active object")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
     '''
     hide: bpy.props.BoolProperty(
@@ -35,6 +37,16 @@ class AngleArcTwoPoints(bpy.types.Operator):
         default=0.0,
     )
 
+    radius: bpy.props.FloatProperty(
+        name="Radius:",
+        description="Radius of arc",
+        min=0.01,
+        soft_max=20,
+        default=1
+    )
+
+    
+
    
   
 
@@ -57,14 +69,8 @@ class AngleArcTwoPoints(bpy.types.Operator):
 
         arc = new_arc(angle=360, sides=64)
 
-        add_driver_distance(
-            obj=arc,
-            prop= 'scale',
-            fields= 'XYZ', 
-            A=A, 
-            B=B, 
-            scale=1
-            )
+        for i in range(3):
+            arc.scale[i] = self.radius
 
 
         

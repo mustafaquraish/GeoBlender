@@ -1,4 +1,5 @@
 import bpy
+from GeoBlender.utils.objects import new_plane
 
 
 class Plane(bpy.types.Operator):
@@ -7,36 +8,25 @@ class Plane(bpy.types.Operator):
     bl_description = "Add a plane"
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
-    # GeoBlender Panel Type
-    gb_panel = '2D Constructions > Basic Tools > Planes'
+    plane_size: bpy.props.FloatProperty(
+        name="Plane size:",
+        description="Length of side of plane",
+        soft_min=100,
+        soft_max=1000,
+        default=300
+    )
 
     @classmethod
     def poll(cls, context):
-        # return False
-        if (len(context.selected_objects) != 2):
-            return False
-
-        (A, B) = context.selected_objects[-2:]
-
-        if not (isinstance(A.data, bpy.types.Curve) and
-                isinstance(B.data, bpy.types.Curve)):
-            return False
-
-        if 'Circle' not in A.data.name or 'Circle' not in B.data.name:
-            return False
-
         return True
 
     def invoke(self, context, event):
         self.hide_extra = context.scene.geoblender_settings.hide_extra
+        self.plane_size = context.scene.geoblender_settings.plane_size
         return self.execute(context)
 
     def execute(self, context):
 
-        (A, B) = context.selected_objects[-2:]
-
-        X = new_point()
-        Y = new_point()
-        circle_circle_intersection(X, Y, A, B, hide_extra=self.hide_extra)
+        new_plane(size=self.plane_size)
 
         return {'FINISHED'}

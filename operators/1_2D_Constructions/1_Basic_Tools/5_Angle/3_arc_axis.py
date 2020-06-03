@@ -12,13 +12,13 @@ from GeoBlender.utils.constraints import locked_track
 
 
 class ArcCenter(bpy.types.Operator):
-    bl_label = "Arc with axis, angle and radius"
+    bl_label = "Arc with axis"
     bl_idname = "geometry.arc_center_angle"
-    bl_description = ("Add an arc with given axis, angle and radius. The axis"
-                      " is determined by the center of the arc and the starting"
-                      " point of the arc. "
+    bl_description = ("Add the arc of an angle with given axis." 
+                      " The axis is determined by the center of "
+                      " the arc and another point one side of the angle. "
                       "Select two points. The center should "
-                      "be active")
+                      "be the active object")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
  
