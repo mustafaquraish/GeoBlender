@@ -10,7 +10,7 @@ class Midpoint(bpy.types.Operator):
     bl_label = "Reflection about a line"
     bl_idname = "geometry.reflection_line"
     bl_description = ("Returns the reflection of a point relative to a line."
-                      " Select a point and a line or three points. The points" 
+                      " Select a point and a line or three points. The point" 
                       " to be reflected should be the active object")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
     
@@ -36,23 +36,29 @@ class Midpoint(bpy.types.Operator):
     @classmethod
     def poll(cls, context):
         
-        if (len(context.selected_objects) == 2):
-            return True
-
-        if (len(context.selected_objects) == 1):
+        if (len(context.selected_objects) == 2  and
+                context.object is not None):
             A = context.active_object
+            others = context.selected_objects[-2:]
+            others.remove(A)
+            B = others[0]
 
-            if not (isinstance(A.data, bpy.types.Curve)):
+            if not (isinstance(B.data, bpy.types.Curve)):
                 return False
 
-            elif 'Line' not in A.data.name:
+            elif 'Line' not in B.data.name:
                 return False
 
             else:
                 return True
 
-        else: 
-            return False     
+        if (len(context.selected_objects) == 3 and
+                context.object is not None):
+            return True
+        else:
+            return False
+
+             
 
         
         
@@ -64,24 +70,29 @@ class Midpoint(bpy.types.Operator):
 
     def execute(self, context):
 
-        if  (len(context.selected_objects) == 2):
-            (A, B) = context.selected_objects[-2:]
-            obj = new_point(use_spheres=self.use_spheres,
-                           radius=self.sphere_radius)
-
-            midpoint(obj, A, B) 
-                  
-        
-
-        if  (len(context.selected_objects) == 1):
+        if (len(context.selected_objects) == 2  and
+                context.object is not None):
             A = context.active_object
-            X = new_point(hide=self.hide_extra)
-            Y = new_point(hide=self.hide_extra)
-            line_ends(X, Y, A)
-            obj = new_point(use_spheres=self.use_spheres,
-                           radius=self.sphere_radius)
+            others = context.selected_objects[-2:]
+            others.remove(A)
+            B = others[0]
 
-            midpoint(obj, X, Y) 
+            reflect_point = new_point(use_spheres=self.use_spheres,
+                                    radius=self.sphere_radius)
+            reflect_across_line(reflect_point, A, B)
+
+        if (len(context.selected_objects) == 3  and
+                context.object is not None):
+            A = context.active_object
+            others = context.selected_objects[-3:]
+            others.remove(A)
+            (B, C) = others
+
+            reflect_point = new_point(use_spheres=self.use_spheres,
+                                    radius=self.sphere_radius)
+            reflect_across_line_of_points(reflect_point, A, B, C)
+        
+         
 
 
         

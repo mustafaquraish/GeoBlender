@@ -158,7 +158,7 @@ def uniform_scale(obj, scale):
 
 
 @preserve_selection
-def set_parent(obj, parent):
+def set_parent(obj, here_parent):
     '''
     Using parenting without inverse.
 
@@ -166,7 +166,7 @@ def set_parent(obj, parent):
     ------------------------------ DEPRECATED CODE ----------------------------
     ---------------------------------------------------------------------------
 
-        Just do `obj.parent = parent` in the calling function instead.
+        Just do `obj.parent = here_parent` in the calling function instead.
 
     '''
     bpy.ops.object.select_all(action='DESELECT')

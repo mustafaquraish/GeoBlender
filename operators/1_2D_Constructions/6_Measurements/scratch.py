@@ -8,7 +8,7 @@ from GeoBlender.geometry.lines import bisecting_line_of_line
 
 class Scratch(bpy.types.Operator):
     bl_label = "Scratch"
-    bl_idname = "geometry.create_angle_scratch"
+    bl_idname = "geometry.create_angle_scratch_me"
     bl_description = 'To display the angle between two points from the '\
                      'active object'
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.

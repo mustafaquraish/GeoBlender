@@ -9,7 +9,7 @@ class ReflectionPoint(bpy.types.Operator):
     bl_label = "Reflection about point"
     bl_idname = "geometry.reflection_point"
     bl_description = ("Returns the reflection of a point relative to another"
-                      " point (origin of reflection). Select two points. The "
+                      " point (origin of reflection). Select two points. The"
                       " point to be reflected should be the active object")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
     

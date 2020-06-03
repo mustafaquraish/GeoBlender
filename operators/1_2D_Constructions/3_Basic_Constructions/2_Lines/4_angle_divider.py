@@ -1,6 +1,6 @@
 import bpy
 from GeoBlender.utils.objects import new_line, add_abs_bevel, new_point
-from GeoBlender.geometry.triangles import angle_bisector, angle_bisector_foot
+from GeoBlender.geometry.triangles import angle_bisector, angle_divider_foot
 from GeoBlender.geometry.lines import segment, ray, line
 
 
@@ -8,9 +8,9 @@ from GeoBlender.geometry.lines import segment, ray, line
 
 
 class AngleBisector(bpy.types.Operator):
-    bl_label = "Angle bisector"
-    bl_idname = "geometry.angle_bisector"
-    bl_description = ("Returns the angle bisector of an angle."
+    bl_label = "Angle divider"
+    bl_idname = "geometry.angle_divider"
+    bl_description = ("Adds the angle divider of an angle."
                       " Select three points defining the angle."
                       " The vertex of the angle should be the active object")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
@@ -37,6 +37,14 @@ class AngleBisector(bpy.types.Operator):
         min=0,
         soft_max=300,
         default=100,
+    )
+
+    division_proportion: bpy.props.FloatProperty(
+        name="Division proporition:",
+        description="Proportion of division of angle by angle divider",
+        min=0,
+        soft_max=1,
+        default=0.5,
     )
 
    
@@ -68,7 +76,8 @@ class AngleBisector(bpy.types.Operator):
 
         point1 = new_point(hide=True)
 
-        angle_bisector_foot(point1, A, B, C)
+        angle_divider_foot(point1, A, B, C, 
+                          influ=self.division_proportion)
 
         line1 = new_line()
         add_abs_bevel(line1, self.bevel_depth)

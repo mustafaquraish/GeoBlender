@@ -208,6 +208,27 @@ def angle_bisector_foot(point, A, B, C, hide_extra=True):
     )
 
 
+def angle_divider_foot(point, A, B, C, influ, hide_extra=True):
+    '''
+    Places the angle bisector foot on BC of the angle BAC.
+    point:      Point to place              (Blender Object)
+    A, B, C:    Points of triangle          (Blender Objects)
+    influ:      Proporition of division     (float)
+    '''
+
+    pr_plane = objects.new_plane(hide=hide_extra)
+    pr_plane.name = "projection plane"
+    core.make_orthogonal_to(pr_plane, C, B, A)
+
+    constraints.copy_transforms(point, A, transforms='LR')
+    core.track_to_angle_between(point, B, C, influ)
+    constraints.project_along_axis(
+        point,
+        axis='X',
+        target=pr_plane,
+        opposite=True
+    )
+
 def angle_bisector(line, point, A, B, C, hide_extra=True):
     '''
     Places the angle bisector of the angle BAC.

@@ -315,4 +315,4 @@ def reflect_across_line_of_points(obj, A, B, C, hide_extra=True):
     proje.name = "orth. projection to line"
     orthogonal_proj_to_points(proje, A, B, C, hide_extra=hide_extra)
 
-    reflect_across_point(obj, proje, A, hide_extra=hide_extra)
+    reflect_across_point(obj, A, proje, hide_extra=hide_extra)
