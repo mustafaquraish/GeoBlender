@@ -2,7 +2,7 @@ import bpy
 from GeoBlender.utils.objects import new_point, new_line, add_abs_bevel
 from GeoBlender.geometry.triangles import angle_bisector
 
-class MedianTriangle(bpy.types.Operator):
+class AngleBisector(bpy.types.Operator):
     bl_label = "Angle bisector"
     bl_idname = "geometry.angle_bis"
     bl_description = ("Add the angle bisector of a triangle. Select three"

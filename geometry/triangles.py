@@ -295,7 +295,7 @@ def excenter(point, A, B, C, hide_extra=True):
     bisec1.name = "external bisector 1"
     bisec2.name = "external bisector 2"
 
-    external_bisector(bisec1, A, B, C)
+    external_bisector(bisec1, C, A, B)
     external_bisector(bisec2, B, A, C)
 
     intersections.line_line_inteserction(

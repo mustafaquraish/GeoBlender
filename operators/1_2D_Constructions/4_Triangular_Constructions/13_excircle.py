@@ -1,17 +1,18 @@
 import bpy
-from GeoBlender.utils.objects import new_point, new_line, add_abs_bevel
-from GeoBlender.geometry.triangles import median
+from GeoBlender.utils.objects import new_point, new_circle, add_abs_bevel
+from GeoBlender.geometry.triangles import excircle
 
-class MedianTriangle(bpy.types.Operator):
-    bl_label = "Median"
-    bl_idname = "geometry.median_tr"
-    bl_description = ("Add a median of a triangle. Select three points for the"
-                     " vertices of the triangle. The vertex of the median "
-                     "should be the active object")
+class Circumcircle(bpy.types.Operator):
+    bl_label = "Excircle"
+    bl_idname = "geometry.excircle"
+    bl_description = ("Add the excircle of a triangle."
+                     " Select three points."
+                     " The vertex opposite to the excircle should be the"
+                     " active object")
+                      
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     # GeoBlender Panel Type
-    gb_panel = '2D Constructions > Basic Tools > Circles'
 
     bevel_depth: bpy.props.FloatProperty(
         name="Bevel Depth:",
@@ -22,22 +23,22 @@ class MedianTriangle(bpy.types.Operator):
     )
       
     
-    hide_foot: bpy.props.BoolProperty(
-        name="Hide mid point:",
-        description="Hide the mid point",
+    hide_center: bpy.props.BoolProperty(
+        name="Hide center:",
+        description="Hide the center of the circle",
         default=False
         )
     
 
     use_spheres: bpy.props.BoolProperty(
-        name="Sphere for mid point:",
-        description="Use sphere for mid point. Otherwise use empty",
+        name="Spheres for points:",
+        description="Use spheres for points. Otherwise use empties",
         default=True
     )
 
     sphere_radius: bpy.props.FloatProperty(
         name="Radius:",
-        description="Radius of sphere drawn for mid point",
+        description="Radius of spheres drawn for points",
         soft_min=0.01,
         soft_max=2,
         default=0.5
@@ -61,14 +62,14 @@ class MedianTriangle(bpy.types.Operator):
         others.remove(A)
         (B, C) = others
 
-        midp = new_point(use_spheres=self.use_spheres,
+        center = new_point(use_spheres=self.use_spheres,
                            radius=self.sphere_radius,
-                           hide=self.hide_foot)
-
-        med = new_line()
-        add_abs_bevel(med, self.bevel_depth)
-        median(med, midp, A, B, C)
+                           hide=self.hide_center)
 
         
+
+        circle = new_circle()
+        excircle(circle, center, A, B, C)
+        add_abs_bevel(circle, self.bevel_depth)
 
         return {'FINISHED'}

@@ -2,7 +2,7 @@ import bpy
 from GeoBlender.utils.objects import new_point, new_line, add_abs_bevel
 from GeoBlender.geometry.triangles import euler_line
 
-class Circumcircle(bpy.types.Operator):
+class EulerLine(bpy.types.Operator):
     bl_label = "Euler line"
     bl_idname = "geometry.euler_line"
     bl_description = ("Add the Euler line of a triangle."

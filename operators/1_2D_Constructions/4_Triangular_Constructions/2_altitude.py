@@ -45,7 +45,8 @@ class Alti(bpy.types.Operator):
     
     @classmethod
     def poll(cls, context):
-        return (len(context.selected_objects) == 3)
+        return (len(context.selected_objects) == 3 and
+                context.object is not None)
 
     def invoke(self, context, event):
         self.bevel_depth = context.scene.geoblender_settings.bevel_depth
