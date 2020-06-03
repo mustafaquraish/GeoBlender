@@ -1,11 +1,11 @@
 import bpy
 from GeoBlender.utils.objects import new_point, new_circle, add_abs_bevel
-from GeoBlender.geometry.triangles import euler_center
+from GeoBlender.geometry.triangles import circumcenter
 
 class Circumcenter(bpy.types.Operator):
-    bl_label = "Euler center"
-    bl_idname = "geometry.circumcece"
-    bl_description = ("Add the Euler center of a triangle."
+    bl_label = "Circumcenter"
+    bl_idname = "geometry.circumce"
+    bl_description = ("Add the circumcenter of a triangle."
                      " Select three points")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
@@ -44,6 +44,6 @@ class Circumcenter(bpy.types.Operator):
                            radius=self.sphere_radius)                         
 
         
-        euler_center(center, A, B, C)
+        circumcenter(center, A, B, C)
 
         return {'FINISHED'}
