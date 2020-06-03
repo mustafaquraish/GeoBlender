@@ -296,7 +296,7 @@ def new_line(length=1, axis='X', hide=False):
     bpy.context.object.data.resolution_u = 64
     bpy.context.object.data.bevel_resolution = 32
     set_hidden(bpy.context.object, hide)
-    return line
+    return bpy.context.object
 
 
 @preserve_selection

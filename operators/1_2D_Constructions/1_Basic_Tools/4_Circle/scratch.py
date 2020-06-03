@@ -2,7 +2,9 @@ import bpy
 from GeoBlender.utils.objects import new_arc
 from GeoBlender.utils.geometry import align_to_plane_of
 from GeoBlender.utils.drivers import add_driver
-
+from GeoBlender.utils.objects import new_line, add_abs_bevel, new_point
+from GeoBlender.geometry.lines import bisecting_line_of_points
+from GeoBlender.geometry.lines import bisecting_line_of_line
 
 class Scratch(bpy.types.Operator):
     bl_label = "Scratch"
@@ -43,8 +45,7 @@ class Scratch(bpy.types.Operator):
 
     @classmethod
     def poll(cls, context):
-        return (len(context.selected_objects) == 3 and
-                context.object is not None)
+        return True
 
     def invoke(self, context, event):
         self.bevel_depth = context.scene.geoblender_settings.bevel_depth
@@ -53,51 +54,6 @@ class Scratch(bpy.types.Operator):
 
     def execute(self, context):
         A = context.active_object
-        others = context.selected_objects[-3:]
-        others.remove(A)
-        B, C = others
-
-        arc = new_arc(angle=360, sides=64)
-        for i in range(3):
-            arc.scale[i] = self.radius
-        arc.data.bevel_depth = self.bevel_depth / self.radius
-        align_to_plane_of(arc, A, B, C)
-
-        if self.other_angle:
-            B, C = C, B
-
-        add_driver(
-            obj=arc.data,
-            prop='bevel_factor_start',
-            vars_def={
-                'ax': ('transform', A, 'location', 'X'),
-                'ay': ('transform', A, 'location', 'Y'),
-                'az': ('transform', A, 'location', 'Z'),
-                'bx': ('transform', B, 'location', 'X'),
-                'by': ('transform', B, 'location', 'Y'),
-                'bz': ('transform', B, 'location', 'Z'),
-                'cx': ('transform', C, 'location', 'X'),
-                'cy': ('transform', C, 'location', 'Y'),
-                'cz': ('transform', C, 'location', 'Z'),
-            },
-            expr='gb_drive_angle_bevel(True,ax,ay,az,bx,by,bz,cx,cy,cz)'
-        )
-
-        add_driver(
-            obj=arc.data,
-            prop='bevel_factor_end',
-            vars_def={
-                'ax': ('transform', A, 'location', 'X'),
-                'ay': ('transform', A, 'location', 'Y'),
-                'az': ('transform', A, 'location', 'Z'),
-                'bx': ('transform', B, 'location', 'X'),
-                'by': ('transform', B, 'location', 'Y'),
-                'bz': ('transform', B, 'location', 'Z'),
-                'cx': ('transform', C, 'location', 'X'),
-                'cy': ('transform', C, 'location', 'Y'),
-                'cz': ('transform', C, 'location', 'Z'),
-            },
-            expr='gb_drive_angle_bevel(False,ax,ay,az,bx,by,bz,cx,cy,cz)'
-        )
-
+        obj = new_line()
+        bisecting_line_of_line(obj, A)
         return {'FINISHED'}

@@ -1,11 +1,13 @@
 import bpy
-from GeoBlender.utils.objects import new_point, new_circle, add_abs_bevel
-from GeoBlender.geometry.triangles import circumcircle
+from GeoBlender.utils.objects import new_point, new_line, add_abs_bevel
+from GeoBlender.geometry.triangles import median
 
-class CircleThrough3Points(bpy.types.Operator):
-    bl_label = "Circle through 3 points"
-    bl_idname = "geometry.circle_through_3_points"
-    bl_description = "Add a circle through three points. Select three points"
+class MedianTriangle(bpy.types.Operator):
+    bl_label = "Median"
+    bl_idname = "geometry.median_tr"
+    bl_description = ("Add a median of a triangle. Select three points for the"
+                     " vertices of the triangle. The vertex of the median "
+                     "should be the active object")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     # GeoBlender Panel Type
@@ -20,22 +22,22 @@ class CircleThrough3Points(bpy.types.Operator):
     )
       
     
-    hide_center: bpy.props.BoolProperty(
-        name="Hide center:",
-        description="Hide the center of the circle",
+    hide_foot: bpy.props.BoolProperty(
+        name="Hide mid point:",
+        description="Hide the mid point",
         default=False
         )
     
 
     use_spheres: bpy.props.BoolProperty(
-        name="Spheres for points:",
-        description="Use spheres for points. Otherwise use empties",
+        name="Sphere for mid point:",
+        description="Use sphere for mid point. Otherwise use empty",
         default=True
     )
 
     sphere_radius: bpy.props.FloatProperty(
         name="Radius:",
-        description="Radius of spheres drawn for points",
+        description="Radius of sphere drawn for mid point",
         soft_min=0.01,
         soft_max=2,
         default=0.5
@@ -53,16 +55,19 @@ class CircleThrough3Points(bpy.types.Operator):
         return self.execute(context)
 
     def execute(self, context):
-        (A, B, C) = context.selected_objects[-3:]
+        A = context.active_object
+        others = context.selected_objects[-3:]
+        others.remove(A)
+        (B, C) = others
 
-        center = new_point(use_spheres=self.use_spheres,
+        midp = new_point(use_spheres=self.use_spheres,
                            radius=self.sphere_radius,
-                           hide=self.hide_center)
+                           hide=self.hide_foot)
+
+        med = new_line()
+        add_abs_bevel(med, self.bevel_depth)
+        median(med, midp, A, B, C)
 
         
-
-        circle = new_circle()
-        circumcircle(circle, center, A, B, C)
-        add_abs_bevel(circle, self.bevel_depth)
 
         return {'FINISHED'}

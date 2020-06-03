@@ -41,7 +41,7 @@ def barycenter(point, A, B, C, hide_extra=True):
     mid2.name = "midpoint 2"
 
     median(median1, mid1, A, B, C)
-    median(median2, mid2, A, B, C)
+    median(median2, mid2, B, A, C)
     intersections.line_line_inteserction(
         inter=point,
         line1=median1,
@@ -215,7 +215,7 @@ def angle_bisector(line, point, A, B, C, hide_extra=True):
     point:      Point to place at foot      (Blender Object)
     A, B, C:    Points of triangle          (Blender Objects)
     '''
-    angle_bisector_foot(point, B, A, C, hide_extra=hide_extra)
+    angle_bisector_foot(point, A, B, C, hide_extra=hide_extra)
     lines.segment(line, A, point)
 
 

@@ -95,7 +95,7 @@ def radical_intercept(obj, A, B):
     obj:        Source object   (Blender Object)
     A, B:       2 Circles       (Blender Objects)
     '''
-    constraints.copy_rotation(obj, A)
+    
     drivers.add_driver(
         obj=obj,
         prop='location',
@@ -109,6 +109,22 @@ def radical_intercept(obj, A, B):
         },
         expr='gb_rad_axis_helper(d, r1, r2, o1, o2)'
     )
+    constraints.copy_rotation(obj, A)
+    constraints.locked_track(obj, 'Z', 'Y', A)
+
+def radical_axis(line, circle1, circle2):
+    '''
+    Place the given object at the radical axis of 2 given circles.
+     
+    obj:        Source object   (Blender Object)
+    A, B:       2 Circles       (Blender Objects)
+    '''
+    point_r = objects.new_point(hide=True)
+    radical_intercept(point_r, circle1, circle2)
+    objects.move_origin_center(line)
+    constraints.copy_location(line, point_r)
+    constraints.copy_rotation(line, point_r)
+
 
 
 # --------------------------------------------------------------------------- #

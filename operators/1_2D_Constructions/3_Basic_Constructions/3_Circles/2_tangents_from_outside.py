@@ -1,15 +1,15 @@
 import bpy
 from GeoBlender.utils.objects import new_line, add_abs_bevel, new_point
-from GeoBlender.geometry.circles import circle_tangent_line
-from GeoBlender.geometry.circles import polar_line
+from GeoBlender.geometry.circles import circle_tangent_lines
+from GeoBlender.geometry.circles import circle_tangent_points
 
 
 
-class PolarLine(bpy.types.Operator):
-    bl_label = "Polar line"
-    bl_idname = "geometry.polar_line"
-    bl_description = ("Returns the polar line of a point relative to acircle."
-                     " Select a point and a circle."
+class TangentsFromOutside(bpy.types.Operator):
+    bl_label = "Tangents from outside point"
+    bl_idname = "geometry.tangents_outside"
+    bl_description = ("Returns the two tangents from " +\
+                     "a point outside a circle. Select a point and a circle."
                      " The point should be the active object.")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
@@ -17,18 +17,10 @@ class PolarLine(bpy.types.Operator):
    
     bevel_depth: bpy.props.FloatProperty(
         name="Bevel Depth:",
-        description="Thickness of tangent",
+        description="Thickness of tangents",
         min=0,
         soft_max=0.5,
         default=0.2,
-    )
-
-    length: bpy.props.FloatProperty(
-        name="Length:",
-        description="Length of tangent",
-        min=0,
-        soft_max=300,
-        default=100,
     )
 
     @classmethod
@@ -52,9 +44,8 @@ class PolarLine(bpy.types.Operator):
 
     def invoke(self, context, event):
         self.hide_extra = context.scene.geoblender_settings.hide_extra
-        self.length = context.scene.geoblender_settings.length
+        self.sphere_radius = context.scene.geoblender_settings.sphere_radius
         self.bevel_depth = context.scene.geoblender_settings.bevel_depth
-
         return self.execute(context)
 
     def execute(self, context):
@@ -63,12 +54,16 @@ class PolarLine(bpy.types.Operator):
         others.remove(A)
         B = others[0]
 
-                
-        line1 = new_line(length=self.length)
-        add_abs_bevel(line1, self.bevel_depth)
+        point1=new_point()
+        point2=new_point()
+        circle_tangent_points(point1, point2, B, A)
         
+        line1 = new_line()
+        add_abs_bevel(line1, self.bevel_depth)
+        line2 = new_line()
+        add_abs_bevel(line2, self.bevel_depth)
 
 
-        polar_line(line1, A, B, hide_extra=self.hide_extra)
+        circle_tangent_lines(line1, line2, B, A, hide_extra=self.hide_extra)
 
         return {'FINISHED'}

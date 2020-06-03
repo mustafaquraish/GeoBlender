@@ -1,21 +1,20 @@
 import bpy
 from GeoBlender.utils.objects import new_line, add_abs_bevel, new_point
-from GeoBlender.geometry.circles import radical_axis, radical_intercept
-from GeoBlender.utils.constraints import copy_transforms
-from GeoBlender.utils.objects import move_origin_center
+from GeoBlender.geometry.circles import circle_tangent_line
+from GeoBlender.geometry.circles import circle_tangent_points
 
 
 
-
-class RadicalAxis(bpy.types.Operator):
-    bl_label = "Radical axis"
-    bl_idname = "geometry.radical_axis"
-    bl_description = ("Returns the radical axis two circles. "
-                      "Select two circles")
+class TangentsFromOn(bpy.types.Operator):
+    bl_label = "Tangent at a point"
+    bl_idname = "geometry.tangents_on"
+    bl_description = ("Returns the tangent at a point on the circle. "+\
+                     "Select a point and a circle."
+                     " The point should be the active object.")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
-    
-        
 
+
+   
     bevel_depth: bpy.props.FloatProperty(
         name="Bevel Depth:",
         description="Thickness of tangent",
@@ -32,49 +31,44 @@ class RadicalAxis(bpy.types.Operator):
         default=100,
     )
 
-   
-  
-
     @classmethod
     def poll(cls, context):
-        
-        if not (len(context.selected_objects) == 2):
+        if (len(context.selected_objects) != 2):
             return False
 
-        (A, B) = context.selected_objects[-2:]
+        A = context.active_object
+        others = context.selected_objects[-2:]
+        others.remove(A)
+        B = others[0]
 
-        if not (isinstance(A.data, bpy.types.Curve)):
+        if not (isinstance(A.data, bpy.types.Mesh) and
+                isinstance(B.data, bpy.types.Curve)):
             return False
 
-        if not (isinstance(B.data, bpy.types.Curve)):
-            return False
-
-        if 'Circle' not in A.data.name:
-            return False
-
-        if 'Circle' not in B.data.name:
+        if not ('Circle' in B.data.name):
             return False
 
         return True
-        
 
     def invoke(self, context, event):
-        self.length = context.scene.geoblender_settings.length
         self.hide_extra = context.scene.geoblender_settings.hide_extra
+        self.length = context.scene.geoblender_settings.length
         self.bevel_depth = context.scene.geoblender_settings.bevel_depth
+
         return self.execute(context)
 
     def execute(self, context):
-        (A, B) = context.selected_objects[-2:]
-        point_r = new_point(hide=True)
-        radical_intercept(point_r, A, B)
+        A = context.active_object
+        others = context.selected_objects[-2:]
+        others.remove(A)
+        B = others[0]
+
+                
         line1 = new_line(length=self.length)
         add_abs_bevel(line1, self.bevel_depth)
-
-        radical_axis(line1, A, B)
         
 
 
-
+        circle_tangent_line(line1, B, A)
 
         return {'FINISHED'}

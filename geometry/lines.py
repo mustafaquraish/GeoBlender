@@ -257,7 +257,7 @@ def bisecting_line_of_line(line, other_line, hide_extra=True):
     constraints.position_on_curve(mid_point, other_line, position=0.5)
     constraints.copy_rotation(mid_point, other_line)
 
-    orthogonal_line_to_line(line, midpoint, other_line, hide_extra=hide_extra)
+    orthogonal_line_to_line(line, mid_point, other_line, hide_extra=hide_extra)
 
 
 # --------------------------------------------------------------------------- #
