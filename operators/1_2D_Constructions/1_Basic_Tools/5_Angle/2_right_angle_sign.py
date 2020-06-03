@@ -2,11 +2,12 @@ import bpy
 import mathutils
 import math
 from GeoBlender.utils.objects import new_point, new_circle, add_abs_bevel
-from GeoBlender.utils.objects import new_arc, new_right_angle
+from GeoBlender.utils.objects import new_arc, new_right_angle, new_empty
+from GeoBlender.utils.objects import set_parent
 from GeoBlender.geometry.circles import circle_from_center_radius
 from GeoBlender.utils.drivers import add_driver
 from GeoBlender.utils.constraints import copy_location, copy_rotation
-from GeoBlender.utils.constraints import locked_track
+from GeoBlender.utils.constraints import locked_track, damped_track
 from GeoBlender.utils.geometry import align_to_plane_of
 
 
@@ -18,7 +19,7 @@ class RightAngle(bpy.types.Operator):
     bl_idname = "geometry.right_angle"
     bl_description = ("Add a right angle with given  center and one point"
                       " on each of the two sides of the angle."
-                      "Select three points. The center should "
+                      " Select three points. The center should "
                       "be the active object")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
@@ -68,10 +69,19 @@ class RightAngle(bpy.types.Operator):
 
         arc_neo = new_right_angle(length=self.length)
         add_abs_bevel(arc_neo, self.bevel_depth)
-        align_to_plane_of(arc_neo, A, B, C)
+
+        center = new_empty() #hide=self.hide_extra
+        copy_location(center, A)
+        damped_track(center, axis='-X', target=B)
+        locked_track(center, axis='-Y', lock='X', target=C)
+
+        #set_parent(arc_neo, center)
+        arc_neo.parent = center
+        arc_neo.location[0] = - self.length 
+        arc_neo.location[1] = - self.length 
 
 
-        
+
              
         
 
