@@ -171,8 +171,8 @@ def set_parent(obj, here_parent):
     '''
     bpy.ops.object.select_all(action='DESELECT')
     obj.select_set(True)
-    parent.select_set(True)
-    bpy.context.view_layer.objects.active = parent
+    parent_here.select_set(True)
+    bpy.context.view_layer.objects.active = parent_here
     bpy.ops.object.parent_no_inverse_set()
 
 # ----------------------------------------------------------------------------

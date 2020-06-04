@@ -1,5 +1,5 @@
 import bpy
-from GeoBlender.utils.objects import new_arc
+from GeoBlender.utils.objects import new_plane, new_line
 from GeoBlender.utils.geometry import align_to_plane_of
 from GeoBlender.utils.drivers import add_driver
 from GeoBlender.utils.objects import new_line, add_abs_bevel, new_point
@@ -9,7 +9,7 @@ from GeoBlender.geometry.lines import bisecting_line_of_line
 
 class Scratch(bpy.types.Operator):
     bl_label = "Scratch"
-    bl_idname = "geometry.create_angle_scratch_me"
+    bl_idname = "geometry.create_angle_scratch_mea"
     bl_description = 'To display the angle between two points from the '\
                      'active object'
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
@@ -53,6 +53,11 @@ class Scratch(bpy.types.Operator):
 
     def execute(self, context):
         A = context.active_object
-        obj = new_line()
-        bisecting_line_of_line(obj, A)
+        others = context.selected_objects[-2:]
+        others.remove(A)
+        B = others[0]
+        #C = new_line()
+        #D = new_plane()
+        B.data = A.data
+        
         return {'FINISHED'}
