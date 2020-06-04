@@ -1,15 +1,15 @@
 import bpy
 from GeoBlender.utils.objects import new_line, add_abs_bevel, new_point
 from GeoBlender.geometry.circles import circle_tangent_line
-from GeoBlender.geometry.circles import circle_tangent_points
+from GeoBlender.geometry.circles import polar_line
 
 
 
-class TangentsFromOn(bpy.types.Operator):
-    bl_label = "Tangent at a point"
-    bl_idname = "geometry.tangents_on"
-    bl_description = ("Returns the tangent at a point on the circle. "+\
-                     "Select a point and a circle."
+class PolarLine(bpy.types.Operator):
+    bl_label = "Polar line"
+    bl_idname = "geometry.polar_line"
+    bl_description = ("Returns the polar line of a point relative to acircle."
+                     " Select a point and a circle."
                      " The point should be the active object.")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
@@ -69,6 +69,6 @@ class TangentsFromOn(bpy.types.Operator):
         
 
 
-        circle_tangent_line(line1, B, A)
+        polar_line(line1, A, B, hide_extra=self.hide_extra)
 
         return {'FINISHED'}

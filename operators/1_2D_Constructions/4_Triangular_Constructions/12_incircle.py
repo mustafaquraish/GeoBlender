@@ -1,15 +1,15 @@
 import bpy
 from GeoBlender.utils.objects import new_point, new_circle, add_abs_bevel
-from GeoBlender.geometry.triangles import circumcircle
+from GeoBlender.geometry.triangles import incircle
 
-class CircleThrough3Points(bpy.types.Operator):
-    bl_label = "Circle through 3 points"
-    bl_idname = "geometry.circle_through_3_points"
-    bl_description = "Add a circle through three points. Select three points"
+class Circumcircle(bpy.types.Operator):
+    bl_label = "Incircle"
+    bl_idname = "geometry.incircle"
+    bl_description = ("Add the incircle of a triangle."
+                     " Select three points")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     # GeoBlender Panel Type
-    gb_panel = '2D Constructions > Basic Tools > Circles'
 
     bevel_depth: bpy.props.FloatProperty(
         name="Bevel Depth:",
@@ -62,7 +62,7 @@ class CircleThrough3Points(bpy.types.Operator):
         
 
         circle = new_circle()
-        circumcircle(circle, center, A, B, C)
+        incircle(circle, center, A, B, C)
         add_abs_bevel(circle, self.bevel_depth)
 
         return {'FINISHED'}

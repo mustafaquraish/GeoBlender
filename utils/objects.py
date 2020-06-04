@@ -158,7 +158,7 @@ def uniform_scale(obj, scale):
 
 
 @preserve_selection
-def set_parent(obj, parent):
+def set_parent(obj, here_parent):
     '''
     Using parenting without inverse.
 
@@ -166,7 +166,7 @@ def set_parent(obj, parent):
     ------------------------------ DEPRECATED CODE ----------------------------
     ---------------------------------------------------------------------------
 
-        Just do `obj.parent = parent` in the calling function instead.
+        Just do `obj.parent = here_parent` in the calling function instead.
 
     '''
     bpy.ops.object.select_all(action='DESELECT')
@@ -213,6 +213,7 @@ def new_circle(radius=1, location=(0, 0, 0), hide=False):
         location=location
     )
     bpy.context.object.data.resolution_u = 64
+    bpy.context.object.data.bevel_resolution = 32
     set_hidden(bpy.context.object, hide)
     return bpy.context.object
 
@@ -232,6 +233,26 @@ def new_arc(radius=1, location=(0, 0, 0), angle=180, sides=40, hide=False):
         edit_mode=False
     )
     bpy.context.object.data.resolution_u = 64
+    bpy.context.object.data.bevel_resolution = 32
+    set_hidden(bpy.context.object, hide)
+    return bpy.context.object
+
+@preserve_selection
+def new_right_angle(length=2, location=(0, 0, 0), hide=False):
+    bpy.ops.curve.simple(
+        align='WORLD',
+        location=location,
+        rotation=(0, 0, 0),
+        Simple_Type='Angle',
+        Simple_angle=90,
+        Simple_length=length,
+        use_cyclic_u=False,
+        shape='2D',
+        edit_mode=False
+    )
+    bpy.context.object.data.fill_mode = 'NONE'
+    bpy.context.object.data.resolution_u = 64
+    bpy.context.object.data.bevel_resolution = 32
     set_hidden(bpy.context.object, hide)
     return bpy.context.object
 
@@ -272,9 +293,10 @@ def new_line(length=1, axis='X', hide=False):
         use_cyclic_u=False,
         edit_mode=False
     )
-    line = bpy.context.object
-    set_hidden(line, hide)
-    return line
+    bpy.context.object.data.resolution_u = 64
+    bpy.context.object.data.bevel_resolution = 32
+    set_hidden(bpy.context.object, hide)
+    return bpy.context.object
 
 
 @preserve_selection

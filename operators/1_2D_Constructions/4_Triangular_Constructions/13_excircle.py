@@ -1,15 +1,18 @@
 import bpy
 from GeoBlender.utils.objects import new_point, new_circle, add_abs_bevel
-from GeoBlender.geometry.triangles import circumcircle
+from GeoBlender.geometry.triangles import excircle
 
-class CircleThrough3Points(bpy.types.Operator):
-    bl_label = "Circle through 3 points"
-    bl_idname = "geometry.circle_through_3_points"
-    bl_description = "Add a circle through three points. Select three points"
+class Circumcircle(bpy.types.Operator):
+    bl_label = "Excircle"
+    bl_idname = "geometry.excircle"
+    bl_description = ("Add the excircle of a triangle."
+                     " Select three points."
+                     " The vertex opposite to the excircle should be the"
+                     " active object")
+                      
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     # GeoBlender Panel Type
-    gb_panel = '2D Constructions > Basic Tools > Circles'
 
     bevel_depth: bpy.props.FloatProperty(
         name="Bevel Depth:",
@@ -44,7 +47,8 @@ class CircleThrough3Points(bpy.types.Operator):
     
     @classmethod
     def poll(cls, context):
-        return (len(context.selected_objects) == 3)
+        return (len(context.selected_objects) == 3 and
+                context.object is not None)
 
     def invoke(self, context, event):
         self.bevel_depth = context.scene.geoblender_settings.bevel_depth
@@ -53,7 +57,10 @@ class CircleThrough3Points(bpy.types.Operator):
         return self.execute(context)
 
     def execute(self, context):
-        (A, B, C) = context.selected_objects[-3:]
+        A = context.active_object
+        others = context.selected_objects[-3:]
+        others.remove(A)
+        (B, C) = others
 
         center = new_point(use_spheres=self.use_spheres,
                            radius=self.sphere_radius,
@@ -62,7 +69,7 @@ class CircleThrough3Points(bpy.types.Operator):
         
 
         circle = new_circle()
-        circumcircle(circle, center, A, B, C)
+        excircle(circle, center, A, B, C)
         add_abs_bevel(circle, self.bevel_depth)
 
         return {'FINISHED'}

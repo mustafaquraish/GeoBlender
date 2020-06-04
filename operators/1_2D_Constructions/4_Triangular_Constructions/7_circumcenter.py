@@ -1,31 +1,17 @@
 import bpy
 from GeoBlender.utils.objects import new_point, new_circle, add_abs_bevel
-from GeoBlender.geometry.triangles import circumcircle
+from GeoBlender.geometry.triangles import circumcenter
 
-class CircleThrough3Points(bpy.types.Operator):
-    bl_label = "Circle through 3 points"
-    bl_idname = "geometry.circle_through_3_points"
-    bl_description = "Add a circle through three points. Select three points"
+class Circumcenter(bpy.types.Operator):
+    bl_label = "Circumcenter"
+    bl_idname = "geometry.circumce"
+    bl_description = ("Add the circumcenter of a triangle."
+                     " Select three points")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     # GeoBlender Panel Type
-    gb_panel = '2D Constructions > Basic Tools > Circles'
 
-    bevel_depth: bpy.props.FloatProperty(
-        name="Bevel Depth:",
-        description="Thickness of circle",
-        min=0,
-        soft_max=0.5,
-        default=0.2,
-    )
-      
-    
-    hide_center: bpy.props.BoolProperty(
-        name="Hide center:",
-        description="Hide the center of the circle",
-        default=False
-        )
-    
+       
 
     use_spheres: bpy.props.BoolProperty(
         name="Spheres for points:",
@@ -47,7 +33,6 @@ class CircleThrough3Points(bpy.types.Operator):
         return (len(context.selected_objects) == 3)
 
     def invoke(self, context, event):
-        self.bevel_depth = context.scene.geoblender_settings.bevel_depth
         self.use_spheres = context.scene.geoblender_settings.use_spheres
         self.sphere_radius = context.scene.geoblender_settings.sphere_radius
         return self.execute(context)
@@ -56,13 +41,9 @@ class CircleThrough3Points(bpy.types.Operator):
         (A, B, C) = context.selected_objects[-3:]
 
         center = new_point(use_spheres=self.use_spheres,
-                           radius=self.sphere_radius,
-                           hide=self.hide_center)
+                           radius=self.sphere_radius)                         
 
         
-
-        circle = new_circle()
-        circumcircle(circle, center, A, B, C)
-        add_abs_bevel(circle, self.bevel_depth)
+        circumcenter(center, A, B, C)
 
         return {'FINISHED'}

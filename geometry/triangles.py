@@ -41,7 +41,7 @@ def barycenter(point, A, B, C, hide_extra=True):
     mid2.name = "midpoint 2"
 
     median(median1, mid1, A, B, C)
-    median(median2, mid2, A, B, C)
+    median(median2, mid2, B, A, C)
     intersections.line_line_inteserction(
         inter=point,
         line1=median1,
@@ -208,6 +208,27 @@ def angle_bisector_foot(point, A, B, C, hide_extra=True):
     )
 
 
+def angle_divider_foot(point, A, B, C, influ, hide_extra=True):
+    '''
+    Places the angle bisector foot on BC of the angle BAC.
+    point:      Point to place              (Blender Object)
+    A, B, C:    Points of triangle          (Blender Objects)
+    influ:      Proporition of division     (float)
+    '''
+
+    pr_plane = objects.new_plane(hide=hide_extra)
+    pr_plane.name = "projection plane"
+    core.make_orthogonal_to(pr_plane, C, B, A)
+
+    constraints.copy_transforms(point, A, transforms='LR')
+    core.track_to_angle_between(point, B, C, influ)
+    constraints.project_along_axis(
+        point,
+        axis='X',
+        target=pr_plane,
+        opposite=True
+    )
+
 def angle_bisector(line, point, A, B, C, hide_extra=True):
     '''
     Places the angle bisector of the angle BAC.
@@ -215,7 +236,7 @@ def angle_bisector(line, point, A, B, C, hide_extra=True):
     point:      Point to place at foot      (Blender Object)
     A, B, C:    Points of triangle          (Blender Objects)
     '''
-    angle_bisector_foot(point, B, A, C, hide_extra=hide_extra)
+    angle_bisector_foot(point, A, B, C, hide_extra=hide_extra)
     lines.segment(line, A, point)
 
 
@@ -295,7 +316,7 @@ def excenter(point, A, B, C, hide_extra=True):
     bisec1.name = "external bisector 1"
     bisec2.name = "external bisector 2"
 
-    external_bisector(bisec1, A, B, C)
+    external_bisector(bisec1, C, A, B)
     external_bisector(bisec2, B, A, C)
 
     intersections.line_line_inteserction(

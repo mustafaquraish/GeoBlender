@@ -1,15 +1,15 @@
 import bpy
 from GeoBlender.utils.objects import new_point, new_circle, add_abs_bevel
-from GeoBlender.geometry.triangles import circumcircle
+from GeoBlender.geometry.triangles import euler_circle
 
-class CircleThrough3Points(bpy.types.Operator):
-    bl_label = "Circle through 3 points"
-    bl_idname = "geometry.circle_through_3_points"
-    bl_description = "Add a circle through three points. Select three points"
+class Eulercircle(bpy.types.Operator):
+    bl_label = "Euler circle"
+    bl_idname = "geometry.circumceulre"
+    bl_description = ("Add the Euler circle of a triangle."
+                     " Select three points")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     # GeoBlender Panel Type
-    gb_panel = '2D Constructions > Basic Tools > Circles'
 
     bevel_depth: bpy.props.FloatProperty(
         name="Bevel Depth:",
@@ -22,20 +22,20 @@ class CircleThrough3Points(bpy.types.Operator):
     
     hide_center: bpy.props.BoolProperty(
         name="Hide center:",
-        description="Hide the center of the circle",
+        description="Hide the center of the Euler circle",
         default=False
         )
     
 
     use_spheres: bpy.props.BoolProperty(
-        name="Spheres for points:",
-        description="Use spheres for points. Otherwise use empties",
+        name="Sphere for center:",
+        description="Use sphere for the center. Otherwise use empty",
         default=True
     )
 
     sphere_radius: bpy.props.FloatProperty(
         name="Radius:",
-        description="Radius of spheres drawn for points",
+        description="Radius of spheres drawn for center",
         soft_min=0.01,
         soft_max=2,
         default=0.5
@@ -62,7 +62,8 @@ class CircleThrough3Points(bpy.types.Operator):
         
 
         circle = new_circle()
-        circumcircle(circle, center, A, B, C)
         add_abs_bevel(circle, self.bevel_depth)
+
+        euler_circle(circle, center, A, B, C)
 
         return {'FINISHED'}

@@ -257,7 +257,7 @@ def bisecting_line_of_line(line, other_line, hide_extra=True):
     constraints.position_on_curve(mid_point, other_line, position=0.5)
     constraints.copy_rotation(mid_point, other_line)
 
-    orthogonal_line_to_line(line, midpoint, other_line, hide_extra=hide_extra)
+    orthogonal_line_to_line(line, mid_point, other_line, hide_extra=hide_extra)
 
 
 # --------------------------------------------------------------------------- #
@@ -315,4 +315,4 @@ def reflect_across_line_of_points(obj, A, B, C, hide_extra=True):
     proje.name = "orth. projection to line"
     orthogonal_proj_to_points(proje, A, B, C, hide_extra=hide_extra)
 
-    reflect_across_point(obj, proje, A, hide_extra=hide_extra)
+    reflect_across_point(obj, A, proje, hide_extra=hide_extra)
