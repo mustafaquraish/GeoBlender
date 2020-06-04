@@ -237,6 +237,7 @@ def new_arc(radius=1, location=(0, 0, 0), angle=180, sides=40, hide=False):
     set_hidden(bpy.context.object, hide)
     return bpy.context.object
 
+
 @preserve_selection
 def new_right_angle(length=2, location=(0, 0, 0), hide=False):
     bpy.ops.curve.simple(

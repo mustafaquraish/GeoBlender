@@ -2,6 +2,7 @@ import bpy
 from GeoBlender.utils.objects import new_point, new_circle, add_abs_bevel
 from GeoBlender.geometry.circles import circle_from_center_radius
 
+
 class CirceCeRa(bpy.types.Operator):
     bl_label = "Circle with center and radius"
     bl_idname = "geometry.circle_center_radius"
@@ -19,9 +20,7 @@ class CirceCeRa(bpy.types.Operator):
         soft_max=0.5,
         default=0.2,
     )
-      
-    
-   
+
     circle_radius: bpy.props.FloatProperty(
         name="Radius:",
         description="Radius of sphere",
@@ -31,18 +30,17 @@ class CirceCeRa(bpy.types.Operator):
         options={'HIDDEN'},
     )
 
-    
     @classmethod
     def poll(cls, context):
         if (len(context.selected_objects) == 1 and
-            context.object is not None):
+                context.object is not None):
             A = context.active_object
             if (isinstance(A.data, bpy.types.Curve)):
                 return False
             else:
                 return True
-        else: 
-            return False   
+        else:
+            return False
 
     def invoke(self, context, event):
         self.bevel_depth = context.scene.geoblender_settings.bevel_depth
@@ -52,8 +50,7 @@ class CirceCeRa(bpy.types.Operator):
     def execute(self, context):
 
         A = context.active_object
-         
-               
+
         circle = new_circle()
         circle_from_center_radius(circle, A, self.circle_radius)
         add_abs_bevel(circle, self.bevel_depth)

@@ -2,11 +2,12 @@ import bpy
 from GeoBlender.utils.objects import new_line, add_abs_bevel
 from GeoBlender.geometry.lines import ray
 
+
 class Ray(bpy.types.Operator):
     bl_label = "Ray"
     bl_idname = "geometry.ray"
     bl_description = ("Add a ray from a point to another point. Select two "
-                       "points. The origin of the ray should be active")
+                      "points. The origin of the ray should be active")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     # GeoBlender Panel Type
@@ -43,8 +44,6 @@ class Ray(bpy.types.Operator):
         others = context.selected_objects[-2:]
         others.remove(A)
         B = others[0]
-
-        
 
         line = new_line()
         ray(line, A, B, length=self.length)

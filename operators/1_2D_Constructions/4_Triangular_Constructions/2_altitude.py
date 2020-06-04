@@ -2,12 +2,13 @@ import bpy
 from GeoBlender.utils.objects import new_point, new_line, add_abs_bevel
 from GeoBlender.geometry.triangles import altitude
 
+
 class Alti(bpy.types.Operator):
     bl_label = "Altitude"
     bl_idname = "geometry.altitu"
     bl_description = ("Add an altitude of a triangle. Select three points for"
-                     " the vertices of the triangle. The vertex of the"
-                     " altitude should be the active object")
+                      " the vertices of the triangle. The vertex of the"
+                      " altitude should be the active object")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     # GeoBlender Panel Type
@@ -19,14 +20,12 @@ class Alti(bpy.types.Operator):
         soft_max=0.5,
         default=0.2,
     )
-      
-    
+
     hide_foot: bpy.props.BoolProperty(
         name="Hide foot:",
         description="Hide the foot of the altitude",
         default=False
-        )
-    
+    )
 
     use_spheres: bpy.props.BoolProperty(
         name="Sphere for mid point:",
@@ -42,7 +41,6 @@ class Alti(bpy.types.Operator):
         default=0.5
     )
 
-    
     @classmethod
     def poll(cls, context):
         return (len(context.selected_objects) == 3 and
@@ -61,13 +59,11 @@ class Alti(bpy.types.Operator):
         (B, C) = others
 
         footp = new_point(use_spheres=self.use_spheres,
-                           radius=self.sphere_radius,
-                           hide=self.hide_foot)
+                          radius=self.sphere_radius,
+                          hide=self.hide_foot)
 
         alt = new_line()
         add_abs_bevel(alt, self.bevel_depth)
         altitude(alt, footp, A, B, C)
-
-        
 
         return {'FINISHED'}

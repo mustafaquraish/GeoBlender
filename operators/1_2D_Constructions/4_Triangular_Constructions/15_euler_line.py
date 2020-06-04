@@ -2,11 +2,12 @@ import bpy
 from GeoBlender.utils.objects import new_point, new_line, add_abs_bevel
 from GeoBlender.geometry.triangles import euler_line
 
+
 class EulerLine(bpy.types.Operator):
     bl_label = "Euler line"
     bl_idname = "geometry.euler_line"
     bl_description = ("Add the Euler line of a triangle."
-                     " Select three points")
+                      " Select three points")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     # GeoBlender Panel Type
@@ -18,7 +19,7 @@ class EulerLine(bpy.types.Operator):
         soft_max=0.5,
         default=0.2,
     )
-      
+
     length: bpy.props.FloatProperty(
         name="Length:",
         description="Length of tangent",
@@ -27,7 +28,6 @@ class EulerLine(bpy.types.Operator):
         default=100,
     )
 
-    
     @classmethod
     def poll(cls, context):
         return (len(context.selected_objects) == 3)

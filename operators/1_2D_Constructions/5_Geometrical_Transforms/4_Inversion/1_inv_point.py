@@ -3,25 +3,21 @@ from GeoBlender.utils.objects import new_arc, add_abs_bevel, new_point
 from GeoBlender.geometry.inversions import inversion_point
 
 
-
-
 class InversionPoint(bpy.types.Operator):
     bl_label = "Inversion of point"
     bl_idname = "geometry.inversion_point"
     bl_description = ("Adds the inversion of a point. Select the point"
                       " and a circle. The center of"
-                      " this circle is the origin  and the" 
-                      " square of the radius is the power of inversion." 
-                      " The point to be inverted should be the active object") 
+                      " this circle is the origin  and the"
+                      " square of the radius is the power of inversion."
+                      " The point to be inverted should be the active object")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
-    
-      
 
     use_spheres: bpy.props.BoolProperty(
         name="Spheres for points:",
         description="Use spheres for points. Otherwise use empties.",
         default=True,
-        )
+    )
 
     sphere_radius: bpy.props.FloatProperty(
         name="Radius:",
@@ -29,12 +25,11 @@ class InversionPoint(bpy.types.Operator):
         soft_min=0.01,
         soft_max=2,
         default=0.5,
-        )
+    )
 
-   
     @classmethod
     def poll(cls, context):
-        if (len(context.selected_objects) == 2  and
+        if (len(context.selected_objects) == 2 and
                 context.object is not None):
             A = context.active_object
             others = context.selected_objects[-2:]
@@ -67,10 +62,9 @@ class InversionPoint(bpy.types.Operator):
         others = context.selected_objects[-2:]
         others.remove(A)
         B = others[0]
-        
 
         inv_point = new_point(use_spheres=self.use_spheres,
-                                    radius=self.sphere_radius)
+                              radius=self.sphere_radius)
         inversion_point(inv_point, A, B)
 
         return {'FINISHED'}

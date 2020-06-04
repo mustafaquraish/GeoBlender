@@ -2,6 +2,7 @@ import bpy
 from GeoBlender.utils.objects import new_point, new_line, add_abs_bevel
 from GeoBlender.geometry.triangles import median, excenter
 
+
 class Incenter(bpy.types.Operator):
     bl_label = "Excenter"
     bl_idname = "geometry.excenter"
@@ -11,10 +12,6 @@ class Incenter(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     # GeoBlender Panel Type
-
-        
-    
-    
 
     use_spheres: bpy.props.BoolProperty(
         name="Sphere for excenter:",
@@ -30,7 +27,6 @@ class Incenter(bpy.types.Operator):
         default=0.5
     )
 
-    
     @classmethod
     def poll(cls, context):
         return (len(context.selected_objects) == 3 and
@@ -48,13 +44,8 @@ class Incenter(bpy.types.Operator):
         (B, C) = others
 
         point = new_point(use_spheres=self.use_spheres,
-                           radius=self.sphere_radius)
-                           
-        
+                          radius=self.sphere_radius)
 
         excenter(point, A, B, C)
-
-        
-        
 
         return {'FINISHED'}

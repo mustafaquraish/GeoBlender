@@ -2,11 +2,12 @@ import bpy
 from GeoBlender.utils.objects import new_point, new_circle, add_abs_bevel
 from GeoBlender.geometry.triangles import euler_circle
 
+
 class Eulercircle(bpy.types.Operator):
     bl_label = "Euler circle"
     bl_idname = "geometry.circumceulre"
     bl_description = ("Add the Euler circle of a triangle."
-                     " Select three points")
+                      " Select three points")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     # GeoBlender Panel Type
@@ -18,14 +19,12 @@ class Eulercircle(bpy.types.Operator):
         soft_max=0.5,
         default=0.2,
     )
-      
-    
+
     hide_center: bpy.props.BoolProperty(
         name="Hide center:",
         description="Hide the center of the Euler circle",
         default=False
-        )
-    
+    )
 
     use_spheres: bpy.props.BoolProperty(
         name="Sphere for center:",
@@ -41,7 +40,6 @@ class Eulercircle(bpy.types.Operator):
         default=0.5
     )
 
-    
     @classmethod
     def poll(cls, context):
         return (len(context.selected_objects) == 3)
@@ -58,8 +56,6 @@ class Eulercircle(bpy.types.Operator):
         center = new_point(use_spheres=self.use_spheres,
                            radius=self.sphere_radius,
                            hide=self.hide_center)
-
-        
 
         circle = new_circle()
         add_abs_bevel(circle, self.bevel_depth)
