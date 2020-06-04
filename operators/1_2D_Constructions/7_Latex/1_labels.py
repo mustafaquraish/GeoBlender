@@ -3,8 +3,10 @@ import bpy
 from .latex_utils import import_latex
 from GeoBlender.utils import drivers
 
+
 def menu_func(self, context):
     self.layout.operator(LatexLabel.bl_idname)
+
 
 class LatexLabel(bpy.types.Operator):
     """Enter Latex Label"""          # Use this as a tooltip for menu items and buttons.
@@ -26,10 +28,10 @@ class LatexLabel(bpy.types.Operator):
     # execute() is called when running the operator.
     def execute(self, context):
         A = context.object
-        
+
         # The original script
         curve = import_latex(self.text)
-        
+
         if curve is None:
             # Error parsing LaTeX
             self.report({'ERROR'}, 'Invalid Latex Source')

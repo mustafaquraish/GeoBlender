@@ -4,9 +4,6 @@ from GeoBlender.geometry.lines import orthogonal_proj_to_points
 from GeoBlender.geometry.lines import orthogonal_proj_to_line
 
 
-
-
-
 class OrthProj(bpy.types.Operator):
     bl_label = "Orthogonal projection"
     bl_idname = "geometry.ortho_proje"
@@ -15,14 +12,12 @@ class OrthProj(bpy.types.Operator):
                       " and a line. The point that is projected should"
                       " be the active object")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
-    
-      
 
     use_spheres: bpy.props.BoolProperty(
         name="Spheres for points:",
         description="Use spheres for points. Otherwise use empties.",
         default=True,
-        )
+    )
 
     sphere_radius: bpy.props.FloatProperty(
         name="Radius:",
@@ -30,14 +25,11 @@ class OrthProj(bpy.types.Operator):
         soft_min=0.01,
         soft_max=2,
         default=0.5,
-        )
-
-   
-  
+    )
 
     @classmethod
     def poll(cls, context):
-        
+
         if (len(context.selected_objects) == 3):
             return True
 
@@ -47,7 +39,7 @@ class OrthProj(bpy.types.Operator):
             others = context.selected_objects[-2:]
             others.remove(A)
             B = others[0]
-            
+
             if not (isinstance(B.data, bpy.types.Curve)):
                 return False
 
@@ -57,11 +49,8 @@ class OrthProj(bpy.types.Operator):
             else:
                 return True
 
-        else: 
-            return False     
-
-        
-        
+        else:
+            return False
 
     def invoke(self, context, event):
         self.sphere_radius = context.scene.geoblender_settings.sphere_radius
@@ -70,30 +59,25 @@ class OrthProj(bpy.types.Operator):
 
     def execute(self, context):
 
-        if  (len(context.selected_objects) == 3): 
+        if (len(context.selected_objects) == 3):
             A = context.active_object
             others = context.selected_objects[-3:]
             others.remove(A)
             (B, C) = others
-        
-        
+
             obj = new_point(use_spheres=self.use_spheres,
-                           radius=self.sphere_radius)
+                            radius=self.sphere_radius)
 
             orthogonal_proj_to_points(obj, A, B, C)
-                  
-        
 
-        if  (len(context.selected_objects) == 2):
+        if (len(context.selected_objects) == 2):
             A = context.active_object
             others = context.selected_objects[-2:]
             others.remove(A)
             B = others[0]
             obj = new_point(use_spheres=self.use_spheres,
-                           radius=self.sphere_radius)
+                            radius=self.sphere_radius)
 
-            orthogonal_proj_to_line(obj, A, B) 
+            orthogonal_proj_to_line(obj, A, B)
 
-
-        
         return {'FINISHED'}

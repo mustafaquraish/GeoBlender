@@ -9,21 +9,15 @@ from GeoBlender.utils.constraints import copy_location, copy_rotation
 from GeoBlender.utils.constraints import locked_track
 
 
-
-
 class ArcCenter(bpy.types.Operator):
     bl_label = "Arc with axis"
     bl_idname = "geometry.arc_center_angle"
-    bl_description = ("Add the arc of an angle with given axis." 
+    bl_description = ("Add the arc of an angle with given axis."
                       " The axis is determined by the center of "
                       " the arc and another point one side of the angle. "
                       "Select two points. The center should "
                       "be the active object")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
-
- 
- 
-
 
     other_angle: bpy.props.BoolProperty(
         name="Display the outer angle:",
@@ -38,8 +32,6 @@ class ArcCenter(bpy.types.Operator):
         soft_max=360,
         default=90,
     )
-
-    
 
     radius: bpy.props.FloatProperty(
         name="Radius:",
@@ -57,10 +49,6 @@ class ArcCenter(bpy.types.Operator):
         default=0.0,
     )
 
-    
-
-  
-
     @classmethod
     def poll(cls, context):
         return (len(context.selected_objects) == 2 and
@@ -77,13 +65,11 @@ class ArcCenter(bpy.types.Operator):
         others.remove(A)
         B = others[0]
 
-        arc_neo = new_arc(angle= 360, sides=64)
+        arc_neo = new_arc(angle=360, sides=64)
         copy_location(arc_neo, A)
         copy_rotation(arc_neo, A)
         locked_track(arc_neo, 'Z', 'X', B)
 
-
-        
         for i in range(3):
             arc_neo.scale[i] = self.radius
         arc_neo.data.bevel_depth = self.bevel_depth / self.radius
@@ -93,8 +79,5 @@ class ArcCenter(bpy.types.Operator):
         else:
             arc_neo.data.bevel_factor_start = self.arc_angle / 360
             arc_neo.data.bevel_factor_end = 1
-        
-
-
 
         return {'FINISHED'}

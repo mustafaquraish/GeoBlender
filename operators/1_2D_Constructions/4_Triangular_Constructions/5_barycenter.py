@@ -2,6 +2,7 @@ import bpy
 from GeoBlender.utils.objects import new_point, new_line, add_abs_bevel
 from GeoBlender.geometry.triangles import median, barycenter
 
+
 class Bary(bpy.types.Operator):
     bl_label = "Barycenter"
     bl_idname = "geometry.bary"
@@ -9,10 +10,6 @@ class Bary(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     # GeoBlender Panel Type
-
-        
-    
-    
 
     use_spheres: bpy.props.BoolProperty(
         name="Sphere for mid point:",
@@ -28,7 +25,6 @@ class Bary(bpy.types.Operator):
         default=0.5
     )
 
-    
     @classmethod
     def poll(cls, context):
         return (len(context.selected_objects) == 3)
@@ -42,13 +38,8 @@ class Bary(bpy.types.Operator):
         (A, B, C) = context.selected_objects[-3:]
 
         point = new_point(use_spheres=self.use_spheres,
-                           radius=self.sphere_radius)
-                           
-        
+                          radius=self.sphere_radius)
 
         barycenter(point, A, B, C)
-
-        
-        
 
         return {'FINISHED'}

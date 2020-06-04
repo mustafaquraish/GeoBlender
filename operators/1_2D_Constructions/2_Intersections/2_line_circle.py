@@ -3,7 +3,6 @@ from GeoBlender.utils.objects import new_arc, add_abs_bevel, new_point
 from GeoBlender.geometry.intersections import line_circle_intersections
 
 
-
 class LineCircleIntersection(bpy.types.Operator):
     bl_label = "Line - Circle"
     bl_idname = "geometry.line_circle_intersection"
@@ -11,13 +10,11 @@ class LineCircleIntersection(bpy.types.Operator):
                      "and circle. Select a line and a circle"
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
-
-   
     use_spheres: bpy.props.BoolProperty(
         name="Spheres for points:",
         description="Use spheres for points. Otherwise use empties.",
         default=True,
-        )
+    )
 
     sphere_radius: bpy.props.FloatProperty(
         name="Radius:",
@@ -25,7 +22,7 @@ class LineCircleIntersection(bpy.types.Operator):
         soft_min=0.01,
         soft_max=2,
         default=0.5,
-        )
+    )
 
     @classmethod
     def poll(cls, context):
@@ -64,9 +61,9 @@ class LineCircleIntersection(bpy.types.Operator):
         (A, B) = context.selected_objects[-2:]
 
         X = new_point(use_spheres=self.use_spheres,
-                           radius=self.sphere_radius)
+                      radius=self.sphere_radius)
         Y = new_point(use_spheres=self.use_spheres,
-                           radius=self.sphere_radius)
+                      radius=self.sphere_radius)
         line_circle_intersections(
             X, Y, line, circle, hide_extra=self.hide_extra)
 

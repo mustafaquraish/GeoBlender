@@ -6,6 +6,7 @@ from GeoBlender.utils.objects import new_line, add_abs_bevel, new_point
 from GeoBlender.geometry.lines import bisecting_line_of_points
 from GeoBlender.geometry.lines import bisecting_line_of_line
 
+
 class Scratch(bpy.types.Operator):
     bl_label = "Scratch"
     bl_idname = "geometry.create_angle_scratch_me"
@@ -40,8 +41,6 @@ class Scratch(bpy.types.Operator):
         soft_max=20,
         default=1,
     )
-
-    
 
     @classmethod
     def poll(cls, context):

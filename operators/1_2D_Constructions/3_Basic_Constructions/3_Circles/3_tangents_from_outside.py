@@ -4,17 +4,14 @@ from GeoBlender.geometry.circles import circle_tangent_lines
 from GeoBlender.geometry.circles import circle_tangent_points
 
 
-
 class TangentsFromOutside(bpy.types.Operator):
     bl_label = "Tangents from outside point"
     bl_idname = "geometry.tangents_outside"
-    bl_description = ("Returns the two tangents from " +\
-                     "a point outside a circle. Select a point and a circle."
-                     " The point should be the active object.")
+    bl_description = ("Returns the two tangents from " +
+                      "a point outside a circle. Select a point and a circle."
+                      " The point should be the active object.")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
-
-   
     bevel_depth: bpy.props.FloatProperty(
         name="Bevel Depth:",
         description="Thickness of tangents",
@@ -54,15 +51,14 @@ class TangentsFromOutside(bpy.types.Operator):
         others.remove(A)
         B = others[0]
 
-        point1=new_point()
-        point2=new_point()
+        point1 = new_point()
+        point2 = new_point()
         circle_tangent_points(point1, point2, B, A)
-        
+
         line1 = new_line()
         add_abs_bevel(line1, self.bevel_depth)
         line2 = new_line()
         add_abs_bevel(line2, self.bevel_depth)
-
 
         circle_tangent_lines(line1, line2, B, A, hide_extra=self.hide_extra)
 

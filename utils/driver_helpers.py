@@ -70,9 +70,6 @@ def gb_rad_axis_helper(d, r1, r2, o1, o2):
     return (1 - frac) * o1 + frac * o2
 
 
-
-
-
 def gb_polar_intersection(d, r, o1, o2):
     '''
     Function to be used in the driver to help compute the intersection point of

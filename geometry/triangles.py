@@ -229,6 +229,7 @@ def angle_divider_foot(point, A, B, C, influ, hide_extra=True):
         opposite=True
     )
 
+
 def angle_bisector(line, point, A, B, C, hide_extra=True):
     '''
     Places the angle bisector of the angle BAC.

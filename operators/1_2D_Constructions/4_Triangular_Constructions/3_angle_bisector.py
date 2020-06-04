@@ -2,13 +2,14 @@ import bpy
 from GeoBlender.utils.objects import new_point, new_line, add_abs_bevel
 from GeoBlender.geometry.triangles import angle_bisector
 
+
 class AngleBisector(bpy.types.Operator):
     bl_label = "Angle bisector"
     bl_idname = "geometry.angle_bis"
     bl_description = ("Add the angle bisector of a triangle. Select three"
-                     " points for the"
-                     " vertices of the triangle. The vertex of the bisector "
-                     "should be the active object")
+                      " points for the"
+                      " vertices of the triangle. The vertex of the bisector "
+                      "should be the active object")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     # GeoBlender Panel Type
@@ -20,14 +21,12 @@ class AngleBisector(bpy.types.Operator):
         soft_max=0.5,
         default=0.2,
     )
-      
-    
+
     hide_foot: bpy.props.BoolProperty(
         name="Hide foot:",
         description="Hide the foot of the angle bisector",
         default=False
-        )
-    
+    )
 
     use_spheres: bpy.props.BoolProperty(
         name="Sphere for mid point:",
@@ -43,10 +42,9 @@ class AngleBisector(bpy.types.Operator):
         default=0.5
     )
 
-    
     @classmethod
     def poll(cls, context):
-        return (len(context.selected_objects) == 3  and
+        return (len(context.selected_objects) == 3 and
                 context.object is not None)
 
     def invoke(self, context, event):
@@ -61,15 +59,12 @@ class AngleBisector(bpy.types.Operator):
         others.remove(A)
         (B, C) = others
 
-
         midp = new_point(use_spheres=self.use_spheres,
-                           radius=self.sphere_radius,
-                           hide=self.hide_foot)
+                         radius=self.sphere_radius,
+                         hide=self.hide_foot)
 
         med = new_line()
         add_abs_bevel(med, self.bevel_depth)
         angle_bisector(med, midp, A, B, C)
-
-        
 
         return {'FINISHED'}
