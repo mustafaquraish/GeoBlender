@@ -50,6 +50,7 @@ class Circumcircle(bpy.types.Operator):
         self.bevel_depth = context.scene.geoblender_settings.bevel_depth
         self.use_spheres = context.scene.geoblender_settings.use_spheres
         self.sphere_radius = context.scene.geoblender_settings.sphere_radius
+        self.hide_extra = context.scene.geoblender_settings.hide_extra
         return self.execute(context)
 
     def execute(self, context):
