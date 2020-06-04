@@ -24,7 +24,7 @@ class Scratch(bpy.types.Operator):
 
     ratio: bpy.props.FloatProperty(
         name="Homothety ratio:",
-        description="Sets the homothety ration",
+        description="Sets the homothety ratio",
         min=-150,
         soft_max=150,
         default=2,
