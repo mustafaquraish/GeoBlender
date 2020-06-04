@@ -40,7 +40,7 @@ def get_files(folder, accum=None):
         new_accum = f'{accum}.{item}' if accum is not None else item
         # If this is an operator file, add it to the `files` list
         if (os.path.isfile(itempath) and item != '__init__.py' and 
-            item[0] != '.'):
+            item[-3:] == '.py'):
             files.append(new_accum[:-3])  # [:-3] to remove the .py
         # If this is a directory, recurse
         elif os.path.isdir(itempath) and item != "__pycache__":
@@ -50,10 +50,6 @@ def get_files(folder, accum=None):
 # Get the directory of this folder (`operators`) and get all files.
 path = os.path.dirname(os.path.abspath(__file__))
 get_files(path)
-
-with open("t.txt", "w") as f:
-    for l in files:
-        f.write(l+'\n')
 
 # For each file
 for py in files:
