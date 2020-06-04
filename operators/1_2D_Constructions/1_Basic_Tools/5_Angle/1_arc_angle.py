@@ -6,11 +6,10 @@ from GeoBlender.utils.constraints import copy_location, copy_rotation
 from GeoBlender.utils.constraints import locked_track
 
 
-
 class AngleArcTwoPointsFree(bpy.types.Operator):
     bl_label = "Arc for angle"
     bl_idname = "geometry.create_angle_arc_free"
-    bl_description = ("Add the arc of an angle with given center" 
+    bl_description = ("Add the arc of an angle with given center"
                       " and one point on each of the two sides of the angle."
                       "Select three points. The center should "
                       "be the active object")
@@ -45,11 +44,6 @@ class AngleArcTwoPointsFree(bpy.types.Operator):
         default=1
     )
 
-    
-
-   
-  
-
     @classmethod
     def poll(cls, context):
         return (len(context.selected_objects) == 3 and
@@ -65,15 +59,12 @@ class AngleArcTwoPointsFree(bpy.types.Operator):
         others = context.selected_objects[-3:]
         others.remove(A)
         B, C = others
-     
 
         arc = new_arc(angle=360, sides=64)
 
         for i in range(3):
             arc.scale[i] = self.radius
 
-
-        
         add_abs_bevel(arc, self.bevel_depth)
         align_to_plane_of(arc, A, B, C)
 

@@ -6,7 +6,6 @@ from GeoBlender.utils.constraints import copy_location, copy_rotation
 from GeoBlender.utils.constraints import locked_track
 
 
-
 class AngleArcTwoPoints(bpy.types.Operator):
     bl_label = "Arc with endpoints"
     bl_idname = "geometry.create_angle_arc"
@@ -35,9 +34,6 @@ class AngleArcTwoPoints(bpy.types.Operator):
         default=0.0,
     )
 
-   
-  
-
     @classmethod
     def poll(cls, context):
         return (len(context.selected_objects) == 3 and
@@ -53,21 +49,18 @@ class AngleArcTwoPoints(bpy.types.Operator):
         others = context.selected_objects[-3:]
         others.remove(A)
         B, C = others
-     
 
         arc = new_arc(angle=360, sides=64)
 
         add_driver_distance(
             obj=arc,
-            prop= 'scale',
-            fields= 'XYZ', 
-            A=A, 
-            B=B, 
+            prop='scale',
+            fields='XYZ',
+            A=A,
+            B=B,
             scale=1
-            )
+        )
 
-
-        
         add_abs_bevel(arc, self.bevel_depth)
         align_to_plane_of(arc, A, B, C)
 

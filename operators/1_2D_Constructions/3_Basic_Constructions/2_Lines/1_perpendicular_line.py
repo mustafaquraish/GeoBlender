@@ -4,9 +4,6 @@ from GeoBlender.geometry.lines import orthogonal_line_to_line
 from GeoBlender.geometry.lines import orthogonal_line_to_points
 
 
-
-
-
 class PerpLine(bpy.types.Operator):
     bl_label = "Perpendicular line"
     bl_idname = "geometry.perpe_line"
@@ -16,8 +13,7 @@ class PerpLine(bpy.types.Operator):
                       " and a line. The point that is projected should"
                       " be the active object")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
-    
-      
+
     bevel_depth: bpy.props.FloatProperty(
         name="Bevel Depth:",
         description="Thickness of ray",
@@ -25,7 +21,6 @@ class PerpLine(bpy.types.Operator):
         soft_max=0.5,
         default=0.2,
     )
-    
 
     length: bpy.props.FloatProperty(
         name="Length:",
@@ -35,12 +30,9 @@ class PerpLine(bpy.types.Operator):
         default=100,
     )
 
-   
-  
-
     @classmethod
     def poll(cls, context):
-        
+
         if (len(context.selected_objects) == 3):
             return True
 
@@ -50,7 +42,7 @@ class PerpLine(bpy.types.Operator):
             others = context.selected_objects[-2:]
             others.remove(A)
             B = others[0]
-            
+
             if not (isinstance(B.data, bpy.types.Curve)):
                 return False
 
@@ -60,11 +52,8 @@ class PerpLine(bpy.types.Operator):
             else:
                 return True
 
-        else: 
-            return False     
-
-        
-        
+        else:
+            return False
 
     def invoke(self, context, event):
         self.hide_extra = context.scene.geoblender_settings.hide_extra
@@ -74,22 +63,18 @@ class PerpLine(bpy.types.Operator):
 
     def execute(self, context):
 
-        if  (len(context.selected_objects) == 3): 
+        if (len(context.selected_objects) == 3):
             A = context.active_object
             others = context.selected_objects[-3:]
             others.remove(A)
             (B, C) = others
-        
-        
+
             obj = new_line(length=self.length)
             add_abs_bevel(obj, self.bevel_depth)
 
-
             orthogonal_line_to_points(obj, A, B, C, hide_extra=self.hide_extra)
-                  
-        
 
-        if  (len(context.selected_objects) == 2):
+        if (len(context.selected_objects) == 2):
             A = context.active_object
             others = context.selected_objects[-2:]
             others.remove(A)
@@ -97,8 +82,6 @@ class PerpLine(bpy.types.Operator):
             obj = new_line(length=self.length)
             add_abs_bevel(obj, self.bevel_depth)
 
-            orthogonal_line_to_line(obj, A, B, hide_extra=self.hide_extra) 
+            orthogonal_line_to_line(obj, A, B, hide_extra=self.hide_extra)
 
-
-        
         return {'FINISHED'}

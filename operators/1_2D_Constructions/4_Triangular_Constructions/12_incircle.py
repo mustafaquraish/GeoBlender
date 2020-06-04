@@ -2,11 +2,12 @@ import bpy
 from GeoBlender.utils.objects import new_point, new_circle, add_abs_bevel
 from GeoBlender.geometry.triangles import incircle
 
+
 class Circumcircle(bpy.types.Operator):
     bl_label = "Incircle"
     bl_idname = "geometry.incircle"
     bl_description = ("Add the incircle of a triangle."
-                     " Select three points")
+                      " Select three points")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     # GeoBlender Panel Type
@@ -18,14 +19,12 @@ class Circumcircle(bpy.types.Operator):
         soft_max=0.5,
         default=0.2,
     )
-      
-    
+
     hide_center: bpy.props.BoolProperty(
         name="Hide center:",
         description="Hide the center of the circle",
         default=False
-        )
-    
+    )
 
     use_spheres: bpy.props.BoolProperty(
         name="Spheres for points:",
@@ -41,7 +40,6 @@ class Circumcircle(bpy.types.Operator):
         default=0.5
     )
 
-    
     @classmethod
     def poll(cls, context):
         return (len(context.selected_objects) == 3)
@@ -58,8 +56,6 @@ class Circumcircle(bpy.types.Operator):
         center = new_point(use_spheres=self.use_spheres,
                            radius=self.sphere_radius,
                            hide=self.hide_center)
-
-        
 
         circle = new_circle()
         incircle(circle, center, A, B, C)

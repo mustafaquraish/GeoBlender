@@ -5,16 +5,12 @@ from GeoBlender.utils.constraints import copy_transforms
 from GeoBlender.utils.objects import move_origin_center
 
 
-
-
 class RadicalAxis(bpy.types.Operator):
     bl_label = "Radical axis"
     bl_idname = "geometry.radical_axis"
     bl_description = ("Returns the radical axis two circles. "
                       "Select two circles")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
-    
-        
 
     bevel_depth: bpy.props.FloatProperty(
         name="Bevel Depth:",
@@ -32,12 +28,9 @@ class RadicalAxis(bpy.types.Operator):
         default=100,
     )
 
-   
-  
-
     @classmethod
     def poll(cls, context):
-        
+
         if not (len(context.selected_objects) == 2):
             return False
 
@@ -56,7 +49,6 @@ class RadicalAxis(bpy.types.Operator):
             return False
 
         return True
-        
 
     def invoke(self, context, event):
         self.length = context.scene.geoblender_settings.length
@@ -72,9 +64,5 @@ class RadicalAxis(bpy.types.Operator):
         add_abs_bevel(line1, self.bevel_depth)
 
         radical_axis(line1, A, B)
-        
-
-
-
 
         return {'FINISHED'}

@@ -9,18 +9,16 @@ from GeoBlender.geometry.lines import bisecting_line_of_line
 from GeoBlender.utils.constraints import copy_location, copy_rotation
 from GeoBlender.utils.constraints import locked_track, copy_scale
 
+
 class Scratch(bpy.types.Operator):
     bl_label = "Homothety with ratio"
     bl_idname = "geometry.homothety_ratio"
-    bl_description = ("Adds the homothetic object relative to an origin (point)"
-                       " and a ratio (number set in the operator panel). Select" 
-                       " two objects. The object to be transformed should be " 
-                       "the active one")
+    bl_description = (
+        "Adds the homothetic object relative to an origin (point)"
+        " and a ratio (number set in the operator panel). Select"
+        " two objects. The object to be transformed should be "
+        "the active one")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
-
-    
-
-        
 
     ratio: bpy.props.FloatProperty(
         name="Homothety ratio:",
@@ -42,13 +40,13 @@ class Scratch(bpy.types.Operator):
         name="Display center:",
         description="Display center when object is a circle",
         default=True,
-        )
+    )
 
     use_spheres: bpy.props.BoolProperty(
         name="Spheres for points:",
         description="Use spheres for points. Otherwise use empties.",
         default=True,
-        )
+    )
 
     sphere_radius: bpy.props.FloatProperty(
         name="Radius:",
@@ -56,8 +54,7 @@ class Scratch(bpy.types.Operator):
         soft_min=0.01,
         soft_max=2,
         default=0.5,
-        )
-    
+    )
 
     @classmethod
     def poll(cls, context):
@@ -83,14 +80,10 @@ class Scratch(bpy.types.Operator):
         e_help.name = "Object defining drivers"
         e_help.location[0] = self.ratio
 
-                 
-       
-
         if not (isinstance(A.data, bpy.types.Curve)):
             new = new_point(use_spheres=self.use_spheres,
-                           radius=self.sphere_radius)
+                            radius=self.sphere_radius)
             new.name = "Homothetic object"
-
 
         # Can try to duplicate instead and then clear all constraints
         if 'Line' in A.data.name:
@@ -98,32 +91,28 @@ class Scratch(bpy.types.Operator):
             new.name = "Homothetic object"
             add_abs_bevel(new, self.bevel_depth)
 
-        
-            
         if 'Circle' in A.data.name:
             new = new_circle()
             new.name = "Homothetic object"
             add_abs_bevel(new, self.bevel_depth)
-  
+
         copy_rotation(new, A)
-        add_driver(obj = new, 
-                   prop = 'location', 
-                   fields='XYZ', 
+        add_driver(obj=new,
+                   prop='location',
+                   fields='XYZ',
                    vars_def={'x1': ('transform', e_help, 'location', 'X'),
                              'b1': ('transform', B, 'location', '-'),
-                             'a1': ('transform', A, 'location', '-'),}, 
+                             'a1': ('transform', A, 'location', '-'), },
                    expr="b1 + x1*(a1-b1)")
-        
-
 
         if 'Circle' in A.data.name:
 
-            add_driver(obj = new, 
-                      prop = 'scale', 
-                      fields='XYZ', 
-                      vars_def={'x1': ('transform', e_help, 'location', 'X'),
-                                's1': ('transform', A, 'scale', 'X'),}, 
-                      expr="x1*s1")
+            add_driver(obj=new,
+                       prop='scale',
+                       fields='XYZ',
+                       vars_def={'x1': ('transform', e_help, 'location', 'X'),
+                                 's1': ('transform', A, 'scale', 'X'), },
+                       expr="x1*s1")
 
             if self.display_center:
                 center = new_point(use_spheres=self.use_spheres,
@@ -131,17 +120,12 @@ class Scratch(bpy.types.Operator):
                 copy_location(center, new)
                 copy_rotation(center, new)
 
-        
         if 'Line' in A.data.name:
-            add_driver(obj = new, 
-                      prop = 'scale', 
-                      fields='XYZ', 
-                      vars_def={'x1': ('transform', e_help, 'location', 'X'),
-                                's1': ('transform', A, 'scale', 'X'),}, 
-                      expr="x1*s1")
+            add_driver(obj=new,
+                       prop='scale',
+                       fields='XYZ',
+                       vars_def={'x1': ('transform', e_help, 'location', 'X'),
+                                 's1': ('transform', A, 'scale', 'X'), },
+                       expr="x1*s1")
 
-       
         return {'FINISHED'}
-
-
-
