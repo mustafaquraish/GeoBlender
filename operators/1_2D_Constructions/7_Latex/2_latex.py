@@ -16,19 +16,12 @@ class LatexLabel(bpy.types.Operator):
 
     text: bpy.props.StringProperty(name="Latex:", description="Latex Code")
 
-    @classmethod
-    def poll(cls, context):
-        return (len(context.selected_objects) == 1 and
-                context.object is not None)
-
     def invoke(self, context, event):
         wm = context.window_manager
         return wm.invoke_props_dialog(self)
 
     # execute() is called when running the operator.
     def execute(self, context):
-        A = context.object
-
         # The original script
         curve = import_latex(self.text)
 
