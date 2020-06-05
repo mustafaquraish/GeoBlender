@@ -106,7 +106,7 @@ def add_driver(obj, prop, fields=None, vars_def={}, expr="1.0"):
 
             else:
                 raise Exception("Driver variable type not in "
-                                "{'transform', 'distance'}")
+                                "{'transform', 'distance', 'datapath'}")
 
         driver.driver.expression = expr
 
