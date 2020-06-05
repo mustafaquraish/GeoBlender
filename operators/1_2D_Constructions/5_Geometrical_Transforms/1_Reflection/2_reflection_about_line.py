@@ -4,7 +4,7 @@ from GeoBlender.geometry.lines import reflect_across_line
 from GeoBlender.geometry.lines import reflect_across_line_of_points
 
 
-class Midpoint(bpy.types.Operator):
+class MidpointRef(bpy.types.Operator):
     bl_label = "Reflection about a line"
     bl_idname = "geometry.reflection_line"
     bl_description = ("Returns the reflection of a point relative to a line."

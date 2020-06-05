@@ -11,7 +11,7 @@ from GeoBlender.utils.constraints import locked_track, copy_scale
 from GeoBlender.geometry.lines import line_ends
 
 
-class Scratch(bpy.types.Operator):
+class ScratchHom(bpy.types.Operator):
     bl_label = "Homothety with length ratio"
     bl_idname = "geometry.homothety_ratio_distances"
     bl_description = (
@@ -23,8 +23,8 @@ class Scratch(bpy.types.Operator):
 
     
     bevel_depth: bpy.props.FloatProperty(
-        name="Bevel Depth:",
-        description="Thickness of circle",
+        name="Bevel depth:",
+        description="Thickness of curve",
         min=0,
         soft_max=0.5,
         default=0.2,
@@ -60,9 +60,9 @@ class Scratch(bpy.types.Operator):
             (O_test, L_test, R_test) = others
             if 'Sphere' in O_test.data.name:
                 O = O_test
-            if 'Sphere' in L_test.data.name:
+            elif 'Sphere' in L_test.data.name:
                 O = L_test
-            if 'Sphere' in R_test.data.name:
+            elif 'Sphere' in R_test.data.name:
                 O = R_test
             else:
                 return False
@@ -71,13 +71,14 @@ class Scratch(bpy.types.Operator):
             if ('Line' in L_test.data.name and 
                 'Circle' in R_test.data.name):
                 return True
-            if ('Line' in R_test.data.name and 
+            elif ('Line' in R_test.data.name and 
                 'Circle' in L_test.data.name):
                 return True
             else: 
                 return False
-        else:
+        else: 
             return False
+        
         
         
 

@@ -13,7 +13,7 @@ class Segment(bpy.types.Operator):
     gb_panel = '2D Constructions > Basic Tools > Lines'
 
     bevel_depth: bpy.props.FloatProperty(
-        name="Bevel Depth:",
+        name="Bevel depth:",
         description="Thickness of segment",
         min=0,
         soft_max=0.5,

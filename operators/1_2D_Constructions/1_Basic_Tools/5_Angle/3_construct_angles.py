@@ -53,7 +53,7 @@ class ArcCenter(bpy.types.Operator):
     )
 
     radius: bpy.props.FloatProperty(
-        name="Radius:",
+        name="Arc radius:",
         description="Radius of arc",
         min=0.01,
         soft_max=20,
@@ -61,7 +61,7 @@ class ArcCenter(bpy.types.Operator):
     )
 
     bevel_depth: bpy.props.FloatProperty(
-        name="Bevel Depth:",
+        name="Bevel depth:",
         description="Thickness of arc",
         min=0,
         soft_max=0.5,

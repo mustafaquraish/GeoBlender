@@ -27,7 +27,7 @@ class AngleArcTwoPoints(bpy.types.Operator):
     )
 
     bevel_depth: bpy.props.FloatProperty(
-        name="Bevel Depth:",
+        name="Bevel depth:",
         description="Thickness of arc bevel",
         min=0,
         soft_max=0.5,

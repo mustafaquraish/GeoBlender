@@ -1,9 +1,11 @@
 import bpy
-from GeoBlender.utils.objects import new_arc, add_abs_bevel
+from GeoBlender.utils.objects import new_arc, add_abs_bevel, new_point
+from GeoBlender.utils.objects import new_line
 from GeoBlender.utils.geometry import align_to_plane_of
 from GeoBlender.utils.drivers import add_driver, add_driver_distance
 from GeoBlender.utils.constraints import copy_location, copy_rotation
 from GeoBlender.utils.constraints import locked_track, position_on_curve
+from GeoBlender.geometry.lines import ray
 
 
 class AngleArcTwoPointsFree(bpy.types.Operator):
@@ -47,7 +49,7 @@ class AngleArcTwoPointsFree(bpy.types.Operator):
     )
 
     bevel_depth: bpy.props.FloatProperty(
-        name="Bevel Depth:",
+        name="Bevel depth:",
         description="Thickness of arc bevel",
         min=0,
         soft_max=0.5,
@@ -55,11 +57,19 @@ class AngleArcTwoPointsFree(bpy.types.Operator):
     )
 
     radius: bpy.props.FloatProperty(
-        name="Radius:",
+        name="Arc radius:",
         description="Radius of arc",
         min=0.01,
         soft_max=20,
         default=1
+    )
+
+    sphere_radius: bpy.props.FloatProperty(
+        name="Point radius:",
+        description="Radius of spheres drawn for points",
+        soft_min=0.01,
+        soft_max=2,
+        default=0.5,
     )
 
     @classmethod
@@ -134,33 +144,30 @@ class AngleArcTwoPointsFree(bpy.types.Operator):
 
 
 
-        end1 = new_point(use_spheres=self.use_spheres,
-                            radius=self.sphere_radius,
-                            hide=self.hide_endpoints)
+        end1 = new_point(radius=self.sphere_radius,hide=self.hide_endpoints)
         end1.name = "Arc endpoint"
-        end2 = new_point(use_spheres=self.use_spheres,
-                            radius=self.sphere_radius,
-                            hide=self.hide_endpoints)
+        end2 = new_point(radius=self.sphere_radius,hide=self.hide_endpoints)
         end2.name = "Arc endpoint"
-        position_on_curve(end1, arc_neo, position=self.arc_angle / 360)
-        position_on_curve(end2, arc_neo, position=1) 
+        position_on_curve(end1, arc, position=0)
+        position_on_curve(end2, arc, position=1) 
 
         add_driver(
-            obj=end1.constraints["Follow Path"],
-            prop='offset_factor',
-            vars_def={
-                'ax': ('transform', A, 'location', 'X'),
-                'ay': ('transform', A, 'location', 'Y'),
-                'az': ('transform', A, 'location', 'Z'),
-                'bx': ('transform', B, 'location', 'X'),
-                'by': ('transform', B, 'location', 'Y'),
-                'bz': ('transform', B, 'location', 'Z'),
-                'cx': ('transform', C, 'location', 'X'),
-                'cy': ('transform', C, 'location', 'Y'),
-                'cz': ('transform', C, 'location', 'Z'),
-            },
-            expr='0.5'
-        )
+                obj=end1.constraints[-1],
+                prop= 'offset_factor',
+                vars_def={
+                    'bev': ("datapath", arc, "data.bevel_factor_start"),},
+                expr= "bev"
+                )
+
+        add_driver(
+                obj=end2.constraints[-1],
+                prop= 'offset_factor',
+                vars_def={
+                    'bev': ("datapath", arc, "data.bevel_factor_end"),},
+                expr= "bev"
+                )       
+
+        
 
         
         return {'FINISHED'}

@@ -11,7 +11,7 @@ from GeoBlender.utils.constraints import copy_location, copy_rotation
 from GeoBlender.utils.constraints import locked_track, copy_scale
 
 
-class Scratch(bpy.types.Operator):
+class ScratchHommnum(bpy.types.Operator):
     bl_label = "Homothety with number ratio"
     bl_idname = "geometry.homothety_ratio"
     bl_description = (
@@ -29,8 +29,8 @@ class Scratch(bpy.types.Operator):
     )
 
     bevel_depth: bpy.props.FloatProperty(
-        name="Bevel Depth:",
-        description="Thickness of circle",
+        name="Bevel depth:",
+        description="Thickness of curve",
         min=0,
         soft_max=0.5,
         default=0.2,

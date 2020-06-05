@@ -10,7 +10,7 @@ from GeoBlender.utils.constraints import copy_location, copy_rotation
 from GeoBlender.utils.constraints import locked_track, copy_scale
 
 
-class Scratch(bpy.types.Operator):
+class ScratchRot(bpy.types.Operator):
     bl_label = "Rotation about a point"
     bl_idname = "geometry.rotation_about_point"
     bl_description = ("Adds the rotation of any object about a point."
@@ -24,6 +24,14 @@ class Scratch(bpy.types.Operator):
         min=0,
         soft_max=360,
         default=45,
+    )
+
+    bevel_depth: bpy.props.FloatProperty(
+        name="Bevel depth:",
+        description="Thickness of circle",
+        min=0,
+        soft_max=0.5,
+        default=0.2,
     )
 
     @classmethod
@@ -70,5 +78,10 @@ class Scratch(bpy.types.Operator):
         copy_location(dupli_A, e_loc)
         copy_rotation(dupli_A, e_loc)
         copy_scale(dupli_A, A)
+
+        if (isinstance(A.data, bpy.types.Curve)):
+            add_abs_bevel(dupli_A, self.bevel_depth)
+
+        
 
         return {'FINISHED'}
