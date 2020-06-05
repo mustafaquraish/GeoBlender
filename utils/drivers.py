@@ -98,6 +98,12 @@ def add_driver(obj, prop, fields=None, vars_def={}, expr="1.0"):
                 var.targets[0].id = A
                 var.targets[1].id = B
 
+            elif var_type == "datapath":
+                (A, data_path) = vars_def[var_name][1:]
+                var.type = 'SINGLE_PROP'
+                var.targets[0].id        = A
+                var.targets[0].data_path = data_path
+
             else:
                 raise Exception("Driver variable type not in "
                                 "{'transform', 'distance'}")
