@@ -4,10 +4,6 @@ from .latex_utils import import_latex
 from GeoBlender.utils import drivers
 
 
-def menu_func(self, context):
-    self.layout.operator(LatexLabel.bl_idname)
-
-
 class LatexLabel(bpy.types.Operator):
     """Enter Latex Label"""          # Use this as a tooltip for menu items and buttons.
     bl_idname = "add.latex_label"            # Unique identifier for buttons and menu items to reference.

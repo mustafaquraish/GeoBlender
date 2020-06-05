@@ -1,12 +1,7 @@
 import bpy
 
 from .latex_utils import import_latex
-from GeoBlender.utils import drivers
-
-
-def menu_func(self, context):
-    self.layout.operator(LatexLabel.bl_idname)
-
+from GeoBlender.utils import driver
 
 class LatexLabel(bpy.types.Operator):
     """Enter Latex Expression"""          # Use this as a tooltip for menu items and buttons.
