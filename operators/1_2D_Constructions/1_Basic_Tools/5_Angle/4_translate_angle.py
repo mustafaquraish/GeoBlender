@@ -171,34 +171,6 @@ class ArcCenter(bpy.types.Operator):
 
 
 
-        
-        '''
-        
-        
-        
-        arc_neo.data.bevel_factor_start = 0
-        arc_neo.data.bevel_factor_end = self.arc_angle / 360
-        end1 = new_point(use_spheres=self.use_spheres,
-                            radius=self.sphere_radius,
-                            hide=self.hide_endpoints)
-        end1.name = "Arc endpoint"
-        end2 = new_point(use_spheres=self.use_spheres,
-                            radius=self.sphere_radius,
-                            hide=self.hide_endpoints)
-        end2.name = "Arc endpoint"
-        position_on_curve(end1, arc_neo, position=0)
-        position_on_curve(end2, arc_neo, position=self.arc_angle / 360)   
-        if self.display_sides:
-            side1 = new_line()
-            add_abs_bevel(side1, self.bevel_depth)
-            side2 = new_line()
-            add_abs_bevel(side2, self.bevel_depth)
-            ray(side1, A, end1)
-            ray(side2, A, end2)
-        '''
-
-        
-        
 
 
         return {'FINISHED'}

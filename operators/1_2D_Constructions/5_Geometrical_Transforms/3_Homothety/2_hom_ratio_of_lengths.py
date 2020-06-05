@@ -11,7 +11,7 @@ from GeoBlender.utils.constraints import locked_track, copy_scale
 from GeoBlender.geometry.lines import line_ends
 
 
-class ScratchHom(bpy.types.Operator):
+class Homothety_lengths(bpy.types.Operator):
     bl_label = "Homothety with length ratio"
     bl_idname = "geometry.homothety_ratio_distances"
     bl_description = (

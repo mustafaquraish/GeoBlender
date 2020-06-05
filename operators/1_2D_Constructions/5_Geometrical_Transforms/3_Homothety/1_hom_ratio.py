@@ -11,7 +11,7 @@ from GeoBlender.utils.constraints import copy_location, copy_rotation
 from GeoBlender.utils.constraints import locked_track, copy_scale
 
 
-class ScratchHommnum(bpy.types.Operator):
+class Homothety_ration(bpy.types.Operator):
     bl_label = "Homothety with number ratio"
     bl_idname = "geometry.homothety_ratio"
     bl_description = (
