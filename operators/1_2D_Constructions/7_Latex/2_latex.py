@@ -2,6 +2,7 @@ import bpy
 
 from .latex_utils import import_latex
 
+
 class LatexLabel(bpy.types.Operator):
     """Enter Latex Expression"""          # Use this as a tooltip for menu items and buttons.
     bl_idname = "add.latex"            # Unique identifier for buttons and menu items to reference.
