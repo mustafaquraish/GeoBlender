@@ -25,7 +25,7 @@ def make_driver_list(obj, prop, fields=None):
     for example, 'XY' means the X and Y fields have a new driver created.
     '''
     if fields is None:
-        return [obj.driver_add(prop.lower())]
+        return [obj.driver_add(prop)]
 
     driver_list = []
     for axis in fields:
