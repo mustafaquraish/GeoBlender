@@ -25,7 +25,7 @@ def make_driver_list(obj, prop, fields=None):
     for example, 'XY' means the X and Y fields have a new driver created.
     '''
     if fields is None:
-        return [obj.driver_add(prop.lower())]
+        return [obj.driver_add(prop)]
 
     driver_list = []
     for axis in fields:
@@ -52,7 +52,7 @@ def add_driver(obj, prop, fields=None, vars_def={}, expr="1.0"):
     {
         var_name: (type='transform', target_object, prop, field),
         var_name: (type='distance', object_1, object_2),
-        var_name: (type='datapath', data_path)
+        var_name: (type='datapath', object, data_path)
     }
     where:
         type: 'transform', 'distance', (... unsupported ...)
