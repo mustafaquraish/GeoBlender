@@ -1,7 +1,7 @@
 import bpy
 from GeoBlender.utils.objects import new_point
 from GeoBlender.geometry.planes import constraint_to_plane
-
+from GeoBlender.utils.drivers import add_driver
 
 class PointOnPlane(bpy.types.Operator):
     bl_label = "Point on plane"
@@ -57,5 +57,13 @@ class PointOnPlane(bpy.types.Operator):
         created_point.name = 'Point'
 
         constraint_to_plane(created_point, plane)
+
+        
+        add_driver(obj=created_point,
+                   prop='scale',
+                   fields='XYZ',
+                   vars_def={'x1': ('transform', plane, 'scale', 'X'),
+                   },
+                   expr="1/ x1")
 
         return {'FINISHED'}

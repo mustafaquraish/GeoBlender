@@ -6,28 +6,22 @@ from GeoBlender.utils.drivers import add_driver
 from GeoBlender.utils.objects import new_line, add_abs_bevel, new_point
 from GeoBlender.geometry.lines import bisecting_line_of_points
 from GeoBlender.geometry.lines import bisecting_line_of_line
-from GeoBlender.geometry.lines import line_ends
 from GeoBlender.utils.constraints import copy_location, copy_rotation
 from GeoBlender.utils.constraints import locked_track, copy_scale
+from GeoBlender.geometry.lines import line_ends
 
 
 class Scratch(bpy.types.Operator):
-    bl_label = "Homothety with number ratio"
-    bl_idname = "geometry.homothety_ratio"
+    bl_label = "Homothety with length ratio"
+    bl_idname = "geometry.homothety_ratio_distances"
     bl_description = (
         "Adds the homothetic tranform of an object (active) relative"
-        " to an origin (point). The ratio is the number set at the " 
-        "operator panel. Select the object (active) and an origin")
+        " to an origin (point) and ratio s/r, with s the length of a line segment" 
+        " and r the radius of a circle. Select the object (active), the origin,"
+        " a line segment (s) and a circle (r)")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
-    ratio: bpy.props.FloatProperty(
-        name="Homothety ratio:",
-        description="Sets the homothety ratio",
-        min=-150,
-        soft_max=150,
-        default=2,
-    )
-
+    
     bevel_depth: bpy.props.FloatProperty(
         name="Bevel Depth:",
         description="Thickness of circle",
@@ -58,8 +52,34 @@ class Scratch(bpy.types.Operator):
 
     @classmethod
     def poll(cls, context):
-        return (len(context.selected_objects) == 2 and
-                context.object is not None)
+        if (len(context.selected_objects) == 4 and
+                context.object is not None):
+            A = context.active_object
+            others = context.selected_objects[-4:]
+            others.remove(A)
+            (O_test, L_test, R_test) = others
+            if 'Sphere' in O_test.data.name:
+                O = O_test
+            if 'Sphere' in L_test.data.name:
+                O = L_test
+            if 'Sphere' in R_test.data.name:
+                O = R_test
+            else:
+                return False
+            others.remove(O)
+            (L_test, R_test) = others
+            if ('Line' in L_test.data.name and 
+                'Circle' in R_test.data.name):
+                return True
+            if ('Line' in R_test.data.name and 
+                'Circle' in L_test.data.name):
+                return True
+            else: 
+                return False
+        else:
+            return False
+        
+        
 
     def invoke(self, context, event):
         self.use_spheres = context.scene.geoblender_settings.use_spheres
@@ -72,20 +92,32 @@ class Scratch(bpy.types.Operator):
     def execute(self, context):
 
         A = context.active_object
-        others = context.selected_objects[-2:]
+        others = context.selected_objects[-4:]
         others.remove(A)
-        B = others[0]
+        (O_test, L_test, R_test) = others
+        if 'Sphere' in O_test.data.name:
+            O = O_test
+        if 'Sphere' in L_test.data.name:
+            O = L_test
+        if 'Sphere' in R_test.data.name:
+            O = R_test
+        others.remove(O)
+        (L_test, R_test) = others
+        if 'Line' in L_test.data.name:
+            L = L_test
+            R = R_test               
+        if 'Line' in R_test.data.name:
+            L = R_test
+            R = L_test
 
-        e_help = new_empty(hide=self.hide_extra)
-        e_help.name = "Object defining drivers"
-        e_help.location[0] = self.ratio
-
+        # A: object to transform, O: origin, L: line, R: circle
+               
         if not (isinstance(A.data, bpy.types.Curve)):
             new = new_point(use_spheres=self.use_spheres,
                             radius=self.sphere_radius)
             new.name = "Homothetic object"
 
-        # Can try to duplicate instead and then clear all constraints
+        
         if 'Line' in A.data.name:
             new = new_line()
             new.name = "Homothetic object"
@@ -100,19 +132,21 @@ class Scratch(bpy.types.Operator):
         add_driver(obj=new,
                    prop='location',
                    fields='XYZ',
-                   vars_def={'x1': ('transform', e_help, 'location', 'X'),
-                             'b1': ('transform', B, 'location', '-'),
+                   vars_def={'s': ('transform', L, 'scale', 'X'),
+                             'r': ('transform', R, 'scale', 'X'),
+                             'b1': ('transform', O, 'location', '-'),
                              'a1': ('transform', A, 'location', '-'), },
-                   expr="b1 + x1*(a1-b1)")
+                   expr="b1 + (s/r)*(a1-b1)")
 
         if 'Circle' in A.data.name:
 
             add_driver(obj=new,
                        prop='scale',
                        fields='XYZ',
-                       vars_def={'x1': ('transform', e_help, 'location', 'X'),
+                       vars_def={'s': ('transform', L, 'scale', 'X'),
+                                 'r': ('transform', R, 'scale', 'X'),
                                  's1': ('transform', A, 'scale', 'X'), },
-                       expr="x1*s1")
+                       expr="(s/r)*s1")
 
             if self.display_center:
                 center = new_point(use_spheres=self.use_spheres,
@@ -124,13 +158,16 @@ class Scratch(bpy.types.Operator):
             add_driver(obj=new,
                        prop='scale',
                        fields='XYZ',
-                       vars_def={'x1': ('transform', e_help, 'location', 'X'),
+                       vars_def={'s': ('transform', L, 'scale', 'X'),
+                                 'r': ('transform', R, 'scale', 'X'),
                                  's1': ('transform', A, 'scale', 'X'), },
-                       expr="x1*s1")
+                       expr="(s/r)*s1")
             end1 = new_point(use_spheres=self.use_spheres,
                                    radius=self.sphere_radius)
             end2 = new_point(use_spheres=self.use_spheres,
                                    radius=self.sphere_radius)
             line_ends(end1, end2, new)
+
+            
 
         return {'FINISHED'}

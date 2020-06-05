@@ -3,7 +3,7 @@ from GeoBlender.utils.objects import new_arc, add_abs_bevel
 from GeoBlender.utils.geometry import align_to_plane_of
 from GeoBlender.utils.drivers import add_driver, add_driver_distance
 from GeoBlender.utils.constraints import copy_location, copy_rotation
-from GeoBlender.utils.constraints import locked_track
+from GeoBlender.utils.constraints import locked_track, position_on_curve
 
 
 class AngleArcTwoPointsFree(bpy.types.Operator):
@@ -11,7 +11,7 @@ class AngleArcTwoPointsFree(bpy.types.Operator):
     bl_idname = "geometry.create_angle_arc_free"
     bl_description = ("Add the arc of an angle with given center"
                       " and one point on each of the two sides of the angle."
-                      "Select three points. The center should "
+                      " Select three points. The center should "
                       "be the active object")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
     '''
@@ -26,6 +26,24 @@ class AngleArcTwoPointsFree(bpy.types.Operator):
         name="Display the outer angle:",
         description="Display the outer angle",
         default=True,
+    )
+
+    hide_arc: bpy.props.BoolProperty(
+        name="Hide arc:",
+        description="Hide the arc",
+        default=False,
+    )
+
+    hide_endpoints: bpy.props.BoolProperty(
+        name="Hide endpoints:",
+        description="Hide the arc endpoints",
+        default=True,
+    )
+
+    display_sides: bpy.props.BoolProperty(
+        name="Display sides:",
+        description="Display the angle sides",
+        default=False,
     )
 
     bevel_depth: bpy.props.FloatProperty(
@@ -60,7 +78,15 @@ class AngleArcTwoPointsFree(bpy.types.Operator):
         others.remove(A)
         B, C = others
 
-        arc = new_arc(angle=360, sides=64)
+        arc = new_arc(angle=360, sides=64, hide=self.hide_arc)
+
+        if self.display_sides:
+                side1 = new_line()
+                add_abs_bevel(side1, self.bevel_depth)
+                side2 = new_line()
+                add_abs_bevel(side2, self.bevel_depth)
+                ray(side1, A, B)
+                ray(side2, A, C) 
 
         for i in range(3):
             arc.scale[i] = self.radius
@@ -88,6 +114,7 @@ class AngleArcTwoPointsFree(bpy.types.Operator):
             expr='gb_drive_angle_bevel(True,ax,ay,az,bx,by,bz,cx,cy,cz)'
         )
 
+        
         add_driver(
             obj=arc.data,
             prop='bevel_factor_end',
@@ -105,4 +132,35 @@ class AngleArcTwoPointsFree(bpy.types.Operator):
             expr='gb_drive_angle_bevel(False,ax,ay,az,bx,by,bz,cx,cy,cz)'
         )
 
+
+
+        end1 = new_point(use_spheres=self.use_spheres,
+                            radius=self.sphere_radius,
+                            hide=self.hide_endpoints)
+        end1.name = "Arc endpoint"
+        end2 = new_point(use_spheres=self.use_spheres,
+                            radius=self.sphere_radius,
+                            hide=self.hide_endpoints)
+        end2.name = "Arc endpoint"
+        position_on_curve(end1, arc_neo, position=self.arc_angle / 360)
+        position_on_curve(end2, arc_neo, position=1) 
+
+        add_driver(
+            obj=end1.constraints["Follow Path"],
+            prop='offset_factor',
+            vars_def={
+                'ax': ('transform', A, 'location', 'X'),
+                'ay': ('transform', A, 'location', 'Y'),
+                'az': ('transform', A, 'location', 'Z'),
+                'bx': ('transform', B, 'location', 'X'),
+                'by': ('transform', B, 'location', 'Y'),
+                'bz': ('transform', B, 'location', 'Z'),
+                'cx': ('transform', C, 'location', 'X'),
+                'cy': ('transform', C, 'location', 'Y'),
+                'cz': ('transform', C, 'location', 'Z'),
+            },
+            expr='0.5'
+        )
+
+        
         return {'FINISHED'}
