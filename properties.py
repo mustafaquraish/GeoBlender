@@ -85,9 +85,9 @@ class GeoBlenderSettings(bpy.types.PropertyGroup):
 
 
 class GeoBlenderMeasurements(bpy.types.PropertyGroup):
-    angle: bpy.props.FloatProperty(
-        name="Measured angle",
-        description="Bevel depth for curves",
+    length: bpy.props.FloatProperty(
+        name="Length",
+        description="Length measurement",
         default=0.0,
         options={'HIDDEN'},
     )

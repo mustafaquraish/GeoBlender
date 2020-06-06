@@ -60,7 +60,7 @@ class GeoBlenderPropertiesPanel(bpy.types.Panel):
 
 
 ###############################################################################
-
+    
 class GeoBlenderMeasurePanel(bpy.types.Panel):
     '''
     This panel is to allow measurements and display their values at the point
@@ -74,15 +74,20 @@ class GeoBlenderMeasurePanel(bpy.types.Panel):
     bl_region_type = "UI"
     bl_options = {'DEFAULT_CLOSED'}
 
+    
+
+    
     def draw(self, context):
         layout = self.layout
         measurements = context.scene.geoblender_measurements
 
         col = layout.column(align=True)
         row = col.row(align=True)
-        row.operator("geometry.measure_angle")
-        row.prop(measurements, "angle", text="")
+        row.operator("geometry.measure_length")
+        row.prop(measurements, "length", text="")
 
+    
+    
 
 ###############################################################################
 
