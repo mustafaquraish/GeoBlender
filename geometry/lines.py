@@ -1,3 +1,5 @@
+import math
+
 from ..utils import objects
 from ..utils import constraints
 from ..utils import geometry
@@ -77,6 +79,43 @@ def line(line, A, B, length=100):
         target=B
     )
     objects.uniform_scale(line, length)
+
+# --------------------------------------------------------------------------- #
+#                           DISTANCE AND AREA                                 #
+# --------------------------------------------------------------------------- #
+
+def distance_function(A, B):
+    '''
+    Returns the distance of the points A, B
+
+    A, B:       2 points        (Blender Objects)    
+    '''
+    v = A.location - B.location
+    x, y, z = v[0], v[1], v[2]
+    dist = math.sqrt(x*x+y*y+z*z)
+    return dist
+
+def area_function(A, B, C):
+    '''
+    Returns the are of the triangle ABC
+
+    A, B, C:       3 points        (Blender Objects)    
+    '''
+    c = distance_function(A, B)
+    a = distance_function(B, C)
+    b = distance_function(C, A)
+
+    s = (a+b+c)/2
+    yes = s*(s-a)*(s-b)*(s-c)
+    area = math.sqrt(yes)
+    return area
+
+
+
+
+    
+
+
 
 
 # --------------------------------------------------------------------------- #

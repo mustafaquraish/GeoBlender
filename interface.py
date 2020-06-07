@@ -83,8 +83,24 @@ class GeoBlenderMeasurePanel(bpy.types.Panel):
 
         col = layout.column(align=True)
         row = col.row(align=True)
+
         row.operator("geometry.measure_length")
         row.prop(measurements, "length", text="")
+
+        col = layout.column(align=True)
+        row = col.row(align=True)
+
+        row.operator("geometry.measure_angle")
+        row.prop(measurements, "angle", text="")
+
+
+        col = layout.column(align=True)
+        row = col.row(align=True)
+
+        row.operator("geometry.measure_area")
+        row.prop(measurements, "area", text="")
+
+        
 
     
     

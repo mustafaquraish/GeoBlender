@@ -5,13 +5,13 @@ from GeoBlender.utils.geometry import align_to_plane_of
 from GeoBlender.utils.drivers import add_driver, add_driver_distance
 from GeoBlender.utils.constraints import copy_location, copy_rotation
 from GeoBlender.utils.constraints import locked_track, position_on_curve
-from GeoBlender.geometry.lines import ray
+from GeoBlender.geometry.lines import distance_function, area_function
 
 
-class LengthMeasurement(bpy.types.Operator):
-    bl_label = "Length"
-    bl_idname = "geometry.measure_length"
-    bl_description = ("Computes the length of a segment")
+class AreaMeasurement(bpy.types.Operator):
+    bl_label = "Area"
+    bl_idname = "geometry.measure_area"
+    bl_description = ("Computes the Area of a triangle. Select three points")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
     
 
@@ -25,10 +25,13 @@ class LengthMeasurement(bpy.types.Operator):
 
         
     def execute(self, context):
-        A = context.active_object
-        yes = A.scale[0]
+        
+        (A, B, C) = context.selected_objects[-3:]
 
-        context.scene.geoblender_measurements.length = yes
+        yes = area_function(A, B, C)
+
+         
+        context.scene.geoblender_measurements.area = yes
 
         return {'FINISHED'}
 
@@ -38,8 +41,8 @@ class LengthMeasurement(bpy.types.Operator):
 
         col = layout.column(align=True)
         row = col.row(align=True)
-        row.operator("geometry.measure_length")
-        row.prop(measurements, "length", text="")
+        row.operator("geometry.measure_area")
+        row.prop(measurements, "area", text="")
 
     
         
