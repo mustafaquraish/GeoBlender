@@ -11,7 +11,7 @@ from GeoBlender.geometry.lines import distance_function, segment
 class LengthMeasurement(bpy.types.Operator):
     bl_label = "Length"
     bl_idname = "geometry.measure_length"
-    bl_description = ("Computes the length of a segment. Select a line")
+    bl_description = ("Computes the length of a segment. Select a line segment")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
     
 
@@ -21,7 +21,23 @@ class LengthMeasurement(bpy.types.Operator):
 
     @classmethod
     def poll(cls, context):
-        return True
+        if (len(context.selected_objects) == 1 and
+                context.object is not None):
+            A = context.active_object
+           
+
+            if not (isinstance(A.data, bpy.types.Curve)):
+                return False
+
+            elif 'Line' not in A.data.name:
+                return False
+
+            else:
+                return True
+
+        
+        else:
+            return False
 
     
 
@@ -57,12 +73,12 @@ class LengthMeasurement(bpy.types.Operator):
 
         yes = distance_function(A_clone, B_clone)   
         ''' 
+        A = context.active_object
 
-        (A, B) = context.selected_objects[-2:]
 
-        line = new_line()
         
-        yes = line.data.bevel_resolution 
+        
+        yes = A.scale[0]
         context.scene.geoblender_measurements.length = yes
 
         #clearly the problem is with adding DRIVERS at the SAME FILE. Existing drivers are 

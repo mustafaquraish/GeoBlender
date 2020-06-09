@@ -11,8 +11,8 @@ from GeoBlender.geometry.lines import ray
 class AngleMeasurement(bpy.types.Operator):
     bl_label = "Angle"
     bl_idname = "geometry.measure_angle"
-    bl_description = ("Computes the size of an angle. Select three point"
-                      ". The center of the angle should be active")
+    bl_description = ("Computes the size of an angle. Create an arc (if not" 
+                      " already) and select it")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
     
 
@@ -22,7 +22,23 @@ class AngleMeasurement(bpy.types.Operator):
 
     @classmethod
     def poll(cls, context):
-        return True
+        if (len(context.selected_objects) == 1 and
+                context.object is not None):
+            A = context.active_object
+           
+
+            if not (isinstance(A.data, bpy.types.Curve)):
+                return False
+
+            elif 'Arc' not in A.data.name:
+                return False
+
+            else:
+                return True
+
+        
+        else:
+            return False
 
         
     def execute(self, context):

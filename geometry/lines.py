@@ -110,6 +110,21 @@ def area_function(A, B, C):
     area = math.sqrt(yes)
     return area
 
+def area_function_from_lines(A, B, C):
+    '''
+    Returns the are of the triangle ABC
+
+    A, B, C:       3 lines        (Blender Objects)    
+    '''
+    a = A.scale[0]
+    b = B.scale[0]
+    c = C.scale[0]
+
+    s = (a+b+c)/2
+    yes = s*(s-a)*(s-b)*(s-c)
+    area = math.sqrt(yes)
+    return area
+
 
 
 
