@@ -53,7 +53,7 @@ class AngleArcTwoPointsFree(bpy.types.Operator):
         description="Thickness of arc bevel",
         min=0,
         soft_max=0.5,
-        default=0.0,
+        default=0.2,
     )
 
     radius: bpy.props.FloatProperty(
@@ -77,10 +77,7 @@ class AngleArcTwoPointsFree(bpy.types.Operator):
         return (len(context.selected_objects) == 3 and
                 context.object is not None)
 
-    def invoke(self, context, event):
-        self.bevel_depth = context.scene.geoblender_settings.bevel_depth
-        self.hide_extra = context.scene.geoblender_settings.hide_extra
-        return self.execute(context)
+    
 
     def execute(self, context):
         A = context.active_object

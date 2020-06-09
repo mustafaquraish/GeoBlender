@@ -26,8 +26,17 @@ class AngleMeasurement(bpy.types.Operator):
 
         
     def execute(self, context):
+
+        # The user needs to first create an arc, otherwise the measurement operator
+        # will need to create such an arc (and everything else) every time.
+
         A = context.active_object
-        yes = A.scale[0]
+        
+        start = A.data.bevel_factor_start 
+        end = A.data.bevel_factor_end
+        yes = abs(start-end)*360
+
+
 
         context.scene.geoblender_measurements.angle = yes
 
