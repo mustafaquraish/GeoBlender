@@ -68,10 +68,8 @@ class Vector(bpy.types.Operator):
         others.remove(A)
         B = others[0]
 
-        A_new = new_empty(hide=False)
-        A_new.name="skataaaaaaaaaaaaaaaaaaaaaaaaaa"
-        e_new = new_empty(hide=False)
-        e_new.name="eeeeeeeeeeeeeeeeeeeeeee"
+        A_new = new_empty(hide=True)
+        e_new = new_empty(hide=True)
         e_new.location[0] = self.bevel_depth
         e_new.location[1] = self.cone_length
         e_new.location[2] = self.cone_radius
