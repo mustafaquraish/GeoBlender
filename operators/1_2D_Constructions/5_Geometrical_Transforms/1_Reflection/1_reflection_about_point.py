@@ -1,14 +1,16 @@
 import bpy
 from GeoBlender.utils.objects import new_arc, add_abs_bevel, new_point
+from GeoBlender.utils.objects import duplicate, new_empty
 from GeoBlender.geometry.lines import reflect_across_point
-
+from GeoBlender.utils.constraints import locked_track, copy_location
+from GeoBlender.utils.constraints import copy_rotation
 
 class ReflectionPoint(bpy.types.Operator):
     bl_label = "Reflection about point"
     bl_idname = "geometry.reflection_point"
-    bl_description = ("Returns the reflection of a point relative to another"
-                      " point (origin of reflection). Select two points. The"
-                      " point to be reflected should be the active object")
+    bl_description = ("Returns the reflection of an object relative to a"
+                      " point (origin of reflection). Select an object and "
+                      "a point. The object should be active")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     use_spheres: bpy.props.BoolProperty(
@@ -27,8 +29,9 @@ class ReflectionPoint(bpy.types.Operator):
 
     @classmethod
     def poll(cls, context):
-        return (len(context.selected_objects) == 2 and
-                context.object is not None)
+    #    return (len(context.selected_objects) == 2 and
+    #            context.object is not None)
+        return context.object is not None
 
     def invoke(self, context, event):
         self.use_spheres = context.scene.geoblender_settings.use_spheres
@@ -42,8 +45,21 @@ class ReflectionPoint(bpy.types.Operator):
         others.remove(A)
         B = others[0]
 
-        reflect_point = new_point(use_spheres=self.use_spheres,
-                                  radius=self.sphere_radius)
-        reflect_across_point(reflect_point, A, B)
+            
+        C = duplicate(A)
+        C.name = "Reflection"
+        for constraint in C.constraints:
+            C.constraints.remove(constraint) 
+        reflect_across_point(C, A, B)
+            
+        
+        e_help_X = new_empty(hide=True)
+        e_help_X.parent = A
+        e_help_X.location[0] = 1
+        e_rot_X = new_empty(hide=True)
+        reflect_across_point(e_rot_X, e_help_X, B)
+
+        locked_track(C, 'Z', 'X', e_rot_X)
+
 
         return {'FINISHED'}
