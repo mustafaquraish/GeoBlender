@@ -5,7 +5,7 @@ from GeoBlender.utils.geometry import align_to_plane_of
 from GeoBlender.utils.drivers import add_driver, add_driver_distance
 from GeoBlender.utils.constraints import copy_location, copy_rotation
 from GeoBlender.utils.constraints import locked_track, position_on_curve
-from GeoBlender.geometry.lines import distance_function
+from GeoBlender.geometry.lines import distance_function, segment
 
 
 class LengthMeasurement(bpy.types.Operator):
@@ -23,12 +23,17 @@ class LengthMeasurement(bpy.types.Operator):
     def poll(cls, context):
         return True
 
+    
+
+
         
     def execute(self, context):
-        A = context.active_object
-        others = context.selected_objects[-2:]
-        others.remove(A)
-        B = others[0]
+        #A = context.active_object
+        
+        '''
+        #others = context.selected_objects[-2:]
+        #others.remove(A)
+        #B = others[0]
 
        
         #WILL NOT ALWAYS WORK! BECAUSE A, B MIGHT BE CONSTRAINT AND LOC =0. 
@@ -42,17 +47,28 @@ class LengthMeasurement(bpy.types.Operator):
                    prop='location',
                    fields='XYZ',
                    vars_def={'a1': ('transform', B, 'location', '-'), },
-                   expr="a1")
+                   expr="a1+1")
         
         add_driver(obj = A_clone,
                    prop = 'location',
                    fields= 'XYZ',
                    vars_def={'current': ('transform', A, 'location', '-'),},
-                   expr="current")
+                   expr="current+1")
 
-        yes = distance_function(A_clone, B_clone)    
+        yes = distance_function(A_clone, B_clone)   
+        ''' 
 
+        (A, B) = context.selected_objects[-2:]
+
+        line = new_line()
+        
+        yes = line.data.bevel_resolution 
         context.scene.geoblender_measurements.length = yes
+
+        #clearly the problem is with adding DRIVERS at the SAME FILE. Existing drivers are 
+        #recorded properly.
+
+        #context.scene.geoblender_measurements.length = B_clone.matrix_world.translation[0]
 
         return {'FINISHED'}
 
