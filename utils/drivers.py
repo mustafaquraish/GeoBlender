@@ -16,7 +16,7 @@ def make_driver_list(obj, prop, fields=None):
     list of the newly added drivers back.
 
     obj:       Source objects       (Blender Object)
-    prop:      Driver's property    ('scale', 'location', ...)
+    prop:      Driver's property    ('scale', 'location', 'rotation_euler', ...)
     fields:    Fields of prop.      (String, explained below)
 
     `fields` is a string containing one or more of the characters 'X', 'Y', 'Z'

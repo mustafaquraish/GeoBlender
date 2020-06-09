@@ -2,7 +2,7 @@ import bpy
 import math
 from GeoBlender.utils.objects import new_arc, new_empty, duplicate
 from GeoBlender.utils.geometry import align_to_plane_of
-from GeoBlender.utils.drivers import add_driver_distance
+from GeoBlender.utils.drivers import add_driver_distance, add_driver
 from GeoBlender.utils.objects import new_line, add_abs_bevel, new_point
 from GeoBlender.geometry.lines import bisecting_line_of_points
 from GeoBlender.geometry.lines import bisecting_line_of_line
@@ -15,7 +15,9 @@ class ScratchRot(bpy.types.Operator):
     bl_idname = "geometry.rotation_about_point"
     bl_description = ("Adds the rotation of any object about a point."
                       " Select an object and the origin of rotation."
-                      " The object should be active")
+                      " The object should be active. The angle of rotation "
+                      "can be dynamically changed via the X coordinate of the "
+                      "Rotation Driver empty that is created")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     angle_rot: bpy.props.FloatProperty(
@@ -49,8 +51,14 @@ class ScratchRot(bpy.types.Operator):
         others.remove(A)
         B = others[0]
 
+        drive_rot = new_empty(hide=False)
+        drive_rot.name = "Rotation driver (X loc)"
+        drive_rot.location[0] = self.angle_rot
+        
+        
+
         e_rot = new_empty(hide=self.hide_extra)
-        e_rot.name = "e_rot"
+        e_rot.name = "e_rotttttttttttttttttttttttt"
         e_loc = new_empty(hide=self.hide_extra)
         e_loc.name = "e_loc"
         e_center_X_track = new_empty(hide=self.hide_extra)
@@ -59,14 +67,27 @@ class ScratchRot(bpy.types.Operator):
         e_center_X_rotated.name = "e_center_rotated"
 
         e_rot.parent = A
-        e_rot.rotation_euler[2] = math.radians(self.angle_rot)
+        ###e_rot.rotation_euler[2] = math.radians(self.angle_rot)
+        add_driver(
+            e_rot, 
+            'rotation_euler', 
+            'Z', 
+            vars_def={'x': ('transform', drive_rot, 'location', 'X'),},
+            expr="x")
+
 
         copy_location(e_center_X_track, B)
         copy_rotation(e_center_X_track, B)
         locked_track(e_center_X_track, 'Z', 'X', A)
 
         e_center_X_rotated.parent = e_center_X_track
-        e_center_X_rotated.rotation_euler[2] = math.radians(self.angle_rot)
+        ###e_center_X_rotated.rotation_euler[2] = math.radians(self.angle_rot)
+        add_driver(
+            e_center_X_rotated, 
+            'rotation_euler', 
+            'Z', 
+            vars_def={'x': ('transform', drive_rot, 'location', 'X'),},
+            expr="x")
 
         e_loc.parent = e_center_X_rotated
 
@@ -79,6 +100,8 @@ class ScratchRot(bpy.types.Operator):
         copy_rotation(dupli_A, e_loc)
         copy_scale(dupli_A, A)
 
+
+        # Option to change bevel
         if (isinstance(A.data, bpy.types.Curve)):
             add_abs_bevel(dupli_A, self.bevel_depth)
 
