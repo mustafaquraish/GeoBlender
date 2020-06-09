@@ -47,6 +47,8 @@ class AreaMeasurement(bpy.types.Operator):
 
         yes = area_function_from_lines(A, B, C)
 
+        
+
          
         context.scene.geoblender_measurements.area = yes
 
