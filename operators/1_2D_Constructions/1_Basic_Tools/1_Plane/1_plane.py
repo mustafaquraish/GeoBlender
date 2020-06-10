@@ -29,6 +29,4 @@ class Plane(bpy.types.Operator):
 
         new_plane(size=self.plane_size)
 
-        
-
         return {'FINISHED'}

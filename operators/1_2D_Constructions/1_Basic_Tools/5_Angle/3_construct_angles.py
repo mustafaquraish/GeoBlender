@@ -86,7 +86,7 @@ class ArcCenter(bpy.types.Operator):
         others.remove(A)
         B = others[0]
 
-        arc_neo = new_arc(angle=360, sides=64 , hide=self.hide_arc)
+        arc_neo = new_arc(angle=360, sides=64, hide=self.hide_arc)
         copy_location(arc_neo, A)
         copy_rotation(arc_neo, A)
         locked_track(arc_neo, 'Z', 'X', B)
@@ -94,20 +94,20 @@ class ArcCenter(bpy.types.Operator):
         for i in range(3):
             arc_neo.scale[i] = self.radius
         add_abs_bevel(arc_neo, self.bevel_depth)
-        
+
         if not self.other_angle:
             arc_neo.data.bevel_factor_start = 0
             arc_neo.data.bevel_factor_end = self.arc_angle / 360
             end1 = new_point(use_spheres=self.use_spheres,
-                            radius=self.sphere_radius,
-                            hide=self.hide_endpoints)
+                             radius=self.sphere_radius,
+                             hide=self.hide_endpoints)
             end1.name = "Arc endpoint"
             end2 = new_point(use_spheres=self.use_spheres,
-                            radius=self.sphere_radius,
-                            hide=self.hide_endpoints)
+                             radius=self.sphere_radius,
+                             hide=self.hide_endpoints)
             end2.name = "Arc endpoint"
             position_on_curve(end1, arc_neo, position=0)
-            position_on_curve(end2, arc_neo, position=self.arc_angle / 360)   
+            position_on_curve(end2, arc_neo, position=self.arc_angle / 360)
             if self.display_sides:
                 side1 = new_line()
                 add_abs_bevel(side1, self.bevel_depth)
@@ -120,24 +120,21 @@ class ArcCenter(bpy.types.Operator):
             arc_neo.data.bevel_factor_start = self.arc_angle / 360
             arc_neo.data.bevel_factor_end = 1
             end1 = new_point(use_spheres=self.use_spheres,
-                            radius=self.sphere_radius,
-                            hide=self.hide_endpoints)
+                             radius=self.sphere_radius,
+                             hide=self.hide_endpoints)
             end1.name = "Arc endpoint"
             end2 = new_point(use_spheres=self.use_spheres,
-                            radius=self.sphere_radius,
-                            hide=self.hide_endpoints)
+                             radius=self.sphere_radius,
+                             hide=self.hide_endpoints)
             end2.name = "Arc endpoint"
             position_on_curve(end1, arc_neo, position=self.arc_angle / 360)
-            position_on_curve(end2, arc_neo, position=1) 
+            position_on_curve(end2, arc_neo, position=1)
             if self.display_sides:
                 side1 = new_line()
                 add_abs_bevel(side1, self.bevel_depth)
                 side2 = new_line()
                 add_abs_bevel(side2, self.bevel_depth)
                 ray(side1, A, end1)
-                ray(side2, A, end2)   
-
-        
-
+                ray(side2, A, end2)
 
         return {'FINISHED'}

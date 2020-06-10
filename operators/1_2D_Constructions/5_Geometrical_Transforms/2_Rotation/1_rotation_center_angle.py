@@ -54,8 +54,6 @@ class ScratchRot(bpy.types.Operator):
         drive_rot = new_empty(hide=False)
         drive_rot.name = "Rotation driver (X loc)"
         drive_rot.location[0] = self.angle_rot
-        
-        
 
         e_rot = new_empty(hide=self.hide_extra)
         e_rot.name = "e_rotttttttttttttttttttttttt"
@@ -69,12 +67,11 @@ class ScratchRot(bpy.types.Operator):
         e_rot.parent = A
         ###e_rot.rotation_euler[2] = math.radians(self.angle_rot)
         add_driver(
-            e_rot, 
-            'rotation_euler', 
-            'Z', 
-            vars_def={'x': ('transform', drive_rot, 'location', 'X'),},
+            e_rot,
+            'rotation_euler',
+            'Z',
+            vars_def={'x': ('transform', drive_rot, 'location', 'X'), },
             expr="x")
-
 
         copy_location(e_center_X_track, B)
         copy_rotation(e_center_X_track, B)
@@ -83,10 +80,10 @@ class ScratchRot(bpy.types.Operator):
         e_center_X_rotated.parent = e_center_X_track
         ###e_center_X_rotated.rotation_euler[2] = math.radians(self.angle_rot)
         add_driver(
-            e_center_X_rotated, 
-            'rotation_euler', 
-            'Z', 
-            vars_def={'x': ('transform', drive_rot, 'location', 'X'),},
+            e_center_X_rotated,
+            'rotation_euler',
+            'Z',
+            vars_def={'x': ('transform', drive_rot, 'location', 'X'), },
             expr="x")
 
         e_loc.parent = e_center_X_rotated
@@ -100,11 +97,8 @@ class ScratchRot(bpy.types.Operator):
         copy_rotation(dupli_A, e_loc)
         copy_scale(dupli_A, A)
 
-
         # Option to change bevel
         if (isinstance(A.data, bpy.types.Curve)):
             add_abs_bevel(dupli_A, self.bevel_depth)
-
-        
 
         return {'FINISHED'}

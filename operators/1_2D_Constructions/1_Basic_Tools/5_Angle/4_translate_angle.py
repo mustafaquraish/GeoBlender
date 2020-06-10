@@ -18,7 +18,7 @@ class ArcCenter(bpy.types.Operator):
                       "and equal to another angle (needs existing angle to"
                       " have an arc). Select two points"
                       " and an arc. The center of the new angle should "
-                      "be the active object" )
+                      "be the active object")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     other_side: bpy.props.BoolProperty(
@@ -44,9 +44,6 @@ class ArcCenter(bpy.types.Operator):
         description="Display the angle sides",
         default=False,
     )
-
-   
-    
 
     bevel_depth: bpy.props.FloatProperty(
         name="Bevel depth:",
@@ -96,15 +93,14 @@ class ArcCenter(bpy.types.Operator):
         if 'Arc' in arc_old_test.data.name:
             arc_old = arc_old_test
             B = B_test
-        
-       
+
         empty1 = new_point(hide=True)
         empty1.parent = arc_old
         empty1.location[1] = -1
 
         fl_arc_old = new_point(hide=True)
         copy_location(fl_arc_old, arc_old)
-        locked_track(fl_arc_old,'X', 'Y', empty1)
+        locked_track(fl_arc_old, 'X', 'Y', empty1)
 
         arc_neo = new_arc(angle=360, sides=64, hide=self.hide_arc)
         for i in range(3):
@@ -118,59 +114,52 @@ class ArcCenter(bpy.types.Operator):
             copy_rotation(arc_neo, arc_old)
 
         locked_track(arc_neo, 'Z', 'X', B)
-        
 
         add_driver(
-                obj=arc_neo.data,
-                prop= 'bevel_factor_start',
-                vars_def={
-                    'bev': ('datapath', arc_old, 'data.bevel_factor_start'),},
-                expr= 'bev'
-                )  
+            obj=arc_neo.data,
+            prop='bevel_factor_start',
+            vars_def={
+                'bev': ('datapath', arc_old, 'data.bevel_factor_start'), },
+            expr='bev'
+        )
 
-        
         add_driver(
-                obj=arc_neo.data,
-                prop= 'bevel_factor_end',
-                vars_def={
-                    'bev': ('datapath', arc_old, 'data.bevel_factor_end'),},
-                expr='bev'
-                )  
+            obj=arc_neo.data,
+            prop='bevel_factor_end',
+            vars_def={
+                'bev': ('datapath', arc_old, 'data.bevel_factor_end'), },
+            expr='bev'
+        )
 
         end1 = new_point(radius=self.sphere_radius, hide=self.hide_endpoints)
         end1.name = "Arc endpoint"
         end2 = new_point(radius=self.sphere_radius, hide=self.hide_endpoints)
         end2.name = "Arc endpoint"
         position_on_curve(end1, arc_neo, position=0)
-        position_on_curve(end2, arc_neo, position=1) 
+        position_on_curve(end2, arc_neo, position=1)
 
         add_driver(
-                obj=end1.constraints[-1],
-                prop= 'offset_factor',
-                vars_def={
-                    'bev': ("datapath", arc_neo, "data.bevel_factor_start"),},
-                expr= "bev"
-                )
+            obj=end1.constraints[-1],
+            prop='offset_factor',
+            vars_def={
+                'bev': ("datapath", arc_neo, "data.bevel_factor_start"), },
+            expr="bev"
+        )
 
         add_driver(
-                obj=end2.constraints[-1],
-                prop= 'offset_factor',
-                vars_def={
-                    'bev': ("datapath", arc_neo, "data.bevel_factor_end"),},
-                expr= "bev"
-                ) 
+            obj=end2.constraints[-1],
+            prop='offset_factor',
+            vars_def={
+                'bev': ("datapath", arc_neo, "data.bevel_factor_end"), },
+            expr="bev"
+        )
 
         if self.display_sides:
-                side1 = new_line()
-                add_abs_bevel(side1, self.bevel_depth)
-                side2 = new_line()
-                add_abs_bevel(side2, self.bevel_depth)
-                ray(side1, A, end1)
-                ray(side2, A, end2)  
-
-
-
-
-
+            side1 = new_line()
+            add_abs_bevel(side1, self.bevel_depth)
+            side2 = new_line()
+            add_abs_bevel(side2, self.bevel_depth)
+            ray(side1, A, end1)
+            ray(side2, A, end2)
 
         return {'FINISHED'}
