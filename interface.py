@@ -9,52 +9,6 @@ panel it should be added to. If this attribute isn't set, the operator is not
 added to any panel (but can be accessed using F3).
 '''
 
-
-###############################################################################
-
-
-def operator_panel_factory(label, panel_dict, parent=None):
-    '''
-    Makes an additional GeoBlender panel with the given label and list of ops,
-    and returns the class to be registered. If we want the new panel to be
-    a sub-panel of a parent, it must be passed in.
-    '''
-
-    class_name = label.lower().replace(' ', '_')
-
-    class OperatorPanel(bpy.types.Panel):
-        if parent is not None:
-            bl_parent_id = parent.bl_idname
-            bl_idname = f"{parent.bl_idname}_{class_name}"
-        else:
-            bl_idname = f"OBJECT_PT_geoblender_{class_name}"
-
-        bl_label = label
-        bl_category = "GeoBlender"
-        bl_space_type = "VIEW_3D"
-        bl_region_type = "UI"
-        bl_options = {'DEFAULT_CLOSED'}
-
-        def draw(self, context):
-            layout = self.layout
-            layout.use_property_split = True
-
-            for op in panel_dict['operators']:
-                row = layout.row()
-                row.operator(op.bl_idname)
-
-    created_panels = [OperatorPanel]
-    for subpanel_name, subpanel_dict in panel_dict['subpanels'].items():
-        new_subpanels = operator_panel_factory(
-            subpanel_name,
-            subpanel_dict,
-            parent=OperatorPanel
-        )
-        created_panels += new_subpanels
-
-    return created_panels
-
-
 ###############################################################################
 
 
@@ -106,7 +60,7 @@ class GeoBlenderPropertiesPanel(bpy.types.Panel):
 
 
 ###############################################################################
-
+    
 class GeoBlenderMeasurePanel(bpy.types.Panel):
     '''
     This panel is to allow measurements and display their values at the point
@@ -120,17 +74,86 @@ class GeoBlenderMeasurePanel(bpy.types.Panel):
     bl_region_type = "UI"
     bl_options = {'DEFAULT_CLOSED'}
 
+    
+
+    
     def draw(self, context):
         layout = self.layout
         measurements = context.scene.geoblender_measurements
 
         col = layout.column(align=True)
         row = col.row(align=True)
+
+        row.operator("geometry.measure_length")
+        row.prop(measurements, "length", text="")
+
+        col = layout.column(align=True)
+        row = col.row(align=True)
+
         row.operator("geometry.measure_angle")
         row.prop(measurements, "angle", text="")
 
 
+        col = layout.column(align=True)
+        row = col.row(align=True)
+
+        row.operator("geometry.measure_area")
+        row.prop(measurements, "area", text="")
+
+        
+
+    
+    
+
 ###############################################################################
+
+
+###############################################################################
+
+
+def operator_panel_factory(label, panel_dict, parent=None):
+    '''
+    Makes an additional GeoBlender panel with the given label and list of ops,
+    and returns the class to be registered. If we want the new panel to be
+    a sub-panel of a parent, it must be passed in.
+    '''
+
+    class_name = label.lower().replace(' ', '_')
+
+    class OperatorPanel(bpy.types.Panel):
+        if parent is not None:
+            bl_parent_id = parent.bl_idname
+            bl_idname = f"{parent.bl_idname}_{class_name}"
+        else:
+            bl_idname = f"OBJECT_PT_geoblender_{class_name}"
+
+        bl_label = label
+        bl_category = "GeoBlender"
+        bl_space_type = "VIEW_3D"
+        bl_region_type = "UI"
+        bl_options = {'DEFAULT_CLOSED'}
+
+        def draw(self, context):
+            layout = self.layout
+            layout.use_property_split = True
+
+            for op in panel_dict['operators']:
+                row = layout.row()
+                row.operator(op.bl_idname)
+
+    created_panels = [OperatorPanel]
+    for subpanel_name, subpanel_dict in panel_dict['subpanels'].items():
+        new_subpanels = operator_panel_factory(
+            subpanel_name,
+            subpanel_dict,
+            parent=OperatorPanel
+        )
+        created_panels += new_subpanels
+
+    return created_panels
+
+
+
 
 panel_list = [GeoBlenderPropertiesPanel, GeoBlenderMeasurePanel]
 
@@ -203,3 +226,6 @@ for op, path in operators_dict.items():
 
 for panel_name, panel_dict in top_level_panel_dict['subpanels'].items():
     panel_list += operator_panel_factory(panel_name, panel_dict)
+
+
+

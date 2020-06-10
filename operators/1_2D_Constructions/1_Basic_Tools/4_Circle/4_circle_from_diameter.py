@@ -15,7 +15,7 @@ class CircleDiameter(bpy.types.Operator):
     gb_panel = '2D Constructions > Basic Tools > Circles'
 
     bevel_depth: bpy.props.FloatProperty(
-        name="Bevel Depth:",
+        name="Bevel depth:",
         description="Thickness of circle",
         min=0,
         soft_max=0.5,

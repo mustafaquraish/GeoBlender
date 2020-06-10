@@ -85,9 +85,31 @@ class GeoBlenderSettings(bpy.types.PropertyGroup):
 
 
 class GeoBlenderMeasurements(bpy.types.PropertyGroup):
+    
+    length: bpy.props.FloatProperty(
+        name="Length",
+        description="Length measurement",
+        default=0.0,
+        options={'HIDDEN'},
+    )
+
     angle: bpy.props.FloatProperty(
-        name="Measured angle",
-        description="Bevel depth for curves",
+        name="Angle",
+        description="Angle measurement",
+        default=0.0,
+        options={'HIDDEN'},
+    )
+
+    area: bpy.props.FloatProperty(
+        name="Area",
+        description="Area measurement",
+        default=0.0,
+        options={'HIDDEN'},
+    )
+
+    radius: bpy.props.FloatProperty(
+        name="Radius",
+        description="Radius measurement",
         default=0.0,
         options={'HIDDEN'},
     )

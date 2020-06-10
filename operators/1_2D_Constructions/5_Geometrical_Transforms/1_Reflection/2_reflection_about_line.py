@@ -1,15 +1,17 @@
 import bpy
 from GeoBlender.utils.objects import new_arc, add_abs_bevel, new_point
+from GeoBlender.utils.objects import new_empty, duplicate
 from GeoBlender.geometry.lines import reflect_across_line
 from GeoBlender.geometry.lines import reflect_across_line_of_points
+from GeoBlender.utils.constraints import copy_rotation, copy_location
+from GeoBlender.utils.constraints import locked_track
 
-
-class Midpoint(bpy.types.Operator):
+class MidpointRef(bpy.types.Operator):
     bl_label = "Reflection about a line"
     bl_idname = "geometry.reflection_line"
-    bl_description = ("Returns the reflection of a point relative to a line."
-                      " Select a point and a line or three points. The point"
-                      " to be reflected should be the active object")
+    bl_description = ("Returns the reflection of an object relative to a"
+                      " line (line of reflection). Select an object and "
+                      "a line. The object should be active")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     use_spheres: bpy.props.BoolProperty(
@@ -45,9 +47,7 @@ class Midpoint(bpy.types.Operator):
             else:
                 return True
 
-        if (len(context.selected_objects) == 3 and
-                context.object is not None):
-            return True
+        
         else:
             return False
 
@@ -65,19 +65,34 @@ class Midpoint(bpy.types.Operator):
             others.remove(A)
             B = others[0]
 
-            reflect_point = new_point(use_spheres=self.use_spheres,
-                                      radius=self.sphere_radius)
-            reflect_across_line(reflect_point, A, B)
+            
+            C = duplicate(A)
+            C.name = "Reflection"
+            for constraint in C.constraints:
+               C.constraints.remove(constraint) 
+            reflect_across_line(C, A, B)
+            
+        
+            e_help_X = new_empty(hide=True)
+            e_help_X.parent = A
+            e_help_X.location[0] = 1
+            e_rot_X = new_empty(hide=True)
+            reflect_across_line(e_rot_X, e_help_X, B)
 
-        if (len(context.selected_objects) == 3 and
-                context.object is not None):
-            A = context.active_object
-            others = context.selected_objects[-3:]
-            others.remove(A)
-            (B, C) = others
+            locked_track(C, 'Z', 'X', e_rot_X)
 
-            reflect_point = new_point(use_spheres=self.use_spheres,
-                                      radius=self.sphere_radius)
-            reflect_across_line_of_points(reflect_point, A, B, C)
+
+
+
+
+
+
+
+
+
+
+        
+
+            
 
         return {'FINISHED'}

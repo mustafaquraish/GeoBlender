@@ -7,7 +7,7 @@ from GeoBlender.utils.constraints import locked_track
 
 
 class AngleArcTwoPoints(bpy.types.Operator):
-    bl_label = "Arc with endpoints"
+    bl_label = "Arc from endpoints"
     bl_idname = "geometry.create_angle_arc"
     bl_description = ("Arc with given center and endpoints. Select three "
                       "objects. The center should be the active object")
@@ -27,7 +27,7 @@ class AngleArcTwoPoints(bpy.types.Operator):
     )
 
     bevel_depth: bpy.props.FloatProperty(
-        name="Bevel Depth:",
+        name="Bevel depth:",
         description="Thickness of arc bevel",
         min=0,
         soft_max=0.5,

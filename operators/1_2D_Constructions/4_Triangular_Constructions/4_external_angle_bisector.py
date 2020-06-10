@@ -16,7 +16,7 @@ class ExternalBi(bpy.types.Operator):
     # GeoBlender Panel Type
 
     bevel_depth: bpy.props.FloatProperty(
-        name="Bevel Depth:",
+        name="Bevel depth:",
         description="Thickness of angle bisector",
         min=0,
         soft_max=0.5,

@@ -171,8 +171,8 @@ def set_parent(obj, here_parent):
     '''
     bpy.ops.object.select_all(action='DESELECT')
     obj.select_set(True)
-    parent.select_set(True)
-    bpy.context.view_layer.objects.active = parent
+    parent_here.select_set(True)
+    bpy.context.view_layer.objects.active = parent_here
     bpy.ops.object.parent_no_inverse_set()
 
 # ----------------------------------------------------------------------------
@@ -312,6 +312,29 @@ def new_cylinder(radius=1, depth=1, vert=256, location=(0, 0, 0), hide=False):
     )
     set_hidden(bpy.context.object, hide)
     return bpy.context.object
+
+@preserve_selection
+@shade_smooth_option
+def new_cone(vertices=32, radius1=1, radius2=0, depth=2, hide=False):
+    bpy.ops.view3d.snap_cursor_to_center()
+    bpy.ops.mesh.primitive_cone_add(
+        vertices=vertices,
+        radius1=radius1,
+        radius2=radius2,
+        depth=depth,
+        enter_editmode=False,
+        align='WORLD'
+        )
+    set_hidden(bpy.context.object, hide)
+    bpy.context.object.rotation_euler[1] = 1.5708
+    bpy.ops.object.transform_apply(location=False, rotation=True, scale=False)
+    bpy.context.object.data.use_auto_smooth = True
+    bpy.context.object.location[0] = - depth/2
+    bpy.ops.object.origin_set(type='ORIGIN_CURSOR', center='MEDIAN')
+  
+
+    return bpy.context.object
+
 
 
 @preserve_selection

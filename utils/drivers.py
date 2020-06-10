@@ -16,7 +16,7 @@ def make_driver_list(obj, prop, fields=None):
     list of the newly added drivers back.
 
     obj:       Source objects       (Blender Object)
-    prop:      Driver's property    ('scale', 'location', ...)
+    prop:      Driver's property    ('scale', 'location', 'rotation_euler', ...)
     fields:    Fields of prop.      (String, explained below)
 
     `fields` is a string containing one or more of the characters 'X', 'Y', 'Z'
@@ -52,7 +52,7 @@ def add_driver(obj, prop, fields=None, vars_def={}, expr="1.0"):
     {
         var_name: (type='transform', target_object, prop, field),
         var_name: (type='distance', object_1, object_2),
-        var_name: (type='datapath', object, data_path)
+        var_name: (type='datapath', object, "data_path")
     }
     where:
         type: 'transform', 'distance', (... unsupported ...)
@@ -106,7 +106,7 @@ def add_driver(obj, prop, fields=None, vars_def={}, expr="1.0"):
 
             else:
                 raise Exception("Driver variable type not in "
-                                "{'transform', 'distance'}")
+                                "{'transform', 'distance', 'datapath'}")
 
         driver.driver.expression = expr
 
