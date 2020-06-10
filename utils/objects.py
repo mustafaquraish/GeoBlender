@@ -112,6 +112,7 @@ def join_objects(obj_list):
 def duplicate(obj, hide=False):
     bpy.ops.object.select_all(action='DESELECT')
     obj.select_set(True)
+    bpy.context.view_layer.objects.active = obj
     bpy.ops.object.duplicate()
     set_hidden(bpy.context.object, hide)
     return bpy.context.object
