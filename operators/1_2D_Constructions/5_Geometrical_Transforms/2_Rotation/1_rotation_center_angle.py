@@ -63,11 +63,11 @@ class ScratchRot(bpy.types.Operator):
             locked_track(circle, lock='Z', axis='Y', target=obj)
 
             follow_path(
-                new_obj, 
-                target=circle, 
-                follow=True, 
-                fixed=True, 
-                offset=(self.angle_rot/360.0) % 1
+                new_obj,
+                target=circle,
+                follow=True,
+                fixed=True,
+                offset=(self.angle_rot / 360.0) % 1
             )
 
             # Option to change bevel
