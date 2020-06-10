@@ -68,30 +68,28 @@ class Vector(bpy.types.Operator):
         others.remove(A)
         B = others[0]
 
-        A_new = new_empty(hide=True)
+        
+
+        
         e_new = new_empty(hide=True)
         e_new.location[0] = self.bevel_depth
         e_new.location[1] = self.cone_length
         e_new.location[2] = self.cone_radius
-
         
-        add_driver(obj=A_new,
-                   prop='location',
-                   fields='XYZ',
+        line = new_line()
+        segment(line, B, A)
+        add_abs_bevel(line, self.bevel_depth)
+        line.name = "Vector"
+
+        add_driver(obj=line.data,
+                   prop='bevel_factor_end',
                    vars_def={'d': ('distance', A, B),
                              'b1': ('transform', B, 'location', '-'),
                              'a1': ('transform', A, 'location', '-'),
                              'bev': ('transform', e_new, 'location', 'X'),
                              'dep': ('transform', e_new, 'location', 'Y'),
                              'r1': ('transform', e_new, 'location', 'Z'), },
-                   expr="b1 + (1-(bev*dep)/(r1*d))*(a1-b1)")
-        
-
-
-        line = new_line()
-        segment(line, B, A_new)
-        add_abs_bevel(line, self.bevel_depth)
-        line.name = "Vector"
+                   expr="1-dep/d")
 
         
 
