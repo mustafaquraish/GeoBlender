@@ -27,7 +27,7 @@ class CirceCeRa(bpy.types.Operator):
         soft_min=0.01,
         soft_max=200,
         default=5,
-        )
+    )
 
     @classmethod
     def poll(cls, context):

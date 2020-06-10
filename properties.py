@@ -85,7 +85,7 @@ class GeoBlenderSettings(bpy.types.PropertyGroup):
 
 
 class GeoBlenderMeasurements(bpy.types.PropertyGroup):
-    
+
     length: bpy.props.FloatProperty(
         name="Length",
         description="Length measurement",

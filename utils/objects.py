@@ -314,6 +314,7 @@ def new_cylinder(radius=1, depth=1, vert=256, location=(0, 0, 0), hide=False):
     set_hidden(bpy.context.object, hide)
     return bpy.context.object
 
+
 @preserve_selection
 @shade_smooth_option
 def new_cone(vertices=32, radius1=1, radius2=0, depth=2, hide=False):
@@ -325,17 +326,15 @@ def new_cone(vertices=32, radius1=1, radius2=0, depth=2, hide=False):
         depth=depth,
         enter_editmode=False,
         align='WORLD'
-        )
+    )
     set_hidden(bpy.context.object, hide)
     bpy.context.object.rotation_euler[1] = 1.5708
     bpy.ops.object.transform_apply(location=False, rotation=True, scale=False)
     bpy.context.object.data.use_auto_smooth = True
-    bpy.context.object.location[0] = - depth/2
+    bpy.context.object.location[0] = - depth / 2
     bpy.ops.object.origin_set(type='ORIGIN_CURSOR', center='MEDIAN')
-  
 
     return bpy.context.object
-
 
 
 @preserve_selection

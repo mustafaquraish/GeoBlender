@@ -7,19 +7,16 @@ from GeoBlender.utils.constraints import locked_track
 from GeoBlender.utils.drivers import add_driver, add_driver_distance
 
 
-
-
 class Vector(bpy.types.Operator):
     bl_label = "Vector"
     bl_idname = "geometry.vector"
-    bl_description = ("Add a vector from one point (origin) to another (endpoint)."
-                     " Select two points. The endpoint should be active")
+    bl_description = (
+        "Add a vector from one point (origin) to another (endpoint)."
+        " Select two points. The endpoint should be active")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     # GeoBlender Panel Type
     gb_panel = '2D Constructions > Basic Tools > Lines'
-
-    
 
     bevel_depth: bpy.props.FloatProperty(
         name="Bevel depth:",
@@ -51,8 +48,6 @@ class Vector(bpy.types.Operator):
         default=False
     )
 
-    
-
     @classmethod
     def poll(cls, context):
         return (len(context.selected_objects) == 2 and
@@ -74,7 +69,6 @@ class Vector(bpy.types.Operator):
         e_new.location[1] = self.cone_length
         e_new.location[2] = self.cone_radius
 
-        
         add_driver(obj=A_new,
                    prop='location',
                    fields='XYZ',
@@ -85,16 +79,11 @@ class Vector(bpy.types.Operator):
                              'dep': ('transform', e_new, 'location', 'Y'),
                              'r1': ('transform', e_new, 'location', 'Z'), },
                    expr="b1 + (1-(bev*dep)/(r1*d))*(a1-b1)")
-        
-
 
         line = new_line()
         segment(line, B, A_new)
         add_abs_bevel(line, self.bevel_depth)
         line.name = "Vector"
-
-        
-
 
         cone = new_cone(radius1=self.cone_radius, depth=self.cone_length)
         copy_location(cone, A)
@@ -106,6 +95,5 @@ class Vector(bpy.types.Operator):
             target=B
         )
         A.hide_viewport = self.hide_endpoint
-
 
         return {'FINISHED'}

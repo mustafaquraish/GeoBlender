@@ -74,6 +74,4 @@ class ScratchRot(bpy.types.Operator):
             if (isinstance(obj.data, bpy.types.Curve)):
                 add_abs_bevel(new_obj, self.bevel_depth)
 
-        
-
         return {'FINISHED'}
