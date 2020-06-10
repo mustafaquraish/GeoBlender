@@ -6,6 +6,7 @@ from GeoBlender.geometry.lines import reflect_across_line_of_points
 from GeoBlender.utils.constraints import copy_rotation, copy_location
 from GeoBlender.utils.constraints import locked_track
 
+
 class MidpointRef(bpy.types.Operator):
     bl_label = "Reflection about a line"
     bl_idname = "geometry.reflection_line"
@@ -47,7 +48,6 @@ class MidpointRef(bpy.types.Operator):
             else:
                 return True
 
-        
         else:
             return False
 
@@ -65,14 +65,12 @@ class MidpointRef(bpy.types.Operator):
             others.remove(A)
             B = others[0]
 
-            
             C = duplicate(A)
             C.name = "Reflection"
             for constraint in C.constraints:
-               C.constraints.remove(constraint) 
+                C.constraints.remove(constraint)
             reflect_across_line(C, A, B)
-            
-        
+
             e_help_X = new_empty(hide=True)
             e_help_X.parent = A
             e_help_X.location[0] = 1
@@ -80,19 +78,5 @@ class MidpointRef(bpy.types.Operator):
             reflect_across_line(e_rot_X, e_help_X, B)
 
             locked_track(C, 'Z', 'X', e_rot_X)
-
-
-
-
-
-
-
-
-
-
-
-        
-
-            
 
         return {'FINISHED'}

@@ -2,13 +2,15 @@ import bpy
 
 from .latex_utils import import_latex
 
+
 class LatexLabelLatex(bpy.types.Operator):
-    """Enter Latex Expression (needs internet connection)"""   
+    """Enter Latex Expression (needs internet connection)"""
     bl_idname = "add.latexlatex"            # Unique identifier.
     bl_label = "Latex Expression"           # Display name in the interface.
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
-    text: bpy.props.StringProperty(name="Latex:", description="Latex Code (do not insert $)")
+    text: bpy.props.StringProperty(name="Latex:",
+                                   description="Latex Code (do not insert $)")
 
     scale_property: bpy.props.FloatProperty(
         name="Scale:",
@@ -40,6 +42,6 @@ class LatexLabelLatex(bpy.types.Operator):
         bpy.context.object.active_material.roughness = 0
 
         curve.name = "Expression"
-        curve.data.bevel_depth = 0 # Seems to work decent
+        curve.data.bevel_depth = 0  # Seems to work decent
 
         return {'FINISHED'}
