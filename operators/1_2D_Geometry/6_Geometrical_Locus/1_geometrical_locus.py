@@ -104,14 +104,10 @@ class Locus(bpy.types.Operator):
         bpy.data.particles["Particles for locus"].instance_object = bpy.data.objects["Particle"]
         bpy.context.object.show_instancer_for_viewport = False
 
+        bpy.ops.ptcache.bake_all(bake=True)
 
 
-
-
-
-
-
-        
-
+        bpy.context.scene.frame_set(self.frame_end)
+        bpy.context.scene.frame_end = self.frame_end      
 
         return {'FINISHED'}

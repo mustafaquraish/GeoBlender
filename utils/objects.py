@@ -237,6 +237,21 @@ def new_arc(radius=1, location=(0, 0, 0), angle=180, sides=40, hide=False):
     set_hidden(bpy.context.object, hide)
     return bpy.context.object
 
+@preserve_selection
+def new_polygon(sides=3, length=1, hide=False):
+    bpy.ops.curve.simple(
+        Simple_Type='Polygon', 
+        Simple_sides=sides,
+        Simple_radius=length, 
+        shape='3D',
+        handleType='VECTOR', 
+        edit_mode=False)
+    bpy.context.object.data.resolution_u = 64
+    bpy.context.object.data.bevel_resolution = 32
+    set_hidden(bpy.context.object, hide)
+    return bpy.context.object
+
+
 
 @preserve_selection
 def new_right_angle(length=2, location=(0, 0, 0), hide=False):
