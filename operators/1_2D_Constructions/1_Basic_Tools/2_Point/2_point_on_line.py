@@ -25,6 +25,14 @@ class PointOnLine(bpy.types.Operator):
         default=0.5
     )
 
+    position_c: bpy.props.FloatProperty(
+        name="Position on line:",
+        description="Set the position of the point on the line",
+        soft_min=0,
+        soft_max=1,
+        default=0
+    )
+
     @classmethod
     def poll(cls, context):
 
@@ -61,7 +69,7 @@ class PointOnLine(bpy.types.Operator):
             fields='XYZ',
             expr="0"
         )
-        position_on_curve(A, line, position=0.5)
+        position_on_curve(A, line, position=self.position_c)
         copy_rotation(A, line)
 
         return {'FINISHED'}
