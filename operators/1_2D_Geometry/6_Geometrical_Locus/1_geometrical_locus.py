@@ -13,7 +13,7 @@ class Locus(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
 
-    frame_end: bpy.props.FloatProperty(
+    frame_end: bpy.props.IntProperty(
         name="Frame end:",
         description="Last frame of motion of source point",
         min=0,
@@ -29,9 +29,9 @@ class Locus(bpy.types.Operator):
         default=0.5,
     )
 
-    part_number: bpy.props.FloatProperty(
+    part_number: bpy.props.IntProperty(
         name="Particles number:",
-        description="Number of particles to create along the locus",
+        description="Number of particles to create along locus",
         min=0,
         soft_max=1000,
         default=150,

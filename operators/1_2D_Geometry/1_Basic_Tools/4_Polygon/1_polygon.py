@@ -1,10 +1,12 @@
 import bpy
+import math
 from GeoBlender.utils.objects import new_line, add_abs_bevel, new_polygon
 from GeoBlender.utils.objects import new_point
 from GeoBlender.geometry.lines import segment
 from GeoBlender.utils.constraints import position_on_curve
 from GeoBlender.utils.constraints import copy_location, copy_rotation
 from GeoBlender.utils.drivers import add_driver
+
 
 
 class Polygon(bpy.types.Operator):
@@ -73,7 +75,7 @@ class Polygon(bpy.types.Operator):
                               hide=True)
         add_abs_bevel(polygon, self.bevel_depth)
         polygon.parent = A
-        polygon.rotation_euler[2] = self.polygon_rotate
+        polygon.rotation_euler[2] = math.radians(self.polygon_rotate)
 
             
         
