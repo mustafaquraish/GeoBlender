@@ -5,7 +5,7 @@ from GeoBlender.geometry.lines import segment
 
 
 class Locus(bpy.types.Operator):
-    bl_label = "Geometrical Locus"
+    bl_label = "Geometrical locus"
     bl_idname = "geometry.locus"
     bl_description = ("Add the locus of a (free) point determined by the motion of another " 
                      "point (source) along a curve. Select two points. The free point "

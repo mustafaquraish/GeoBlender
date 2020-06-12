@@ -65,9 +65,7 @@ class StaticVariety(bpy.types.Operator):
             
             B.constraints["Follow Path"].offset_factor = (i-1) / (self.copies_number)
             
-            B.constraints["Follow Path"].keyframe_insert(
-                                                    data_path='offset_factor', 
-                                                    frame=i)
+                                     
             
             bpy.ops.object.select_all(action='DESELECT')
             
@@ -82,10 +80,10 @@ class StaticVariety(bpy.types.Operator):
             if (isinstance(copy.data, bpy.types.Curve)):
                 add_abs_bevel(copy, self.bevel_depth)
 
-            #old_collections = copy.users_collection  # get old collection
+            old_collections = copy.users_collection  # get old collection
             collection.objects.link(copy)    # put obj in extras collection
-            #for coll in old_collections:
-            #    coll.objects.unlink(copy)    # unlink from old collection
+            for coll in old_collections:
+                coll.objects.unlink(copy)    # unlink from old collection
 
             bpy.ops.object.select_all(action='DESELECT')
             for obj in prev_selected:
