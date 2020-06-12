@@ -110,7 +110,7 @@ class StaticVariety(bpy.types.Operator):
             copy.keyframe_insert(data_path='hide_render', frame=1+i*self.frame_gap)
 
             if self.for_test:
-                mat = bpy.data.materials.new(name="LEON {}".format(i))
+                mat = bpy.data.materials.new(name="TEST MATERIAL {}".format(i))
                 mat.use_nodes = True
                 mat.blend_method = 'BLEND'
                 mat_alpha = mat.node_tree.nodes["Principled BSDF"].inputs[18]
