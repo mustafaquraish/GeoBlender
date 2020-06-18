@@ -7,10 +7,10 @@ from GeoBlender.geometry.lines import orthogonal_proj_to_line
 class OrthProj(bpy.types.Operator):
     bl_label = "Orthogonal projection"
     bl_idname = "geometry.ortho_proje"
-    bl_description = ("Returns the orthogonal projection of a point on"
-                      " a line. Select either three points or a point"
-                      " and a line. The point that is projected should"
-                      " be the active object")
+    bl_description = ("Returns the orthogonal projection of a point on "
+                      "a line. Select either three points or a point "
+                      "and a line. The point that is projected should "
+                      "be the active object")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     use_spheres: bpy.props.BoolProperty(

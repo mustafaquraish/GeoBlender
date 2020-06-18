@@ -7,11 +7,11 @@ from GeoBlender.geometry.lines import parallel_line
 class ParallelLine(bpy.types.Operator):
     bl_label = "Parallel line"
     bl_idname = "geometry.parallel_line"
-    bl_description = ("Returns the line through a given point and"
-                      " parallel to a line. Select either three points"
-                      " or a point"
-                      " and a line. The point the parallel line passes"
-                      " through needs to be the active object")
+    bl_description = ("Returns the line through a given point and "
+                      "parallel to a line. Select either three points "
+                      "or a point "
+                      "and a line. The point the parallel line passes "
+                      "through needs to be the active object")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     bevel_depth: bpy.props.FloatProperty(

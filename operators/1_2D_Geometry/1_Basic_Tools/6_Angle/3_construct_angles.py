@@ -16,8 +16,8 @@ class ArcCenter(bpy.types.Operator):
     bl_description = ("Constructs an angle with given "
                       "center and a point on one side of the angle. "
                       "Select two points. The center should "
-                      "be the active object. The size of the ange is set"
-                      " at the operator panel")
+                      "be the active object. The size of the ange is set "
+                      "at the operator panel")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     other_angle: bpy.props.BoolProperty(

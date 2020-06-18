@@ -6,8 +6,7 @@ from GeoBlender.geometry.intersections import circle_circle_intersection
 class CircleCircleInter(bpy.types.Operator):
     bl_label = "Circle - Circle"
     bl_idname = "geometry.circle_circle"
-    bl_description = (
-        "Returns the intersection of two circles. Select two circles")
+    bl_description = ("Returns intersections of 2 circles. Select 2 circles")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     use_spheres: bpy.props.BoolProperty(

@@ -7,8 +7,8 @@ from GeoBlender.geometry.lines import line_ends
 class CircleDiameter(bpy.types.Operator):
     bl_label = "Circle with diameter"
     bl_idname = "geometry.circle_diameter"
-    bl_description = ("Add a circle with given diameter. "
-                      "Select either the antidiametrical points or the diameter")
+    bl_description = ("Add a circle with given diameter. Select either the "
+                      "antidiametrical points or the diameter")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     bevel_depth: bpy.props.FloatProperty(

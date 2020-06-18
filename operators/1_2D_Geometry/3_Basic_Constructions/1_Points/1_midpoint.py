@@ -6,8 +6,8 @@ from GeoBlender.geometry.lines import midpoint, line_ends
 class Midpoint(bpy.types.Operator):
     bl_label = "Mid point"
     bl_idname = "geometry.mid_point"
-    bl_description = ("Returns the mid point of a segment. Select either two"
-                      " points or a line segment")
+    bl_description = ("Returns the mid point of a segment. Select either two "
+                      "points or a line segment")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     use_spheres: bpy.props.BoolProperty(

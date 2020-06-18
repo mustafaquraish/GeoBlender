@@ -13,9 +13,9 @@ from GeoBlender.utils.constraints import locked_track, copy_scale
 class Scratch(bpy.types.Operator):
     bl_label = "Segment divider"
     bl_idname = "geometry.segment_divider"
-    bl_description = ("Adds a point P that divides a segment AB with given"
-                      " ratio PB/PA. The ratio is set at the operator panel. "
-                      " Select two points, A, B. The point A (as above) "
+    bl_description = ("Adds a point P that divides a segment AB with given "
+                      "ratio PB/PA. The ratio is set at the operator panel. "
+                      "Select two points, A, B. The point A (as above) "
                       "should be the active object")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 

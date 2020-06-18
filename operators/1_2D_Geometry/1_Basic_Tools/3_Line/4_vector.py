@@ -12,8 +12,8 @@ from GeoBlender.utils.drivers import add_driver, add_driver_distance
 class Vector(bpy.types.Operator):
     bl_label = "Vector"
     bl_idname = "geometry.vector"
-    bl_description = ("Add a vector from one point (origin) to another (endpoint)."
-                     " Select two points. The endpoint should be active")
+    bl_description = ("Add a vector from one point (origin) to another (end). "
+                     "Select two points. The endpoint should be active")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     bevel_depth: bpy.props.FloatProperty(

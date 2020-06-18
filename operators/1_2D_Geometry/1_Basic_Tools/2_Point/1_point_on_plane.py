@@ -6,8 +6,7 @@ from GeoBlender.utils.drivers import add_driver
 class PointOnPlane(bpy.types.Operator):
     bl_label = "Point on plane"
     bl_idname = "geometry.point_on_plane"
-    bl_description = ("Add a point constrained on a plane. "
-                      "Select a plane")
+    bl_description = ("Add a point constrained on a plane. Select a plane")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     use_spheres: bpy.props.BoolProperty(

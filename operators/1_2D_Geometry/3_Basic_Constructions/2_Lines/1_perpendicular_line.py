@@ -7,11 +7,11 @@ from GeoBlender.geometry.lines import orthogonal_line_to_points
 class PerpLine(bpy.types.Operator):
     bl_label = "Perpendicular line"
     bl_idname = "geometry.perpe_line"
-    bl_description = ("Returns the line through a given point and"
-                      " orthogonal to a line. Select either three points"
-                      " or a point"
-                      " and a line. The point that is projected should"
-                      " be the active object")
+    bl_description = ("Returns the line through a given point and "
+                      "orthogonal to a line. Select either three points "
+                      "or a point "
+                      "and a line. The point that is projected should "
+                      "be the active object")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     bevel_depth: bpy.props.FloatProperty(

@@ -7,10 +7,10 @@ class CircleCenterRadius(bpy.types.Operator):
     bl_label = "Circle through center and distance"
     bl_idname = "geometry.circle_center_distance"
     bl_description = (
-        "Add a circle with given center and radius equal to"
-        " the distance of two points. Select three points. "
-        " The center should be the active object. The distance of"
-        " the other two points determine the radius")
+        "Add a circle with given center and radius equal to "
+        "the distance of two points. Select three points. "
+        "The center should be the active object. The distance of "
+        "the other two points determine the radius")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     bevel_depth: bpy.props.FloatProperty(

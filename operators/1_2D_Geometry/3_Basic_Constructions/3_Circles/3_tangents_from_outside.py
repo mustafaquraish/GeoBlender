@@ -7,9 +7,9 @@ from GeoBlender.geometry.circles import circle_tangent_points
 class TangentsFromOutside(bpy.types.Operator):
     bl_label = "Tangents from outside point"
     bl_idname = "geometry.tangents_outside"
-    bl_description = ("Returns the two tangents from " +
-                      "a point outside a circle. Select a point and a circle."
-                      " The point should be the active object.")
+    bl_description = ("Returns the two tangents from "
+                      "a point outside a circle. Select a point and a circle. "
+                      "The point should be the active object.")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     bevel_depth: bpy.props.FloatProperty(

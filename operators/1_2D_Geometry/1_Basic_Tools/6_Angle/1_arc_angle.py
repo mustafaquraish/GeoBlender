@@ -11,18 +11,12 @@ from GeoBlender.geometry.lines import ray
 class AngleArcTwoPointsFree(bpy.types.Operator):
     bl_label = "Arc for angle"
     bl_idname = "geometry.create_angle_arc_free"
-    bl_description = ("Add the arc of an angle with given center"
-                      " and one point on each of the two sides of the angle."
-                      " Select three points. The center should "
+    bl_description = ("Add the arc of an angle with given center "
+                      "and one point on each of the two sides of the angle. "
+                      "Select three points. The center should "
                       "be the active object")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
-    '''
-    hide: bpy.props.BoolProperty(
-        name="Hide:",
-        description="hide",
-        default=True,
-    )
-    '''
+
 
     other_angle: bpy.props.BoolProperty(
         name="Display the outer angle:",

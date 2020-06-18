@@ -13,9 +13,9 @@ class Polygon(bpy.types.Operator):
     bl_label = "Polygon"
     bl_idname = "geometry.polygon"
     bl_description = ("Add a regular polygon with given center (point). "
-                     " Select a point")
+                      "Select a point")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
-    
+
 
     sides_number: bpy.props.IntProperty(
         name="Number of sides:",

@@ -6,8 +6,8 @@ from GeoBlender.geometry.intersections import line_circle_intersections
 class LineCircleIntersection(bpy.types.Operator):
     bl_label = "Line - Circle"
     bl_idname = "geometry.line_circle_intersection"
-    bl_description = "Returns the intersections of a line " +\
-                     "and circle. Select a line and a circle"
+    bl_description = ("Returns the intersections of a line "
+                      "and circle. Select a line and a circle")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     use_spheres: bpy.props.BoolProperty(

@@ -7,9 +7,9 @@ from GeoBlender.geometry.lines import bisecting_line_of_line
 class PerpBisector(bpy.types.Operator):
     bl_label = "Perpendicular bisector"
     bl_idname = "geometry.perp_bisector"
-    bl_description = ("Returns the line the perpendicular bisector of"
-                      " a line. Select either two points"
-                      " or a line")
+    bl_description = ("Returns the line the perpendicular bisector of "
+                      "a line. Select either two points "
+                      "or a line")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     bevel_depth: bpy.props.FloatProperty(

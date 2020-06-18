@@ -7,9 +7,9 @@ from GeoBlender.geometry.circles import polar_line
 class PolarLine(bpy.types.Operator):
     bl_label = "Polar line"
     bl_idname = "geometry.polar_line"
-    bl_description = ("Returns the polar line of a point relative to acircle."
-                      " Select a point and a circle."
-                      " The point should be the active object.")
+    bl_description = ("Returns the polar line of a point relative to acircle. "
+                      "Select a point and a circle. "
+                      "The point should be the active object.")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     bevel_depth: bpy.props.FloatProperty(

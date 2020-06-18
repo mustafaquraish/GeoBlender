@@ -14,9 +14,9 @@ from GeoBlender.utils.geometry import align_to_plane_of
 class RightAngle(bpy.types.Operator):
     bl_label = "Right angle"
     bl_idname = "geometry.right_angle"
-    bl_description = ("Add a right angle with given  center and one point"
-                      " on each of the two sides of the angle."
-                      " Select three points. The center should "
+    bl_description = ("Add a right angle with given  center and one point "
+                      "on each of the two sides of the angle. "
+                      "Select three points. The center should "
                       "be the active object")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 

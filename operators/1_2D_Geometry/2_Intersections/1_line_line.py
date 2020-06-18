@@ -6,8 +6,7 @@ from GeoBlender.geometry.intersections import line_line_inteserction
 class LineLineInter(bpy.types.Operator):
     bl_label = "Line - Line"
     bl_idname = "geometry.line_line"
-    bl_description = (
-        "Returns the intersection of two lines. Select two lines")
+    bl_description = ("Returns the intersection of 2 lines. Select 2 lines")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     use_spheres: bpy.props.BoolProperty(
