@@ -34,10 +34,7 @@ class TangentsFromOutside(bpy.types.Operator):
                 isinstance(B.data, bpy.types.Curve)):
             return False
 
-        if not ('Circle' in B.data.name):
-            return False
-
-        return True
+        return 'Circle' in B.data.name
 
     def invoke(self, context, event):
         self.hide_extra = context.scene.geoblender_settings.hide_extra

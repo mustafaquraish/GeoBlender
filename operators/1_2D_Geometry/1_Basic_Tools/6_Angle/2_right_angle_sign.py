@@ -55,12 +55,12 @@ class RightAngle(bpy.types.Operator):
         arc_neo = new_right_angle(length=self.length)
         add_abs_bevel(arc_neo, self.bevel_depth)
 
-        center = new_empty()  # hide=self.hide_extra
+        center = new_empty()
         copy_location(center, A)
         damped_track(center, axis='-X', target=B)
         locked_track(center, axis='-Y', lock='X', target=C)
 
-        #set_parent(arc_neo, center)
+        # set_parent(arc_neo, center)
         arc_neo.parent = center
         arc_neo.location[0] = - self.length
         arc_neo.location[1] = - self.length

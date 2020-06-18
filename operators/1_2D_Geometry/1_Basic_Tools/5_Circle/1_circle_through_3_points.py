@@ -50,9 +50,11 @@ class CircleThrough3Points(bpy.types.Operator):
     def execute(self, context):
         (A, B, C) = context.selected_objects[-3:]
 
-        center = new_point(use_spheres=self.use_spheres,
-                           radius=self.sphere_radius,
-                           hide=self.hide_center)
+        center = new_point(
+            use_spheres=self.use_spheres,
+            radius=self.sphere_radius,
+            hide=self.hide_center
+        )
 
         circle = new_circle()
         circumcircle(circle, center, A, B, C)

@@ -22,9 +22,5 @@ class Plane(bpy.types.Operator):
         return self.execute(context)
 
     def execute(self, context):
-
         new_plane(size=self.plane_size)
-
-        
-
         return {'FINISHED'}

@@ -38,17 +38,10 @@ class PerpBisector(bpy.types.Operator):
 
             A = context.active_object
 
-            if not (isinstance(A.data, bpy.types.Curve)):
-                return False
+            if isinstance(A.data, bpy.types.Curve):
+                return 'Line' in A.data.name
 
-            elif 'Line' not in A.data.name:
-                return False
-
-            else:
-                return True
-
-        else:
-            return False
+        return False
 
     def invoke(self, context, event):
         self.hide_extra = context.scene.geoblender_settings.hide_extra

@@ -43,17 +43,10 @@ class ParallelLine(bpy.types.Operator):
             others.remove(A)
             B = others[0]
 
-            if not (isinstance(B.data, bpy.types.Curve)):
-                return False
+            if isinstance(B.data, bpy.types.Curve):
+                return 'Line' in B.data.name
 
-            elif 'Line' not in B.data.name:
-                return False
-
-            else:
-                return True
-
-        else:
-            return False
+        return False
 
     def invoke(self, context, event):
         self.hide_extra = context.scene.geoblender_settings.hide_extra

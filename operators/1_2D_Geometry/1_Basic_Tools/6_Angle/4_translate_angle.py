@@ -2,7 +2,7 @@ import bpy
 import mathutils
 import math
 from GeoBlender.utils.objects import new_point, new_circle, add_abs_bevel
-from GeoBlender.utils.objects import new_arc, new_line
+from GeoBlender.utils.objects import new_arc, new_line, uniform_scale
 from GeoBlender.geometry.circles import circle_from_center_radius
 from GeoBlender.geometry.lines import line_ends, ray
 from GeoBlender.utils.drivers import add_driver
@@ -109,8 +109,7 @@ class ArcCenter(bpy.types.Operator):
         locked_track(fl_arc_old, 'X', 'Y', empty1)
 
         arc_neo = new_arc(angle=360, sides=64, hide=self.hide_arc)
-        for i in range(3):
-            arc_neo.scale[i] = self.radius
+        uniform_scale(arc_neo, self.radius)
         add_abs_bevel(arc_neo, self.bevel_depth)
         copy_location(arc_neo, A)
 

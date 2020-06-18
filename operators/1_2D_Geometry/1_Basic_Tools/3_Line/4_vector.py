@@ -76,28 +76,25 @@ class Vector(bpy.types.Operator):
         add_abs_bevel(line, self.bevel_depth)
         line.name = "Vector"
 
-        add_driver(obj=line.data,
-                   prop='bevel_factor_end',
-                   vars_def={'d': ('distance', A, B),
-                             'b1': ('transform', B, 'location', '-'),
-                             'a1': ('transform', A, 'location', '-'),
-                             'bev': ('transform', e_new, 'location', 'X'),
-                             'dep': ('transform', e_new, 'location', 'Y'),
-                             'r1': ('transform', e_new, 'location', 'Z'), },
-                   expr="1-dep/d")
+        add_driver(
+            obj=line.data,
+            prop='bevel_factor_end',
+            vars_def={
+                'd': ('distance', A, B),
+                'b1': ('transform', B, 'location', '-'),
+                'a1': ('transform', A, 'location', '-'),
+                'bev': ('transform', e_new, 'location', 'X'),
+                'dep': ('transform', e_new, 'location', 'Y'),
+                'r1': ('transform', e_new, 'location', 'Z'), 
+            },
+            expr="1 - dep/d"
+        )
 
         
-
-
         cone = new_cone(radius1=self.cone_radius, depth=self.cone_length)
         copy_location(cone, A)
         copy_rotation(cone, A)
-        locked_track(
-            obj=cone,
-            lock='Z',
-            axis='-X',
-            target=B
-        )
+        locked_track(obj=cone, lock='Z', axis='-X', target=B)
         A.hide_viewport = self.hide_endpoint
 
 

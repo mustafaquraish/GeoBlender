@@ -24,19 +24,15 @@ class CircleDiameter(bpy.types.Operator):
         if (len(context.selected_objects) == 1):
             if context.object is None:
                 return False
-            else:
-                line = context.active_object
-                if (isinstance(line.data, bpy.types.Curve)):
-                    if ('Line' in line.data.name):
-                        return True
-                    else:
-                        return False
-                else:
-                    return False
-        elif (len(context.selected_objects) == 2):
-            return True
-        else:
+
+            line = context.active_object
+            if (isinstance(line.data, bpy.types.Curve)):
+                return ('Line' in line.data.name)
+
             return False
+
+        else:
+            return (len(context.selected_objects) == 2)
 
     def invoke(self, context, event):
         self.bevel_depth = context.scene.geoblender_settings.bevel_depth
@@ -48,7 +44,7 @@ class CircleDiameter(bpy.types.Operator):
 
         line = context.active_object
 
-        if (isinstance(line.data, bpy.types.Curve)):
+        if isinstance(line.data, bpy.types.Curve):
             A = new_point(hide=self.hide_extra)
             B = new_point(hide=self.hide_extra)
             line_ends(A, B, line)

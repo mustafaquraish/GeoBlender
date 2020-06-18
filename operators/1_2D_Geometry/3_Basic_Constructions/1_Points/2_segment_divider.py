@@ -55,8 +55,8 @@ class Scratch(bpy.types.Operator):
 
     @classmethod
     def poll(cls, context):
-        return (len(context.selected_objects) == 2 and
-                context.object is not None)
+        return (len(context.selected_objects) == 2 
+                and context.object is not None)
 
     def invoke(self, context, event):
         self.use_spheres = context.scene.geoblender_settings.use_spheres
@@ -81,13 +81,17 @@ class Scratch(bpy.types.Operator):
             new_inside.name = "Segment divider inside"
             copy_rotation(new_inside, A)
 
-            add_driver(obj=new_inside,
-                       prop='location',
-                       fields='XYZ',
-                       vars_def={'x1': ('transform', e_help, 'location', 'X'),
-                                 'b1': ('transform', B, 'location', '-'),
-                                 'a1': ('transform', A, 'location', '-'), },
-                       expr="b1 + (x1/(1+x1))*(a1-b1)")
+            add_driver(
+                obj=new_inside,
+                prop='location',
+                fields='XYZ',
+                vars_def={
+                    'x1': ('transform', e_help, 'location', 'X'),
+                    'b1': ('transform', B, 'location', '-'),
+                    'a1': ('transform', A, 'location', '-'), 
+                },
+                expr="b1 + (x1 / (1+x1)) * (a1-b1)"
+            )
 
         if self.display_outside:
 
@@ -103,23 +107,12 @@ class Scratch(bpy.types.Operator):
                     prop='location',
                     fields='XYZ',
                     vars_def={
-                        'x1': (
-                            'transform',
-                            e_help,
-                            'location',
-                            'X'),
-                        'b1': (
-                            'transform',
-                            B,
-                            'location',
-                            '-'),
-                        'a1': (
-                            'transform',
-                            A,
-                            'location',
-                            '-'),
+                        'x1': ('transform', e_help, 'location', 'X'),
+                        'b1': ('transform', B, 'location', '-'),
+                        'a1': ('transform', A, 'location', '-'),
                     },
-                    expr="b1 + (x1/(x1-1))*(a1-b1)")
+                    expr="b1 + (x1/(x1-1))*(a1-b1)"
+                )
 
             if self.ratio < 1:
                 new_outside = new_point(use_spheres=self.use_spheres,
@@ -132,22 +125,11 @@ class Scratch(bpy.types.Operator):
                     prop='location',
                     fields='XYZ',
                     vars_def={
-                        'x1': (
-                            'transform',
-                            e_help,
-                            'location',
-                            'X'),
-                        'b1': (
-                            'transform',
-                            B,
-                            'location',
-                            '-'),
-                        'a1': (
-                            'transform',
-                            A,
-                            'location',
-                            '-'),
+                        'x1': ('transform', e_help, 'location', 'X'),
+                        'b1': ('transform', B, 'location', '-'),
+                        'a1': ('transform', A, 'location', '-'),
                     },
-                    expr="b1 - (x1/(1-x1))*(a1-b1)")
+                    expr="b1 - (x1/(1-x1))*(a1-b1)"
+                )
 
         return {'FINISHED'}

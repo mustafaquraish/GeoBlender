@@ -44,8 +44,8 @@ class AngleBisector(bpy.types.Operator):
 
     @classmethod
     def poll(cls, context):
-        return (len(context.selected_objects) == 3 and
-                context.object is not None)
+        return (len(context.selected_objects) == 3 
+                and context.object is not None)
 
     def invoke(self, context, event):
         self.hide_extra = context.scene.geoblender_settings.hide_extra
@@ -70,7 +70,6 @@ class AngleBisector(bpy.types.Operator):
 
         if self.use_ray:
             ray(line1, A, point1)
-
         else:
             line(line1, A, point1)
 

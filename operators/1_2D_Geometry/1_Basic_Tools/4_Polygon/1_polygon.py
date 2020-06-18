@@ -75,8 +75,6 @@ class Polygon(bpy.types.Operator):
         polygon.parent = A
         polygon.rotation_euler[2] = math.radians(self.polygon_rotate)
 
-            
-        
         vertices = []
         for i in range(int(self.sides_number)):
             s = new_point(radius=self.sphere_radius)
@@ -100,7 +98,4 @@ class Polygon(bpy.types.Operator):
             add_abs_bevel(line, self.bevel_depth)
             line.name = "Side of polygon"
             
-            
-
-
         return {'FINISHED'}

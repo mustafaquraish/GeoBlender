@@ -70,8 +70,8 @@ class ArcCenter(bpy.types.Operator):
 
     @classmethod
     def poll(cls, context):
-        return (len(context.selected_objects) == 2 and
-                context.object is not None)
+        return (len(context.selected_objects) == 2 
+                and context.object is not None)
 
     def invoke(self, context, event):
         self.bevel_depth = context.scene.geoblender_settings.bevel_depth
@@ -99,12 +99,12 @@ class ArcCenter(bpy.types.Operator):
             arc_neo.data.bevel_factor_start = 0
             arc_neo.data.bevel_factor_end = self.arc_angle / 360
             end1 = new_point(use_spheres=self.use_spheres,
-                            radius=self.sphere_radius,
-                            hide=self.hide_endpoints)
+                             radius=self.sphere_radius,
+                             hide=self.hide_endpoints)
             end1.name = "Arc endpoint"
             end2 = new_point(use_spheres=self.use_spheres,
-                            radius=self.sphere_radius,
-                            hide=self.hide_endpoints)
+                             radius=self.sphere_radius,
+                             hide=self.hide_endpoints)
             end2.name = "Arc endpoint"
             position_on_curve(end1, arc_neo, position=0)
             position_on_curve(end2, arc_neo, position=self.arc_angle / 360)   
@@ -120,12 +120,12 @@ class ArcCenter(bpy.types.Operator):
             arc_neo.data.bevel_factor_start = self.arc_angle / 360
             arc_neo.data.bevel_factor_end = 1
             end1 = new_point(use_spheres=self.use_spheres,
-                            radius=self.sphere_radius,
-                            hide=self.hide_endpoints)
+                             radius=self.sphere_radius,
+                             hide=self.hide_endpoints)
             end1.name = "Arc endpoint"
             end2 = new_point(use_spheres=self.use_spheres,
-                            radius=self.sphere_radius,
-                            hide=self.hide_endpoints)
+                             radius=self.sphere_radius,
+                             hide=self.hide_endpoints)
             end2.name = "Arc endpoint"
             position_on_curve(end1, arc_neo, position=self.arc_angle / 360)
             position_on_curve(end2, arc_neo, position=1) 
