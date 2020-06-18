@@ -16,11 +16,6 @@ class Vector(bpy.types.Operator):
                      " Select two points. The endpoint should be active")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
-    # GeoBlender Panel Type
-    gb_panel = '2D Constructions > Basic Tools > Lines'
-
-    
-
     bevel_depth: bpy.props.FloatProperty(
         name="Bevel depth:",
         description="Thickness of segment",

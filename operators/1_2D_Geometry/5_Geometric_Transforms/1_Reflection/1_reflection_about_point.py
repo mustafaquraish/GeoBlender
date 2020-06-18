@@ -8,8 +8,8 @@ from GeoBlender.utils.constraints import copy_rotation
 class ReflectionPoint(bpy.types.Operator):
     bl_label = "Reflection about point"
     bl_idname = "geometry.reflection_point"
-    bl_description = ("Returns the reflection of an object relative to a"
-                      " point (origin of reflection). Select an object and "
+    bl_description = ("Returns the reflection of an object relative to a "
+                      "point (origin of reflection). Select an object and "
                       "a point. The object should be active")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
@@ -29,9 +29,9 @@ class ReflectionPoint(bpy.types.Operator):
 
     @classmethod
     def poll(cls, context):
-    #    return (len(context.selected_objects) == 2 and
-    #            context.object is not None)
-        return context.object is not None
+       return (len(context.selected_objects) == 2 
+               and context.object is not None
+               and context.object in context.selected_objects)
 
     def invoke(self, context, event):
         self.use_spheres = context.scene.geoblender_settings.use_spheres

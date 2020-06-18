@@ -38,18 +38,10 @@ class MidpointRef(bpy.types.Operator):
             others.remove(A)
             B = others[0]
 
-            if not (isinstance(B.data, bpy.types.Curve)):
-                return False
-
-            elif 'Line' not in B.data.name:
-                return False
-
-            else:
-                return True
-
+            if isinstance(B.data, bpy.types.Curve):
+                return ('Line' in B.data.name) 
         
-        else:
-            return False
+        return False
 
     def invoke(self, context, event):
         self.sphere_radius = context.scene.geoblender_settings.sphere_radius

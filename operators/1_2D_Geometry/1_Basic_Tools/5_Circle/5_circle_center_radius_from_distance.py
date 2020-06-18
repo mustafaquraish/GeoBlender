@@ -13,9 +13,6 @@ class CircleCenterRadius(bpy.types.Operator):
         " the other two points determine the radius")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
-    # GeoBlender Panel Type
-    gb_panel = '2D Constructions > Basic Tools > Circles'
-
     bevel_depth: bpy.props.FloatProperty(
         name="Bevel depth:",
         description="Thickness of circle",

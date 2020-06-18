@@ -15,8 +15,6 @@ class Polygon(bpy.types.Operator):
     bl_description = ("Add a regular polygon with given center (point). "
                      " Select a point")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
-
-
     
 
     sides_number: bpy.props.IntProperty(

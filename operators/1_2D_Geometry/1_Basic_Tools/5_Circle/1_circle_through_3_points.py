@@ -9,9 +9,6 @@ class CircleThrough3Points(bpy.types.Operator):
     bl_description = "Add a circle through three points. Select three points"
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
-    # GeoBlender Panel Type
-    gb_panel = '2D Constructions > Basic Tools > Circles'
-
     bevel_depth: bpy.props.FloatProperty(
         name="Bevel depth:",
         description="Thickness of circle",

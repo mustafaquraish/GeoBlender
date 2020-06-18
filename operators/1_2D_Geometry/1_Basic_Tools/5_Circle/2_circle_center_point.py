@@ -11,8 +11,6 @@ class CircleCPoint(bpy.types.Operator):
         "Select two points, the center should be the active object")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
-    # GeoBlender Panel Type
-    gb_panel = '2D Constructions > Basic Tools > Circles'
 
     bevel_depth: bpy.props.FloatProperty(
         name="Bevel depth:",

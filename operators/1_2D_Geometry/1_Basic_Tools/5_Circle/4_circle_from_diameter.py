@@ -11,9 +11,6 @@ class CircleDiameter(bpy.types.Operator):
                       "Select either the antidiametrical points or the diameter")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
-    # GeoBlender Panel Type
-    gb_panel = '2D Constructions > Basic Tools > Circles'
-
     bevel_depth: bpy.props.FloatProperty(
         name="Bevel depth:",
         description="Thickness of circle",

@@ -16,10 +16,6 @@ class Plane(bpy.types.Operator):
         default=300
     )
 
-    @classmethod
-    def poll(cls, context):
-        return True
-
     def invoke(self, context, event):
         self.hide_extra = context.scene.geoblender_settings.hide_extra
         self.plane_size = context.scene.geoblender_settings.plane_size
