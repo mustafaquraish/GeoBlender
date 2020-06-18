@@ -7,11 +7,11 @@ from GeoBlender.geometry.lines import segment
 class Locus(bpy.types.Operator):
     bl_label = "Geometrical locus"
     bl_idname = "geometry.locus"
-    bl_description = ("Add the locus of a (free) point determined by the motion of another " 
-                     "point (source) along a curve. Select two points. The free point "
-                     "should be active")
+    bl_description = (
+        "Add the locus of a (free) point determined by the motion of another "
+        "point (source) along a curve. Select two points. The free point "
+        "should be active")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
-
 
     frame_end: bpy.props.IntProperty(
         name="Frame end:",
@@ -39,7 +39,7 @@ class Locus(bpy.types.Operator):
 
     @classmethod
     def poll(cls, context):
-         return (len(context.selected_objects) == 2 and
+        return (len(context.selected_objects) == 2 and
                 context.object is not None)
 
     def invoke(self, context, event):
@@ -51,31 +51,24 @@ class Locus(bpy.types.Operator):
         others.remove(A)
         B = others[0]
 
-
-
-        
         B.constraints["Follow Path"].offset_factor = 0
-        B.constraints["Follow Path"].keyframe_insert(data_path='offset_factor', frame=1)
+        B.constraints["Follow Path"].keyframe_insert(
+            data_path='offset_factor', frame=1)
 
         B.constraints["Follow Path"].offset_factor = 1
-        B.constraints["Follow Path"].keyframe_insert(data_path='offset_factor', 
-                                                    frame=self.frame_end)
+        B.constraints["Follow Path"].keyframe_insert(data_path='offset_factor',
+                                                     frame=self.frame_end)
         fcurves = B.animation_data.action.fcurves
         for fcurve in fcurves:
             for kf in fcurve.keyframe_points:
                 kf.interpolation = 'LINEAR'
 
-
-
-
         plane = new_plane(size=1, location=(0, 0, 0), hide=False)
         plane.parent = A
-        
 
         particle = new_point(radius=self.sphere_radius)
-        particle.name ="Particle"
+        particle.name = "Particle"
         bpy.data.objects["Particle"].hide_render = True
-
 
         bpy.context.view_layer.objects.active = plane
 
@@ -99,15 +92,13 @@ class Locus(bpy.types.Operator):
         bpy.data.particles["Particles for locus"].effector_weights.gravity = 0
         bpy.data.particles["Particles for locus"].effector_weights.all = 0
 
-
         bpy.context.object.show_instancer_for_render = False
         bpy.data.particles["Particles for locus"].instance_object = bpy.data.objects["Particle"]
         bpy.context.object.show_instancer_for_viewport = False
 
         bpy.ops.ptcache.bake_all(bake=True)
 
-
         bpy.context.scene.frame_set(self.frame_end)
-        bpy.context.scene.frame_end = self.frame_end      
+        bpy.context.scene.frame_end = self.frame_end
 
         return {'FINISHED'}

@@ -63,14 +63,11 @@ class Vector(bpy.types.Operator):
         others.remove(A)
         B = others[0]
 
-        
-
-        
         e_new = new_empty(hide=True)
         e_new.location[0] = self.bevel_depth
         e_new.location[1] = self.cone_length
         e_new.location[2] = self.cone_radius
-        
+
         line = new_line()
         segment(line, B, A)
         add_abs_bevel(line, self.bevel_depth)
