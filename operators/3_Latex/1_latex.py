@@ -1,6 +1,6 @@
 import bpy
 
-from .latex_utils import import_latex
+from GeoBlender.utils.latex import import_latex
 
 class LatexLabelLatex(bpy.types.Operator):
     """Enter Latex Expression (needs internet connection)"""   

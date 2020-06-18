@@ -11,13 +11,9 @@ from GeoBlender.geometry.lines import area_function_from_lines
 class AreaMeasurement(bpy.types.Operator):
     bl_label = "Area"
     bl_idname = "geometry.measure_area"
-    bl_description = ("Computes the Area of a triangle. Select three line segments "
-                     "(sides of the triange)")
+    bl_description = ("Computes the Area of a triangle. Select three line "
+                      "segments (sides of the triange)")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
-    
-
-    
-    
 
 
     @classmethod
@@ -36,21 +32,13 @@ class AreaMeasurement(bpy.types.Operator):
         else: 
             return True
 
-            
 
-        
-
-        
     def execute(self, context):
         
         (A, B, C) = context.selected_objects[-3:]
 
-        yes = area_function_from_lines(A, B, C)
-
-        
-
-         
-        context.scene.geoblender_measurements.area = yes
+        area = area_function_from_lines(A, B, C)
+        context.scene.geoblender_measurements.area = area
 
         return {'FINISHED'}
 

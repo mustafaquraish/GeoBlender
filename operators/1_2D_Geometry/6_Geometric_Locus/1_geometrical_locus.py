@@ -7,9 +7,9 @@ from GeoBlender.geometry.lines import segment
 class Locus(bpy.types.Operator):
     bl_label = "Geometrical locus"
     bl_idname = "geometry.locus"
-    bl_description = ("Add the locus of a (free) point determined by the motion of another " 
-                     "point (source) along a curve. Select two points. The free point "
-                     "should be active")
+    bl_description = ("Add the locus of a (free) point determined by the "
+                      "motion of another point (source) along a curve. Select "
+                      "two points. The free point should be active")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
 

@@ -1,14 +1,14 @@
 import bpy
 
-from .latex_utils import import_latex
+from GeoBlender.utils.latex import import_latex
 from GeoBlender.utils import drivers
 from GeoBlender.utils.objects import move_origin_center
 
 
 class LatexLabel(bpy.types.Operator):
     """Select an object and then enter a label (needs internet connection)""" 
-    bl_idname = "add.latex_label"  # Unique identifier.
-    bl_label = "Label"           # Display name in the interface.
+    bl_idname = "add.latex_label"
+    bl_label = "Label"
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     text: bpy.props.StringProperty(name="Label:", description="Label text")
@@ -58,7 +58,6 @@ class LatexLabel(bpy.types.Operator):
             self.report({'ERROR'}, 'Invalid Latex Source')
             return {'CANCELLED'}
 
-               
 
         curve.scale *= self.scale_property
 
@@ -66,8 +65,6 @@ class LatexLabel(bpy.types.Operator):
         curve.select_set(True)
         bpy.context.view_layer.objects.active = curve
         bpy.context.object.active_material.roughness = 0
-
-               
 
         curve.parent = A
         curve.data.bevel_depth = 0  # Seems to work decent

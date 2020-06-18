@@ -9,8 +9,8 @@ class StaticVariety(bpy.types.Operator):
     bl_idname = "geometry.static_family"
     bl_description = ("Adds still copies of a dependent object "
                       "while another point moves on a curve (point must be "
-                      "constrained on a curve). Select the object(active)"
-                      " and the point")
+                      "constrained on a curve). Select the object(active) "
+                      "and the point")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
 
