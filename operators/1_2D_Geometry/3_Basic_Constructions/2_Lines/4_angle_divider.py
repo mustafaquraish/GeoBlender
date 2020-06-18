@@ -44,7 +44,7 @@ class AngleBisector(bpy.types.Operator):
 
     @classmethod
     def poll(cls, context):
-        return (len(context.selected_objects) == 3 
+        return (len(context.selected_objects) == 3
                 and context.object is not None)
 
     def invoke(self, context, event):

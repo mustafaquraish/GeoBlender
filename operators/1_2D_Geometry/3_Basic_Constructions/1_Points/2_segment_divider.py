@@ -55,7 +55,7 @@ class Scratch(bpy.types.Operator):
 
     @classmethod
     def poll(cls, context):
-        return (len(context.selected_objects) == 2 
+        return (len(context.selected_objects) == 2
                 and context.object is not None)
 
     def invoke(self, context, event):
@@ -88,7 +88,7 @@ class Scratch(bpy.types.Operator):
                 vars_def={
                     'x1': ('transform', e_help, 'location', 'X'),
                     'b1': ('transform', B, 'location', '-'),
-                    'a1': ('transform', A, 'location', '-'), 
+                    'a1': ('transform', A, 'location', '-'),
                 },
                 expr="b1 + (x1 / (1+x1)) * (a1-b1)"
             )

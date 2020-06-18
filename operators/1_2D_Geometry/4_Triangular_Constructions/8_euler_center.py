@@ -10,7 +10,6 @@ class Circumcenter(bpy.types.Operator):
                       "Select three points")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
-
     use_spheres: bpy.props.BoolProperty(
         name="Spheres for points:",
         description="Use spheres for points. Otherwise use empties",

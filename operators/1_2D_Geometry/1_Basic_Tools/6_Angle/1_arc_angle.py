@@ -17,7 +17,6 @@ class AngleArcTwoPointsFree(bpy.types.Operator):
                       "be the active object")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
-
     other_angle: bpy.props.BoolProperty(
         name="Display the outer angle:",
         description="Display the outer angle",
@@ -85,7 +84,7 @@ class AngleArcTwoPointsFree(bpy.types.Operator):
             side2 = new_line()
             add_abs_bevel(side2, self.bevel_depth)
             ray(side1, A, B)
-            ray(side2, A, C) 
+            ray(side2, A, C)
 
         uniform_scale(arc, self.radius)
 
@@ -111,7 +110,7 @@ class AngleArcTwoPointsFree(bpy.types.Operator):
             },
             expr='gb_drive_angle_bevel(True,ax,ay,az,bx,by,bz,cx,cy,cz)'
         )
-        
+
         add_driver(
             obj=arc.data,
             prop='bevel_factor_end',
@@ -129,29 +128,29 @@ class AngleArcTwoPointsFree(bpy.types.Operator):
             expr='gb_drive_angle_bevel(False,ax,ay,az,bx,by,bz,cx,cy,cz)'
         )
 
-        end1 = new_point(radius=self.sphere_radius,hide=self.hide_endpoints)
+        end1 = new_point(radius=self.sphere_radius, hide=self.hide_endpoints)
         end1.name = "Arc endpoint"
-        end2 = new_point(radius=self.sphere_radius,hide=self.hide_endpoints)
+        end2 = new_point(radius=self.sphere_radius, hide=self.hide_endpoints)
         end2.name = "Arc endpoint"
         position_on_curve(end1, arc, position=0)
-        position_on_curve(end2, arc, position=1) 
+        position_on_curve(end2, arc, position=1)
 
         add_driver(
             obj=end1.constraints[-1],
-            prop= 'offset_factor',
+            prop='offset_factor',
             vars_def={
                 'bev': ("datapath", arc, "data.bevel_factor_start"),
             },
-            expr= "bev"
+            expr="bev"
         )
 
         add_driver(
             obj=end2.constraints[-1],
-            prop= 'offset_factor',
+            prop='offset_factor',
             vars_def={
                 'bev': ("datapath", arc, "data.bevel_factor_end"),
             },
-            expr= "bev"
-        )       
-        
+            expr="bev"
+        )
+
         return {'FINISHED'}

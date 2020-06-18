@@ -13,9 +13,6 @@ class StaticVariety(bpy.types.Operator):
                       "and the point")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
-
-        
-
     copies_number: bpy.props.IntProperty(
         name="Copies number:",
         description="Number of particles to create along the locus",
@@ -34,7 +31,7 @@ class StaticVariety(bpy.types.Operator):
 
     @classmethod
     def poll(cls, context):
-         return (len(context.selected_objects) == 2 and
+        return (len(context.selected_objects) == 2 and
                 context.object is not None)
 
     def invoke(self, context, event):
@@ -47,8 +44,7 @@ class StaticVariety(bpy.types.Operator):
         others = context.selected_objects[-2:]
         others.remove(A)
         B = others[0]
-        
-        
+
         prev_selected = bpy.context.selected_objects
         prev_active = bpy.context.object
 
@@ -60,31 +56,24 @@ class StaticVariety(bpy.types.Operator):
         else:
             collection = bpy.data.collections[COLLECTION_NAME]
 
-           
-        
-        for i in range(1, (self.copies_number)+1):
-            
-            B.constraints["Follow Path"].offset_factor = (i-1) / (self.copies_number)
-            
-                                     
-            
+        for i in range(1, (self.copies_number) + 1):
+
+            B.constraints["Follow Path"].offset_factor = (
+                i - 1) / (self.copies_number)
+
             bpy.ops.object.select_all(action='DESELECT')
-            
+
             copy = duplicate(A)
             copy.select_set(True)
-            
 
             copy.driver_remove('scale')
             copy.driver_remove('location')
             copy.driver_remove('rotation_euler')
 
             bpy.ops.object.visual_transform_apply()
-        
+
             for constraint in copy.constraints:
                 copy.constraints.remove(constraint)
-
-            
-            
 
             # Option to change bevel
             if (isinstance(copy.data, bpy.types.Curve)):
@@ -99,11 +88,5 @@ class StaticVariety(bpy.types.Operator):
             for obj in prev_selected:
                 obj.select_set(True)
             bpy.context.view_layer.objects.active = prev_active
-
-            
-
-         
-            
-         
 
         return {'FINISHED'}

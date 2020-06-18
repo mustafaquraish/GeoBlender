@@ -11,7 +11,6 @@ class CircleCPoint(bpy.types.Operator):
         "Select two points, the center should be the active object")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
-
     bevel_depth: bpy.props.FloatProperty(
         name="Bevel depth:",
         description="Thickness of circle",

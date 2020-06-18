@@ -237,20 +237,20 @@ def new_arc(radius=1, location=(0, 0, 0), angle=180, sides=40, hide=False):
     set_hidden(bpy.context.object, hide)
     return bpy.context.object
 
+
 @preserve_selection
 def new_polygon(sides=3, length=1, hide=False):
     bpy.ops.curve.simple(
-        Simple_Type='Polygon', 
+        Simple_Type='Polygon',
         Simple_sides=sides,
-        Simple_radius=length, 
+        Simple_radius=length,
         shape='3D',
-        handleType='VECTOR', 
+        handleType='VECTOR',
         edit_mode=False)
     bpy.context.object.data.resolution_u = 64
     bpy.context.object.data.bevel_resolution = 32
     set_hidden(bpy.context.object, hide)
     return bpy.context.object
-
 
 
 @preserve_selection
@@ -328,6 +328,7 @@ def new_cylinder(radius=1, depth=1, vert=256, location=(0, 0, 0), hide=False):
     set_hidden(bpy.context.object, hide)
     return bpy.context.object
 
+
 @preserve_selection
 @shade_smooth_option
 def new_cone(vertices=32, radius1=1, radius2=0, depth=2, hide=False):
@@ -339,17 +340,15 @@ def new_cone(vertices=32, radius1=1, radius2=0, depth=2, hide=False):
         depth=depth,
         enter_editmode=False,
         align='WORLD'
-        )
+    )
     set_hidden(bpy.context.object, hide)
     bpy.context.object.rotation_euler[1] = 1.5708
     bpy.ops.object.transform_apply(location=False, rotation=True, scale=False)
     bpy.context.object.data.use_auto_smooth = True
-    bpy.context.object.location[0] = - depth/2
+    bpy.context.object.location[0] = - depth / 2
     bpy.ops.object.origin_set(type='ORIGIN_CURSOR', center='MEDIAN')
-  
 
     return bpy.context.object
-
 
 
 @preserve_selection
