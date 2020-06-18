@@ -30,13 +30,12 @@ class PointOnCircle(bpy.types.Operator):
         options={'HIDDEN'},
     )
 
-    sphere_subdivisions: bpy.props.IntProperty(
-        name="Segments:",
-        description="Segments to use for the spheres for points",
-        min=1,
-        max=100,
-        default=32,
-        options={'HIDDEN'},
+    position_c: bpy.props.FloatProperty(
+        name="Position on circle:",
+        description="Set the position of the point on the circle",
+        soft_min=0,
+        soft_max=1,
+        default=0
     )
 
     @classmethod
@@ -76,7 +75,7 @@ class PointOnCircle(bpy.types.Operator):
             expr="0"
         )
 
-        position_on_curve(A, circle, position=0)
+        position_on_curve(A, circle, position=self.position_c)
         copy_rotation(A, circle)
 
         return {'FINISHED'}
