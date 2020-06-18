@@ -9,8 +9,8 @@ from GeoBlender.utils.constraints import locked_track
 class MidpointRef(bpy.types.Operator):
     bl_label = "Reflection about a line"
     bl_idname = "geometry.reflection_line"
-    bl_description = ("Returns the reflection of an object relative to a"
-                      " line (line of reflection). Select an object and "
+    bl_description = ("Returns the reflection of an object relative to a "
+                      "line (line of reflection). Select an object and "
                       "a line. The object should be active")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 

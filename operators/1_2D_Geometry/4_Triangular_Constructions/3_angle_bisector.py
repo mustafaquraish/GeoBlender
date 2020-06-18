@@ -6,13 +6,12 @@ from GeoBlender.geometry.triangles import angle_bisector
 class AngleBisector(bpy.types.Operator):
     bl_label = "Angle bisector"
     bl_idname = "geometry.angle_bis"
-    bl_description = ("Add the angle bisector of a triangle. Select three"
-                      " points for the"
-                      " vertices of the triangle. The vertex of the bisector "
+    bl_description = ("Add the angle bisector of a triangle. Select three "
+                      "points for the "
+                      "vertices of the triangle. The vertex of the bisector "
                       "should be the active object")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
-    # GeoBlender Panel Type
 
     bevel_depth: bpy.props.FloatProperty(
         name="Bevel depth:",

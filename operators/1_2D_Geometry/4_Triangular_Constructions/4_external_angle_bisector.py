@@ -7,13 +7,12 @@ class ExternalBi(bpy.types.Operator):
     bl_label = "External bisector"
     bl_idname = "geometry.angle_bis_ext"
     bl_description = (
-        "Add the external angle bisector of a triangle. Select three"
-        " points for the"
-        " vertices of the triangle. The vertex of the bisector "
+        "Add the external angle bisector of a triangle. Select three "
+        "points for the "
+        "vertices of the triangle. The vertex of the bisector "
         "should be the active object")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
-    # GeoBlender Panel Type
 
     bevel_depth: bpy.props.FloatProperty(
         name="Bevel depth:",

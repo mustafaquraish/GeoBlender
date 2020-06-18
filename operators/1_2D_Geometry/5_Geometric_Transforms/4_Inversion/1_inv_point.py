@@ -6,11 +6,11 @@ from GeoBlender.geometry.inversions import inversion_point
 class InversionPoint(bpy.types.Operator):
     bl_label = "Inversion of point"
     bl_idname = "geometry.inversion_point"
-    bl_description = ("Adds the inversion of a point. Select the point"
-                      " and a circle. The center of"
-                      " this circle is the origin  and the"
-                      " square of the radius is the power of inversion."
-                      " The point to be inverted should be the active object")
+    bl_description = ("Adds the inversion of a point. Select the point "
+                      "and a circle. The center of "
+                      "this circle is the origin  and the "
+                      "square of the radius is the power of inversion. "
+                      "The point to be inverted should be the active object")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     use_spheres: bpy.props.BoolProperty(

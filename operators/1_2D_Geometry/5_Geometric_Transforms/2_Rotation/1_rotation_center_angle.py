@@ -13,9 +13,9 @@ from GeoBlender.utils.constraints import locked_track, copy_scale
 class ScratchRot(bpy.types.Operator):
     bl_label = "Rotation about a point"
     bl_idname = "geometry.rotation_about_point"
-    bl_description = ("Adds the rotation of any object about a point."
-                      " Select an object and the origin of rotation."
-                      " The object should be active. The angle of rotation "
+    bl_description = ("Adds the rotation of any object about a point. "
+                      "Select an object and the origin of rotation. "
+                      "The object should be active. The angle of rotation "
                       "can be dynamically changed via the X coordinate of the "
                       "Rotation Driver empty that is created")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.

@@ -6,14 +6,13 @@ from GeoBlender.geometry.triangles import excircle
 class Circumcircle(bpy.types.Operator):
     bl_label = "Excircle"
     bl_idname = "geometry.excircle"
-    bl_description = ("Add the excircle of a triangle."
-                      " Select three points."
-                      " The vertex opposite to the excircle should be the"
-                      " active object")
+    bl_description = ("Add the excircle of a triangle. "
+                      "Select three points. "
+                      "The vertex opposite to the excircle should be the "
+                      "active object")
 
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
-    # GeoBlender Panel Type
 
     bevel_depth: bpy.props.FloatProperty(
         name="Bevel depth:",

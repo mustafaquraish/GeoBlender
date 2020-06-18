@@ -6,10 +6,10 @@ from GeoBlender.geometry.inversions import inversion_line_not_on
 class InversionLineOff(bpy.types.Operator):
     bl_label = "Inversion of line (off)"
     bl_idname = "geometry.inversion_line_off"
-    bl_description = ("Adds the inversion of a line in the case where the"
-                      " line does not go through the origin of inversion."
-                      " Select the line (active) and a circle."
-                      " The center of the circle is the origin and the "
+    bl_description = ("Adds the inversion of a line in the case where the "
+                      "line does not go through the origin of inversion. "
+                      "Select the line (active) and a circle. "
+                      "The center of the circle is the origin and the "
                       "square of its radius is the power of inversion")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 

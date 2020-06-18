@@ -6,11 +6,10 @@ from GeoBlender.geometry.triangles import euler_center
 class Circumcenter(bpy.types.Operator):
     bl_label = "Euler center"
     bl_idname = "geometry.circumcece"
-    bl_description = ("Add the Euler center of a triangle."
-                      " Select three points")
+    bl_description = ("Add the Euler center of a triangle. "
+                      "Select three points")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
-    # GeoBlender Panel Type
 
     use_spheres: bpy.props.BoolProperty(
         name="Spheres for points:",

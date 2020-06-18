@@ -6,11 +6,10 @@ from GeoBlender.geometry.triangles import incircle
 class Circumcircle(bpy.types.Operator):
     bl_label = "Incircle"
     bl_idname = "geometry.incircle"
-    bl_description = ("Add the incircle of a triangle."
-                      " Select three points")
+    bl_description = ("Add the incircle of a triangle. "
+                      "Select three points")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
-    # GeoBlender Panel Type
 
     bevel_depth: bpy.props.FloatProperty(
         name="Bevel depth:",
