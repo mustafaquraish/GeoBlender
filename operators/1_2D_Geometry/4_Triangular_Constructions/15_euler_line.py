@@ -10,7 +10,6 @@ class EulerLine(bpy.types.Operator):
                       "Select three points")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
-
     bevel_depth: bpy.props.FloatProperty(
         name="Bevel depth:",
         description="Thickness of circle",

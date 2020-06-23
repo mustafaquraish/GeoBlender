@@ -16,7 +16,7 @@ class Homothety_ration(bpy.types.Operator):
     bl_idname = "geometry.homothety_ratio"
     bl_description = (
         "Adds the homothetic tranform of an object (active) relative "
-        "to an origin (point). The ratio is the number set at the " 
+        "to an origin (point). The ratio is the number set at the "
         "operator panel. Select the object (active) and an origin")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
@@ -128,9 +128,9 @@ class Homothety_ration(bpy.types.Operator):
                                  's1': ('transform', A, 'scale', 'X'), },
                        expr="x1*s1")
             end1 = new_point(use_spheres=self.use_spheres,
-                                   radius=self.sphere_radius)
+                             radius=self.sphere_radius)
             end2 = new_point(use_spheres=self.use_spheres,
-                                   radius=self.sphere_radius)
+                             radius=self.sphere_radius)
             line_ends(end1, end2, new)
 
         return {'FINISHED'}

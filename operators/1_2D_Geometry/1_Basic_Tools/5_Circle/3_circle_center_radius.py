@@ -28,8 +28,8 @@ class CirceCeRa(bpy.types.Operator):
 
     @classmethod
     def poll(cls, context):
-        if (len(context.selected_objects) == 1 
-            and context.object is not None):
+        if (len(context.selected_objects) == 1
+                and context.object is not None):
 
             A = context.active_object
             return (not isinstance(A.data, bpy.types.Curve))

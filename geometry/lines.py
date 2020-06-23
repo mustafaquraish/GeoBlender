@@ -84,53 +84,49 @@ def line(line, A, B, length=100):
 #                           DISTANCE AND AREA                                 #
 # --------------------------------------------------------------------------- #
 
+
 def distance_function(A, B):
     '''
     Returns the distance of the points A, B
 
-    A, B:       2 points        (Blender Objects)    
+    A, B:       2 points        (Blender Objects)
     '''
     v = A.location - B.location
     x, y, z = v[0], v[1], v[2]
-    dist = math.sqrt(x*x+y*y+z*z)
+    dist = math.sqrt(x * x + y * y + z * z)
     return dist
+
 
 def area_function(A, B, C):
     '''
     Returns the are of the triangle ABC
 
-    A, B, C:       3 points        (Blender Objects)    
+    A, B, C:       3 points        (Blender Objects)
     '''
     c = distance_function(A, B)
     a = distance_function(B, C)
     b = distance_function(C, A)
 
-    s = (a+b+c)/2
-    yes = s*(s-a)*(s-b)*(s-c)
+    s = (a + b + c) / 2
+    yes = s * (s - a) * (s - b) * (s - c)
     area = math.sqrt(yes)
     return area
+
 
 def area_function_from_lines(A, B, C):
     '''
     Returns the are of the triangle ABC
 
-    A, B, C:       3 lines        (Blender Objects)    
+    A, B, C:       3 lines        (Blender Objects)
     '''
     a = A.scale[0]
     b = B.scale[0]
     c = C.scale[0]
 
-    s = (a+b+c)/2
-    yes = s*(s-a)*(s-b)*(s-c)
+    s = (a + b + c) / 2
+    yes = s * (s - a) * (s - b) * (s - c)
     area = math.sqrt(yes)
     return area
-
-
-
-
-    
-
-
 
 
 # --------------------------------------------------------------------------- #

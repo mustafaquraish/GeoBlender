@@ -15,26 +15,23 @@ class AreaMeasurement(bpy.types.Operator):
                       "segments (sides of the triange)")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
-
     @classmethod
     def poll(cls, context):
 
         if not (len(context.selected_objects) == 3):
             return False
 
-        
         (A, B, C) = context.selected_objects[-3:]
-        
-        if (('Line' not in A.data.name) and 
+
+        if (('Line' not in A.data.name) and
             ('Line' not in B.data.name) and
-            ('Line' not in C.data.name)):
+                ('Line' not in C.data.name)):
             return False
-        else: 
+        else:
             return True
 
-
     def execute(self, context):
-        
+
         (A, B, C) = context.selected_objects[-3:]
 
         area = area_function_from_lines(A, B, C)
@@ -50,8 +47,3 @@ class AreaMeasurement(bpy.types.Operator):
         row = col.row(align=True)
         row.operator("geometry.measure_area")
         row.prop(measurements, "area", text="")
-
-    
-        
-
-        

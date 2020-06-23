@@ -13,9 +13,6 @@ class StaticVariety(bpy.types.Operator):
                       "and the point")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
-
-        
-
     copies_number: bpy.props.IntProperty(
         name="Copies number:",
         description="Number of particles to create along the locus",
@@ -31,8 +28,6 @@ class StaticVariety(bpy.types.Operator):
         soft_max=100,
         default=5,
     )
-
-
 
     bevel_depth: bpy.props.FloatProperty(
         name="Bevel depth:",
@@ -51,7 +46,7 @@ class StaticVariety(bpy.types.Operator):
 
     @classmethod
     def poll(cls, context):
-         return (len(context.selected_objects) == 2 and
+        return (len(context.selected_objects) == 2 and
                 context.object is not None)
 
     def invoke(self, context, event):
@@ -64,8 +59,7 @@ class StaticVariety(bpy.types.Operator):
         others = context.selected_objects[-2:]
         others.remove(A)
         B = others[0]
-        
-        
+
         prev_selected = bpy.context.selected_objects
         prev_active = bpy.context.object
 
@@ -77,18 +71,17 @@ class StaticVariety(bpy.types.Operator):
         else:
             collection = bpy.data.collections[COLLECTION_NAME]
 
-           
-        
-        for i in range(1, (self.copies_number)+1):
-            
-            B.constraints["Follow Path"].offset_factor = (i-1) / (self.copies_number)
-            
+        for i in range(1, (self.copies_number) + 1):
+
+            B.constraints["Follow Path"].offset_factor = (
+                i - 1) / (self.copies_number)
+
             B.constraints["Follow Path"].keyframe_insert(
-                                                    data_path='offset_factor', 
-                                                    frame=1+i*self.frame_gap)
-            
+                data_path='offset_factor',
+                frame=1 + i * self.frame_gap)
+
             bpy.ops.object.select_all(action='DESELECT')
-            
+
             copy = duplicate(A)
             copy.select_set(True)
 
@@ -97,7 +90,7 @@ class StaticVariety(bpy.types.Operator):
             copy.driver_remove('rotation_euler')
 
             bpy.ops.object.visual_transform_apply()
-        
+
             for constraint in copy.constraints:
                 copy.constraints.remove(constraint)
 
@@ -105,28 +98,31 @@ class StaticVariety(bpy.types.Operator):
             if (isinstance(copy.data, bpy.types.Curve)):
                 add_abs_bevel(copy, self.bevel_depth)
 
-            
             old_collections = copy.users_collection  # get old collection
             collection.objects.link(copy)    # put obj in extras collection
             for coll in old_collections:
                 coll.objects.unlink(copy)    # unlink from old collection
-            
+
             copy.hide_render = True
             copy.keyframe_insert(data_path='hide_render', frame=1)
             copy.hide_render = False
-            copy.keyframe_insert(data_path='hide_render', frame=1+i*self.frame_gap)
+            copy.keyframe_insert(
+                data_path='hide_render',
+                frame=1 + i * self.frame_gap)
 
             if self.for_test:
                 mat = bpy.data.materials.new(name="TEST MATERIAL {}".format(i))
                 mat.use_nodes = True
                 mat.blend_method = 'BLEND'
                 mat_alpha = mat.node_tree.nodes["Principled BSDF"].inputs[18]
-                
+
                 mat_alpha.default_value = 0
                 mat_alpha.keyframe_insert(data_path='default_value', frame=1)
 
                 mat_alpha.default_value = 1
-                mat_alpha.keyframe_insert(data_path='default_value', frame=1+i*self.frame_gap)
+                mat_alpha.keyframe_insert(
+                    data_path='default_value',
+                    frame=1 + i * self.frame_gap)
                 # Assign it to object
                 if copy.data.materials:
                     # assign to 1st material slot
@@ -134,20 +130,10 @@ class StaticVariety(bpy.types.Operator):
                 else:
                     # no slots
                     copy.data.materials.append(mat)
-            
-        
-
-
 
             bpy.ops.object.select_all(action='DESELECT')
             for obj in prev_selected:
                 obj.select_set(True)
             bpy.context.view_layer.objects.active = prev_active
-
-            
-
-         
-            
-         
 
         return {'FINISHED'}

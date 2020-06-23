@@ -6,7 +6,7 @@ from GeoBlender.utils.objects import move_origin_center
 
 
 class LatexLabel(bpy.types.Operator):
-    """Select an object and then enter a label (needs internet connection)""" 
+    """Select an object and then enter a label (needs internet connection)"""
     bl_idname = "add.latex_label"
     bl_label = "Label"
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
@@ -57,7 +57,6 @@ class LatexLabel(bpy.types.Operator):
             # Error parsing LaTeX
             self.report({'ERROR'}, 'Invalid Latex Source')
             return {'CANCELLED'}
-
 
         curve.scale *= self.scale_property
 

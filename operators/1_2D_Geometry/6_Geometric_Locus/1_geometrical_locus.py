@@ -58,7 +58,7 @@ class Locus(bpy.types.Operator):
         follow_constraint.offset_factor = 1
         follow_constraint.keyframe_insert(data_path='offset_factor',
                                           frame=self.frame_end)
-        
+
         # Make sure the interpolation is linear
         fcurve = B.animation_data.action.fcurves[0]
         for kf in fcurve.keyframe_points:

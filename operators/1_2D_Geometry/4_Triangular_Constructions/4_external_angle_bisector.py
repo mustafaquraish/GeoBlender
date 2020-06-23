@@ -13,7 +13,6 @@ class ExternalBi(bpy.types.Operator):
         "should be the active object")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
-
     bevel_depth: bpy.props.FloatProperty(
         name="Bevel depth:",
         description="Thickness of angle bisector",

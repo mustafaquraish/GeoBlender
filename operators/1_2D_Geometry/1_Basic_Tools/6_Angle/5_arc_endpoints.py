@@ -13,7 +13,6 @@ class AngleArcTwoPoints(bpy.types.Operator):
                       "objects. The center should be the active object")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
-    
     other_angle: bpy.props.BoolProperty(
         name="Display the outer angle:",
         description="Display the outer angle",
