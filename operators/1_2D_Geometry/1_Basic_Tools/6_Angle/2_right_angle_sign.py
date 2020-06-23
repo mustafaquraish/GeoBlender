@@ -3,7 +3,6 @@ import mathutils
 import math
 from GeoBlender.utils.objects import new_point, new_circle, add_abs_bevel
 from GeoBlender.utils.objects import new_arc, new_right_angle, new_empty
-from GeoBlender.utils.objects import set_parent
 from GeoBlender.geometry.circles import circle_from_center_radius
 from GeoBlender.utils.drivers import add_driver
 from GeoBlender.utils.constraints import copy_location, copy_rotation
@@ -60,7 +59,6 @@ class RightAngle(bpy.types.Operator):
         damped_track(center, axis='-X', target=B)
         locked_track(center, axis='-Y', lock='X', target=C)
 
-        # set_parent(arc_neo, center)
         arc_neo.parent = center
         arc_neo.location[0] = - self.length
         arc_neo.location[1] = - self.length

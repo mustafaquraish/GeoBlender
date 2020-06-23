@@ -4,7 +4,6 @@ from ..utils.objects import *
 from ..utils.geometry import *
 from ..utils.drivers import add_driver
 from ..utils.constraints import *
-from ..utils.objects import set_parent
 
 from ..geometry.lines import *
 from ..geometry.circles import *

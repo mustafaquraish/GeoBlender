@@ -156,24 +156,15 @@ def uniform_scale(obj, scale):
     for i in range(3):
         obj.scale[i] = scale
 
-
 @preserve_selection
-def set_parent(obj, here_parent):
-    '''
-    Using parenting without inverse.
-
-    ---------------------------------------------------------------------------
-    ------------------------------ DEPRECATED CODE ----------------------------
-    ---------------------------------------------------------------------------
-
-        Just do `obj.parent = here_parent` in the calling function instead.
-
-    '''
-    bpy.ops.object.select_all(action='DESELECT')
-    obj.select_set(True)
-    parent_here.select_set(True)
-    bpy.context.view_layer.objects.active = parent_here
-    bpy.ops.object.parent_no_inverse_set()
+def add_particle_system(obj, **kwargs):
+    bpy.context.view_layer.objects.active = obj
+    bpy.ops.object.particle_system_add()
+    particle_system = bpy.data.particles[-1]
+    for (attr, value) in kwargs.items():
+        setattr(particle_system, attr, value)
+        # print(x)
+    return bpy.data.particles[-1]
 
 # ----------------------------------------------------------------------------
 
