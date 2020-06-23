@@ -9,7 +9,6 @@ class Incenter(bpy.types.Operator):
     bl_description = ("Add the incenter of a triangle. Select three points")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
-
     use_spheres: bpy.props.BoolProperty(
         name="Sphere for incenter:",
         description="Use sphere for incenter. Otherwise use empty",

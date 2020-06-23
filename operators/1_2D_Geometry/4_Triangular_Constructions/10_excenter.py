@@ -11,7 +11,6 @@ class Incenter(bpy.types.Operator):
                       "active object")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
-
     use_spheres: bpy.props.BoolProperty(
         name="Sphere for excenter:",
         description="Use sphere for excenter. Otherwise use empty",

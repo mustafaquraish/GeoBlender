@@ -1,5 +1,6 @@
 import bpy
 
+
 class InversionPoinSft3d(bpy.types.Operator):
     bl_label = "TO DO"
     bl_idname = "geometry.placeholder_thing"
