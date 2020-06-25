@@ -1,6 +1,6 @@
 import bpy
 from GeoBlender.utils.objects import new_line, add_abs_bevel, new_plane
-from GeoBlender.utils.objects import new_point, duplicate
+from GeoBlender.utils.objects import new_point, duplicate, add_to_collection
 from GeoBlender.geometry.lines import segment
 
 
@@ -36,7 +36,6 @@ class StaticVariety(bpy.types.Operator):
 
     def invoke(self, context, event):
         self.bevel_depth = context.scene.geoblender_settings.bevel_depth
-
         return self.execute(context)
 
     def execute(self, context):
@@ -45,48 +44,15 @@ class StaticVariety(bpy.types.Operator):
         others.remove(A)
         B = others[0]
 
-        prev_selected = bpy.context.selected_objects
-        prev_active = bpy.context.object
+        for i in range(self.copies_number):
 
-        COLLECTION_NAME = bpy.context.scene.geoblender_settings.collection_name
+            B.constraints["Follow Path"].offset_factor = i / self.copies_number
 
-        if COLLECTION_NAME not in bpy.data.collections:
-            collection = bpy.data.collections.new(COLLECTION_NAME)
-            bpy.context.scene.collection.children.link(collection)
-        else:
-            collection = bpy.data.collections[COLLECTION_NAME]
-
-        for i in range(1, (self.copies_number) + 1):
-
-            B.constraints["Follow Path"].offset_factor = (
-                i - 1) / (self.copies_number)
-
-            bpy.ops.object.select_all(action='DESELECT')
-
-            copy = duplicate(A)
-            copy.select_set(True)
-
-            copy.driver_remove('scale')
-            copy.driver_remove('location')
-            copy.driver_remove('rotation_euler')
-
-            bpy.ops.object.visual_transform_apply()
-
-            for constraint in copy.constraints:
-                copy.constraints.remove(constraint)
+            copy = duplicate(A, remove_all=True)
+            add_to_collection(copy, "Static Family")
 
             # Option to change bevel
             if (isinstance(copy.data, bpy.types.Curve)):
                 add_abs_bevel(copy, self.bevel_depth)
-
-            old_collections = copy.users_collection  # get old collection
-            collection.objects.link(copy)    # put obj in extras collection
-            for coll in old_collections:
-                coll.objects.unlink(copy)    # unlink from old collection
-
-            bpy.ops.object.select_all(action='DESELECT')
-            for obj in prev_selected:
-                obj.select_set(True)
-            bpy.context.view_layer.objects.active = prev_active
 
         return {'FINISHED'}

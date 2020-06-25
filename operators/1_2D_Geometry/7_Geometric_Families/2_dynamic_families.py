@@ -1,6 +1,6 @@
 import bpy
 from GeoBlender.utils.objects import new_line, add_abs_bevel, new_plane
-from GeoBlender.utils.objects import new_point, duplicate
+from GeoBlender.utils.objects import new_point, duplicate, add_to_collection
 from GeoBlender.geometry.lines import segment
 
 
@@ -51,7 +51,6 @@ class StaticVariety(bpy.types.Operator):
 
     def invoke(self, context, event):
         self.bevel_depth = context.scene.geoblender_settings.bevel_depth
-
         return self.execute(context)
 
     def execute(self, context):
@@ -60,80 +59,47 @@ class StaticVariety(bpy.types.Operator):
         others.remove(A)
         B = others[0]
 
-        prev_selected = bpy.context.selected_objects
-        prev_active = bpy.context.object
+        for i in range(self.copies_number):
 
-        COLLECTION_NAME = bpy.context.scene.geoblender_settings.collection_name
+            frame_num = (1 + i*self.frame_gap)
 
-        if COLLECTION_NAME not in bpy.data.collections:
-            collection = bpy.data.collections.new(COLLECTION_NAME)
-            bpy.context.scene.collection.children.link(collection)
-        else:
-            collection = bpy.data.collections[COLLECTION_NAME]
-
-        for i in range(1, (self.copies_number) + 1):
-
-            B.constraints["Follow Path"].offset_factor = (
-                i - 1) / (self.copies_number)
-
+            B.constraints["Follow Path"].offset_factor = i / self.copies_number
             B.constraints["Follow Path"].keyframe_insert(
                 data_path='offset_factor',
-                frame=1 + i * self.frame_gap)
+                frame=frame_num
+            )
 
-            bpy.ops.object.select_all(action='DESELECT')
-
-            copy = duplicate(A)
-            copy.select_set(True)
-
-            copy.driver_remove('scale')
-            copy.driver_remove('location')
-            copy.driver_remove('rotation_euler')
-
-            bpy.ops.object.visual_transform_apply()
-
-            for constraint in copy.constraints:
-                copy.constraints.remove(constraint)
+            copy = duplicate(A, remove_all=True)
+            add_to_collection(copy, "Dynamic Family")
 
             # Option to change bevel
             if (isinstance(copy.data, bpy.types.Curve)):
                 add_abs_bevel(copy, self.bevel_depth)
 
-            old_collections = copy.users_collection  # get old collection
-            collection.objects.link(copy)    # put obj in extras collection
-            for coll in old_collections:
-                coll.objects.unlink(copy)    # unlink from old collection
-
             copy.hide_render = True
-            copy.keyframe_insert(data_path='hide_render', frame=1)
+            copy.keyframe_insert(data_path='hide_render', frame=0)
+
             copy.hide_render = False
-            copy.keyframe_insert(
-                data_path='hide_render',
-                frame=1 + i * self.frame_gap)
+            copy.keyframe_insert(data_path='hide_render', frame=frame_num)
 
             if self.for_test:
-                mat = bpy.data.materials.new(name="TEST MATERIAL {}".format(i))
+                mat = bpy.data.materials.new(name=f"Test Material {i}")
                 mat.use_nodes = True
                 mat.blend_method = 'BLEND'
                 mat_alpha = mat.node_tree.nodes["Principled BSDF"].inputs[18]
 
                 mat_alpha.default_value = 0
-                mat_alpha.keyframe_insert(data_path='default_value', frame=1)
+                mat_alpha.keyframe_insert(data_path='default_value', 
+                                          frame=frame_num-1)
 
                 mat_alpha.default_value = 1
-                mat_alpha.keyframe_insert(
-                    data_path='default_value',
-                    frame=1 + i * self.frame_gap)
+                mat_alpha.keyframe_insert(data_path='default_value',
+                                          frame=frame_num)
+
                 # Assign it to object
-                if copy.data.materials:
-                    # assign to 1st material slot
+                if copy.data.materials:     # If material exists, replace
                     copy.data.materials[0] = mat
-                else:
-                    # no slots
+                else:                       # Otherwise create new one
                     copy.data.materials.append(mat)
-
-            bpy.ops.object.select_all(action='DESELECT')
-            for obj in prev_selected:
-                obj.select_set(True)
-            bpy.context.view_layer.objects.active = prev_active
-
+        
         return {'FINISHED'}

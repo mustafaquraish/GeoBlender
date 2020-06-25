@@ -52,6 +52,26 @@ def shade_smooth_option(func):
     return new_func
 
 
+def add_to_collection(obj, collection, existing=True):
+    '''
+    Adds the given object to the collection. If 'existing' is true and a 
+    collection with the same name already exists, it is added to that one.
+    Otherwise, a new collection is created (with a number at the end).
+
+    '''
+    # Make a new collection for extra objects if needed.
+    if not existing or collection not in bpy.data.collections:
+        collection = bpy.data.collections.new(collection)
+        bpy.context.scene.collection.children.link(collection)
+    else:
+        collection = bpy.data.collections[collection]
+
+    old_collections = obj.users_collection  # get old collection
+    collection.objects.link(obj)    # put obj in extras collection
+    for coll in old_collections:
+        coll.objects.unlink(obj)    # unlink from old collection
+
+
 def set_hidden(obj, hide=True):
     '''
     Simple function to hide / unhide objects from the viewport and render.
@@ -63,18 +83,7 @@ def set_hidden(obj, hide=True):
         return
 
     COLLECTION_NAME = bpy.context.scene.geoblender_settings.collection_name
-
-    # Make a new collection for extra objects if needed.
-    if COLLECTION_NAME not in bpy.data.collections:
-        collection = bpy.data.collections.new(COLLECTION_NAME)
-        bpy.context.scene.collection.children.link(collection)
-    else:
-        collection = bpy.data.collections[COLLECTION_NAME]
-
-    old_collections = obj.users_collection  # get old collection
-    collection.objects.link(obj)    # put obj in extras collection
-    for coll in old_collections:
-        coll.objects.unlink(obj)    # unlink from old collection
+    add_to_collection(obj, COLLECTION_NAME)
 
     obj.hide_viewport = hide
     obj.hide_render = hide
@@ -109,12 +118,31 @@ def join_objects(obj_list):
 
 
 @preserve_selection
-def duplicate(obj, hide=False):
+def duplicate(obj, remove_all=False, hide=False):
+    '''
+    Duplicate the given object. If `remove_all` is true, remove constraints,
+    drivers for transforms and parents, keeping the visual transform.
+    '''
     bpy.ops.object.select_all(action='DESELECT')
     obj.select_set(True)
     bpy.ops.object.duplicate()
-    set_hidden(bpy.context.object, hide)
-    return bpy.context.object
+    dupl = bpy.context.object
+
+    if remove_all:
+
+        dupl.driver_remove('scale')
+        dupl.driver_remove('location')
+        dupl.driver_remove('rotation_euler')
+
+        bpy.ops.object.visual_transform_apply()
+        bpy.ops.object.parent_clear(type='CLEAR_KEEP_TRANSFORM')
+
+        for constraint in dupl.constraints:
+            dupl.constraints.remove(constraint)
+
+
+    set_hidden(dupl, hide)
+    return dupl
 
 
 @preserve_selection
