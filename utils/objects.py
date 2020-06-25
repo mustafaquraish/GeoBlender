@@ -54,7 +54,7 @@ def shade_smooth_option(func):
 
 def add_to_collection(obj, collection, existing=True):
     '''
-    Adds the given object to the collection. If 'existing' is true and a 
+    Adds the given object to the collection. If 'existing' is true and a
     collection with the same name already exists, it is added to that one.
     Otherwise, a new collection is created (with a number at the end).
 
@@ -139,7 +139,6 @@ def duplicate(obj, remove_all=False, hide=False):
 
         for constraint in dupl.constraints:
             dupl.constraints.remove(constraint)
-
 
     set_hidden(dupl, hide)
     return dupl
