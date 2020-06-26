@@ -29,12 +29,26 @@ class StaticVariety(bpy.types.Operator):
         default=10,
     )
 
+    resolution: bpy.props.IntProperty(
+        name="Vertices:",
+        description="Resolution of the curve",
+        min=3,
+        soft_max=200,
+        default=100,
+    )
+
     bevel_depth: bpy.props.FloatProperty(
         name="Bevel depth:",
         description="Thickness of the copies (if curves)",
         min=0,
         soft_max=0.5,
         default=0.2,
+    )
+
+    vector_handles: bpy.props.BoolProperty(
+        name="Use vector handles:",
+        description="Use vector handles for bezier points instead of auto",
+        default=False
     )
 
     @classmethod
@@ -52,7 +66,7 @@ class StaticVariety(bpy.types.Operator):
         others.remove(A)
         B = others[0]
 
-        num_frames = self.frame_end - self.frame_start
+        num_verts = self.resolution
         prev_offset = B.constraints["Follow Path"].offset_factor
 
         path = bpy.data.curves.new('path','CURVE')
@@ -60,19 +74,18 @@ class StaticVariety(bpy.types.Operator):
         context.collection.objects.link(curve)
         path.dimensions = '3D'
         spline = path.splines.new('BEZIER')
-        spline.bezier_points.add(num_frames)
+        spline.bezier_points.add(num_verts)
 
-        if num_frames == 0:
-            report('ERROR', 'Length of animation is 0 frames')
-            return {'ERROR'}
+        handle_type = 'VECTOR' if self.vector_handles else 'AUTO'
 
         for i, o in enumerate(spline.bezier_points):
-            B.constraints["Follow Path"].offset_factor = i / num_frames
+            B.constraints["Follow Path"].offset_factor = i / num_verts
             bpy.context.view_layer.update()
 
             o.co = A.matrix_world.to_translation()
-            o.handle_right_type = 'AUTO'
-            o.handle_left_type = 'AUTO'
+
+            o.handle_right_type = handle_type
+            o.handle_left_type = handle_type
 
         B.constraints["Follow Path"].offset_factor = prev_offset
         bpy.context.view_layer.update()
