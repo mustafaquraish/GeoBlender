@@ -12,7 +12,7 @@ class StaticVariety(bpy.types.Operator):
                       "along a curve. Select two points. The free point "
                       "should be active")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
-    
+
     frame_start: bpy.props.IntProperty(
         name="Start frame:",
         description="Frame from which the locus curve starts",
@@ -20,7 +20,7 @@ class StaticVariety(bpy.types.Operator):
         soft_max=1000,
         default=0,
     )
-    
+
     frame_end: bpy.props.IntProperty(
         name="End frame:",
         description="Frame from which the locus curve ends",
@@ -69,8 +69,8 @@ class StaticVariety(bpy.types.Operator):
         num_verts = self.resolution
         prev_offset = B.constraints["Follow Path"].offset_factor
 
-        path = bpy.data.curves.new('path','CURVE')
-        curve = bpy.data.objects.new('Locus Curve',path)
+        path = bpy.data.curves.new('path', 'CURVE')
+        curve = bpy.data.objects.new('Locus Curve', path)
         context.collection.objects.link(curve)
         path.dimensions = '3D'
         spline = path.splines.new('BEZIER')
@@ -92,7 +92,6 @@ class StaticVariety(bpy.types.Operator):
 
         add_abs_bevel(curve, self.bevel_depth)
 
-
         # Set keyframes for the start
         # ---------------------------
         curve.data.bevel_factor_end = 0
@@ -103,7 +102,6 @@ class StaticVariety(bpy.types.Operator):
             data_path='offset_factor',
             frame=self.frame_start
         )
-
 
         curve.data.bevel_factor_end = 1
         curve.data.keyframe_insert(data_path='bevel_factor_end',

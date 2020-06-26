@@ -61,7 +61,7 @@ class StaticVariety(bpy.types.Operator):
 
         for i in range(self.copies_number):
 
-            frame_num = (1 + i*self.frame_gap)
+            frame_num = (1 + i * self.frame_gap)
 
             B.constraints["Follow Path"].offset_factor = i / self.copies_number
             B.constraints["Follow Path"].keyframe_insert(
@@ -89,8 +89,8 @@ class StaticVariety(bpy.types.Operator):
                 mat_alpha = mat.node_tree.nodes["Principled BSDF"].inputs[18]
 
                 mat_alpha.default_value = 0
-                mat_alpha.keyframe_insert(data_path='default_value', 
-                                          frame=frame_num-1)
+                mat_alpha.keyframe_insert(data_path='default_value',
+                                          frame=frame_num - 1)
 
                 mat_alpha.default_value = 1
                 mat_alpha.keyframe_insert(data_path='default_value',
@@ -101,5 +101,5 @@ class StaticVariety(bpy.types.Operator):
                     copy.data.materials[0] = mat
                 else:                       # Otherwise create new one
                     copy.data.materials.append(mat)
-        
+
         return {'FINISHED'}
