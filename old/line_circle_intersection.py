@@ -1,6 +1,6 @@
 import bpy
 from ..utils.objects import new_point
-from ..geometry.intersections import line_circle_intersections
+from ..geometry.intersections import line_circle_intersection
 
 
 class LineCircleIntersection(bpy.types.Operator):
@@ -54,7 +54,7 @@ class LineCircleIntersection(bpy.types.Operator):
 
         X = new_point()
         Y = new_point()
-        line_circle_intersections(
+        line_circle_intersection(
             X, Y, line, circle, hide_extra=self.hide_extra)
 
         return {'FINISHED'}

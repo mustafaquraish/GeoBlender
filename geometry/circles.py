@@ -83,7 +83,7 @@ def circle_from_center_radius(circle, A, radius):
 # --------------------------------------------------------------------------- #
 
 
-def radical_intercept(obj, A, B):
+def radical_intercept(obj, A, B, align_2D=True):
     '''
     Place the given object at the intersection point of the radical axis of 2
     given circles and the line connecting their centers. It also aligns the
@@ -109,8 +109,11 @@ def radical_intercept(obj, A, B):
         },
         expr='gb_rad_axis_helper(d, r1, r2, o1, o2)'
     )
-    constraints.copy_rotation(obj, A)
-    constraints.locked_track(obj, 'Z', 'Y', A)
+    if align_2D:
+        constraints.copy_rotation(obj, A)
+        constraints.locked_track(obj, 'Z', 'Y', A)
+    else:
+        constraints.damped_track(obj, axis='Z', target=B)
 
 
 def radical_axis(line, circle1, circle2):

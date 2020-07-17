@@ -42,7 +42,7 @@ def barycenter(point, A, B, C, hide_extra=True):
 
     median(median1, mid1, A, B, C)
     median(median2, mid2, B, A, C)
-    intersections.line_line_inteserction(
+    intersections.line_line_intersection(
         inter=point,
         line1=median1,
         line2=median2,
@@ -81,7 +81,7 @@ def orthocenter(point, A, B, C, hide_extra=True):
     lines.orthogonal_line_to_points(altitude1, A, B, C, hide_extra=hide_extra)
     lines.orthogonal_line_to_points(altitude2, B, A, C, hide_extra=hide_extra)
 
-    intersections.line_line_inteserction(
+    intersections.line_line_intersection(
         inter=point,
         line1=altitude1,
         line2=altitude2,
@@ -107,7 +107,7 @@ def circumcenter(point, A, B, C, hide_extra=True):
     lines.bisecting_line_of_points(perp1, A, B)
     lines.bisecting_line_of_points(perp2, A, C)
 
-    intersections.line_line_inteserction(
+    intersections.line_line_intersection(
         inter=point,
         line1=perp1,
         line2=perp2,
@@ -279,7 +279,7 @@ def incenter(point, A, B, C, hide_extra=True):
     angle_bisector(bisec1, foot1, A, B, C)
     angle_bisector(bisec2, foot2, B, A, C)
 
-    intersections.line_line_inteserction(
+    intersections.line_line_intersection(
         inter=point,
         line1=bisec1,
         line2=bisec2,
@@ -320,7 +320,7 @@ def excenter(point, A, B, C, hide_extra=True):
     external_bisector(bisec1, C, A, B)
     external_bisector(bisec2, B, A, C)
 
-    intersections.line_line_inteserction(
+    intersections.line_line_intersection(
         inter=point,
         line1=bisec1,
         line2=bisec2,

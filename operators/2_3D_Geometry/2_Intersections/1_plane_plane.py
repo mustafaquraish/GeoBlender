@@ -1,12 +1,12 @@
 import bpy
 from GeoBlender.utils.objects import new_arc, add_abs_bevel, new_point
-from GeoBlender.geometry.intersections import line_line_intersection
+from GeoBlender.geometry.intersections import plane_plane_intersection
 
 
-class LineLineInter(bpy.types.Operator):
-    bl_label = "Line - Line"
-    bl_idname = "geometry.line_line"
-    bl_description = ("Returns the intersection of 2 lines. Select 2 lines")
+class planeplaneInter(bpy.types.Operator):
+    bl_label = "plane - plane"
+    bl_idname = "geometry.plane_plane"
+    bl_description = ("Returns the intersection of 2 planes. Select 2 planes")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     use_spheres: bpy.props.BoolProperty(
@@ -37,10 +37,10 @@ class LineLineInter(bpy.types.Operator):
         if not (isinstance(B.data, bpy.types.Curve)):
             return False
 
-        if 'Line' not in A.data.name:
+        if 'plane' not in A.data.name:
             return False
 
-        if 'Line' not in B.data.name:
+        if 'plane' not in B.data.name:
             return False
 
         return True
@@ -55,6 +55,6 @@ class LineLineInter(bpy.types.Operator):
         inter = new_point(use_spheres=self.use_spheres,
                           radius=self.sphere_radius)
 
-        line_line_intersection(inter, A, B, hide_extra=self.hide_extra)
+        plane_plane_intersection(inter, A, B, hide_extra=self.hide_extra)
 
         return {'FINISHED'}

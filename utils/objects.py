@@ -175,7 +175,7 @@ def add_abs_bevel(obj, bevel_depth):
             'sy': ('transform', obj, 'scale', 'Y'),
             'sz': ('transform', obj, 'scale', 'Z'),
         },
-        expr=f'{bevel_depth} / max(sx, sy, sz)'
+        expr=f'{bevel_depth} / (max(sx, sy, sz) + 1e-5)'
     )
 
 

@@ -8,7 +8,7 @@ from . import circles
 from . import lines
 
 
-def line_line_inteserction(inter, line1, line2, hide_extra=True):
+def line_line_intersection(inter, line1, line2, hide_extra=True):
     '''
     This function moves obj to the intersection of two lines.
     We need to re-orient appropriately intersection after using this
@@ -26,7 +26,7 @@ def line_line_inteserction(inter, line1, line2, hide_extra=True):
     constraints.project_along_axis(inter, 'X', target=pr_plane, opposite=True)
 
 
-def line_circle_intersections(inter1, inter2, line, circle, hide_extra=True):
+def line_circle_intersection(inter1, inter2, line, circle, hide_extra=True):
     '''
     This function moves  inter1 and inter2 to the intersection points of a
     line and a circle. Intersections have same orientation as circle.
@@ -89,3 +89,48 @@ def circle_circle_intersection(inter1, inter2, A, B, hide_extra=True):
     constraints.copy_transforms(inter2, int_center, transforms='LR')
     constraints.locked_track(inter2, lock='Z', axis='X', target=B)
     constraints.project_along_axis(inter2, axis='-Y', target=pr_cyl)
+
+
+###############################################################################
+#                           3D INTERSECTIONS                                  #
+###############################################################################
+
+def plane_plane_intersection(inter, plane1, plane2, hide_extra=True):
+    '''
+    This function moves the line to the intersection of two plane.
+    '''
+
+    pass
+
+def plane_sphere_intersection(circle, plane, sphere, hide_extra=True):
+    '''
+    This function moves the circle to the intersection of a plane and sphere.
+    '''
+    import bpy
+    size = bpy.context.scene.geoblender_settings.plane_size
+    plane_copy = objects.new_plane(size=size, hide=hide_extra)
+    constraints.copy_transforms(plane_copy, plane, transforms='LR')
+
+    proj = objects.new_empty(hide=hide_extra)
+    constraints.copy_location(proj, sphere)
+    constraints.project_nearest(proj, target=plane_copy, align_to_normal='Z')
+    
+    pt = objects.new_point(hide=hide_extra)
+    constraints.copy_transforms(pt, proj, transforms='LR')
+    constraints.project_along_axis(pt, axis='X', target=sphere)
+
+    circles.circle_from_center_point(circle, proj, pt)
+
+def sphere_sphere_intersection(circle, sphere1, sphere2, hide_extra=True):
+    '''
+    This function moves the circle to the intersection of 2 spheres.
+    '''
+    pt = objects.new_empty(hide=hide_extra)
+    circles.radical_intercept(pt, sphere1, sphere2, align_2D=False)
+    
+    
+    pt2 = objects.new_empty(hide=hide_extra)
+    constraints.copy_transforms(pt2, pt, transforms='LR')
+    constraints.project_along_axis(pt2, axis='X', target=sphere1)
+
+    circles.circle_from_center_point(circle, pt, pt2)

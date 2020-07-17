@@ -1,6 +1,6 @@
 import bpy
 from GeoBlender.utils.objects import new_arc, add_abs_bevel, new_point
-from GeoBlender.geometry.intersections import line_circle_intersections
+from GeoBlender.geometry.intersections import line_circle_intersection
 
 
 class LineCircleIntersection(bpy.types.Operator):
@@ -64,7 +64,7 @@ class LineCircleIntersection(bpy.types.Operator):
                       radius=self.sphere_radius)
         Y = new_point(use_spheres=self.use_spheres,
                       radius=self.sphere_radius)
-        line_circle_intersections(
+        line_circle_intersection(
             X, Y, line, circle, hide_extra=self.hide_extra)
 
         return {'FINISHED'}
