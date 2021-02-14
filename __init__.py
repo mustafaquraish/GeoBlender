@@ -72,7 +72,6 @@ def load_post_handler(dummy):
 
     for func in custom_funcs:
         bpy.app.driver_namespace[func.__name__] = func
-        print(f"*** Added {func.__name__} to driver namespace")
 
 # -----------------------------------------------------------------------------
 

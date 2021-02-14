@@ -4,9 +4,10 @@ from GeoBlender.geometry.intersections import plane_plane_intersection
 
 
 class planeplaneInter(bpy.types.Operator):
-    bl_label = "plane - plane"
+    bl_label = "Plane - Plane"
     bl_idname = "geometry.plane_plane"
-    bl_description = ("Returns the intersection of 2 planes. Select 2 planes")
+    bl_description = ("Returns the intersection of 2 planes. Select 2 planes."
+                      "NOT IMPLEMENTED YET")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     use_spheres: bpy.props.BoolProperty(
@@ -25,6 +26,8 @@ class planeplaneInter(bpy.types.Operator):
 
     @classmethod
     def poll(cls, context):
+        # Temporarily...
+        return False
 
         if not (len(context.selected_objects) == 2):
             return False
