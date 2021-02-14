@@ -1,8 +1,6 @@
 # GeoBlender: A 3D geometry plugin for Blender
 ---
 
-![PEP8 formatting](https://github.com/mustafaquraish/GeoBlender/workflows/PEP8%20formatting/badge.svg)
-
 <img src="https://imgur.com/QbJPH2R.jpg" width="250" height="250"/>
 
 The purpose of this plugin is to make it much easier to apply mathematical and geometric transformations on objects which are not easily done in Blender natively. Examples of such operations are:
