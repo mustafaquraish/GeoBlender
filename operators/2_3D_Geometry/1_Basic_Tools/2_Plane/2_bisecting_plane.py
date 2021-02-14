@@ -3,6 +3,7 @@ from GeoBlender.utils.objects import new_plane
 from GeoBlender.geometry.planes import bisecting_plane_of_points
 from GeoBlender.geometry.planes import bisecting_plane_of_line
 
+
 class Plane(bpy.types.Operator):
     bl_label = "Perp. Bisecting plane"
     bl_idname = "geometry.3d_bisecting_plane"
@@ -27,7 +28,7 @@ class Plane(bpy.types.Operator):
             if isinstance(A.data, bpy.types.Curve):
                 return ('Line' in A.data.name)
             return False
-        
+
         return len(context.selected_objects) == 2
 
     def execute(self, context):

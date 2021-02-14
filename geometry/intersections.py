@@ -102,6 +102,7 @@ def plane_plane_intersection(inter, plane1, plane2, hide_extra=True):
 
     pass
 
+
 def plane_sphere_intersection(circle, plane, sphere, hide_extra=True):
     '''
     This function moves the circle to the intersection of a plane and sphere.
@@ -114,12 +115,13 @@ def plane_sphere_intersection(circle, plane, sphere, hide_extra=True):
     proj = objects.new_empty(hide=hide_extra)
     constraints.copy_location(proj, sphere)
     constraints.project_nearest(proj, target=plane_copy, align_to_normal='Z')
-    
+
     pt = objects.new_point(hide=hide_extra)
     constraints.copy_transforms(pt, proj, transforms='LR')
     constraints.project_along_axis(pt, axis='X', target=sphere)
 
     circles.circle_from_center_point(circle, proj, pt)
+
 
 def sphere_sphere_intersection(circle, sphere1, sphere2, hide_extra=True):
     '''
@@ -127,8 +129,7 @@ def sphere_sphere_intersection(circle, sphere1, sphere2, hide_extra=True):
     '''
     pt = objects.new_empty(hide=hide_extra)
     circles.radical_intercept(pt, sphere1, sphere2, align_2D=False)
-    
-    
+
     pt2 = objects.new_empty(hide=hide_extra)
     constraints.copy_transforms(pt2, pt, transforms='LR')
     constraints.project_along_axis(pt2, axis='X', target=sphere1)
