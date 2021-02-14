@@ -39,10 +39,9 @@ class SphereSphereInter(bpy.types.Operator):
 
     def execute(self, context):
         (A, B) = context.selected_objects[-2:]
-        
+
         circle = new_circle()
         sphere_sphere_intersection(circle, A, B)
         add_abs_bevel(circle, self.bevel_depth)
-
 
         return {'FINISHED'}

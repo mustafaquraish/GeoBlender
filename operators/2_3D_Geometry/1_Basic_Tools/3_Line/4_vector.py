@@ -85,7 +85,7 @@ class Vector(bpy.types.Operator):
 
         cone = new_cone(radius1=self.cone_radius, depth=self.cone_length)
         bpy.ops.object.mode_set(mode='EDIT')
-        cone.location.z -= self.cone_length/2
+        cone.location.z -= self.cone_length / 2
         bpy.ops.object.mode_set(mode='OBJECT')
 
         copy_location(cone, A)

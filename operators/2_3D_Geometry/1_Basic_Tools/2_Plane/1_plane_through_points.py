@@ -2,6 +2,7 @@ import bpy
 from GeoBlender.utils.objects import new_plane
 from GeoBlender.geometry.planes import align_to_plane_of
 
+
 class Plane(bpy.types.Operator):
     bl_label = "Plane through 3 points"
     bl_idname = "geometry.3d_plane_points"
@@ -23,6 +24,6 @@ class Plane(bpy.types.Operator):
     def execute(self, context):
         A, B, C = context.selected_objects[-3:]
         plane = new_plane(size=self.plane_size)
-        align_to_plane_of(plane, A, B , C)
+        align_to_plane_of(plane, A, B, C)
 
         return {'FINISHED'}
