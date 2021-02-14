@@ -9,12 +9,19 @@ class GeoBlenderSettings(bpy.types.PropertyGroup):
         options={'HIDDEN'},
     )
 
+    shade_smooth: bpy.props.BoolProperty(
+        name="Shade Smooth:",
+        description="Shade objects smooth",
+        default=True,
+        options={'HIDDEN'},
+    )
+
     bevel_depth: bpy.props.FloatProperty(
         name="Bevel Depth:",
-        description="Bevel depth for curves",
+        description="Thickness of curves",
         soft_min=0.0,
         soft_max=0.5,
-        default=0.0,
+        default=0.2,
         options={'HIDDEN'},
     )
 
@@ -27,6 +34,23 @@ class GeoBlenderSettings(bpy.types.PropertyGroup):
         options={'HIDDEN'},
     )
 
+    length: bpy.props.FloatProperty(
+        name="Length:",
+        description="Length of lines",
+        min=0,
+        soft_max=300,
+        default=100,
+    )
+
+    circle_radius: bpy.props.FloatProperty(
+        name="Radius:",
+        description="Radius of sphere",
+        soft_min=0.01,
+        soft_max=200,
+        default=5,
+        options={'HIDDEN'},
+    )
+
     collection_name: bpy.props.StringProperty(
         name="Collection:",
         description="Extra objects needed for operators will be put here",
@@ -34,11 +58,58 @@ class GeoBlenderSettings(bpy.types.PropertyGroup):
         options={'HIDDEN'},
     )
 
+    use_spheres: bpy.props.BoolProperty(
+        name="Spheres for points:",
+        description="Use spheres for points instead of empties",
+        default=True,
+        options={'HIDDEN'},
+    )
+
+    sphere_radius: bpy.props.FloatProperty(
+        name="Radius:",
+        description="Radius of spheres drawn for points",
+        soft_min=0.01,
+        soft_max=2,
+        default=0.5,
+        options={'HIDDEN'},
+    )
+
+    sphere_subdivisions: bpy.props.IntProperty(
+        name="Segments:",
+        description="Segments to use for the spheres for points",
+        min=1,
+        max=100,
+        default=32,
+        options={'HIDDEN'},
+    )
+
 
 class GeoBlenderMeasurements(bpy.types.PropertyGroup):
+
+    length: bpy.props.FloatProperty(
+        name="Length",
+        description="Length measurement",
+        default=0.0,
+        options={'HIDDEN'},
+    )
+
     angle: bpy.props.FloatProperty(
-        name="Measured angle",
-        description="Bevel depth for curves",
+        name="Angle",
+        description="Angle measurement",
+        default=0.0,
+        options={'HIDDEN'},
+    )
+
+    area: bpy.props.FloatProperty(
+        name="Area",
+        description="Area measurement",
+        default=0.0,
+        options={'HIDDEN'},
+    )
+
+    radius: bpy.props.FloatProperty(
+        name="Radius",
+        description="Radius measurement",
         default=0.0,
         options={'HIDDEN'},
     )

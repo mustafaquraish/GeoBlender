@@ -1,6 +1,6 @@
 import bpy
 from collections import defaultdict
-from .operators import operator_list
+from .operators import operators_dict
 
 
 '''
@@ -8,6 +8,96 @@ Each Operator should have an attribute called `gb_panel` with the name of the
 panel it should be added to. If this attribute isn't set, the operator is not
 added to any panel (but can be accessed using F3).
 '''
+
+###############################################################################
+
+
+class GeoBlenderPropertiesPanel(bpy.types.Panel):
+    '''
+    This panel stores the Default properties for the operators. When making a
+    new operator, these values are used by default for the local operator
+    properties. This panel also allows you to choose the default collection
+    for the extra object created by the addon.
+    '''
+    bl_idname = "OBJECT_PT_geoblender_props"
+    bl_label = "Default Properties"
+    bl_category = "GeoBlender"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+    bl_options = {'DEFAULT_CLOSED'}
+
+    def draw(self, context):
+        layout = self.layout
+        layout.use_property_split = True
+        settings = context.scene.geoblender_settings
+
+        row = layout.row()
+        row.prop(settings, 'hide_extra')
+
+        row = layout.row()
+        row.prop(settings, 'shade_smooth')
+
+        row = layout.row()
+        row.prop(settings, "plane_size", expand=True)
+
+        row = layout.row()
+        row.prop(settings, 'bevel_depth', expand=True)
+
+        row = layout.row()
+        row.prop(settings, 'collection_name', expand=True)
+
+        layout.row().separator()
+
+        row = layout.row()
+        row.prop(settings, 'use_spheres', expand=True)
+
+        if settings.use_spheres:
+            row = layout.row()
+            row.prop(settings, 'sphere_radius', expand=True)
+
+            row = layout.row()
+            row.prop(settings, 'sphere_subdivisions', expand=True)
+
+
+###############################################################################
+
+class GeoBlenderMeasurePanel(bpy.types.Panel):
+    '''
+    This panel is to allow measurements and display their values at the point
+    of measurement in the UI itself. This will need to be changed manually
+    to add more measurement operators.
+    '''
+    bl_idname = "OBJECT_PT_geoblender_measure"
+    bl_label = "Measurements"
+    bl_category = "GeoBlender"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+    bl_options = {'DEFAULT_CLOSED'}
+
+    def draw(self, context):
+        layout = self.layout
+        measurements = context.scene.geoblender_measurements
+
+        col = layout.column(align=True)
+        row = col.row(align=True)
+
+        row.operator("geometry.measure_length")
+        row.prop(measurements, "length", text="")
+
+        col = layout.column(align=True)
+        row = col.row(align=True)
+
+        row.operator("geometry.measure_angle")
+        row.prop(measurements, "angle", text="")
+
+        col = layout.column(align=True)
+        row = col.row(align=True)
+
+        row.operator("geometry.measure_area")
+        row.prop(measurements, "area", text="")
+
+
+###############################################################################
 
 
 ###############################################################################
@@ -55,68 +145,6 @@ def operator_panel_factory(label, panel_dict, parent=None):
     return created_panels
 
 
-###############################################################################
-
-
-class GeoBlenderPropertiesPanel(bpy.types.Panel):
-    '''
-    This panel stores the Default properties for the operators. When making a
-    new operator, these values are used by default for the local operator
-    properties. This panel also allows you to choose the default collection
-    for the extra object created by the addon.
-    '''
-    bl_idname = "OBJECT_PT_geoblender_props"
-    bl_label = "Default Properties"
-    bl_category = "GeoBlender"
-    bl_space_type = "VIEW_3D"
-    bl_region_type = "UI"
-    bl_options = {'DEFAULT_CLOSED'}
-
-    def draw(self, context):
-        layout = self.layout
-        layout.use_property_split = True
-        settings = context.scene.geoblender_settings
-
-        row = layout.row()
-        row.prop(settings, 'hide_extra')
-
-        row = layout.row()
-        row.prop(settings, "plane_size", expand=True)
-
-        row = layout.row()
-        row.prop(settings, 'bevel_depth', expand=True)
-
-        row = layout.row()
-        row.prop(settings, 'collection_name', expand=True)
-
-
-###############################################################################
-
-class GeoBlenderMeasurePanel(bpy.types.Panel):
-    '''
-    This panel is to allow measurements and display their values at the point
-    of measurement in the UI itself. This will need to be changed manually
-    to add more measurement operators.
-    '''
-    bl_idname = "OBJECT_PT_geoblender_measure"
-    bl_label = "Measurements"
-    bl_category = "GeoBlender"
-    bl_space_type = "VIEW_3D"
-    bl_region_type = "UI"
-    bl_options = {'DEFAULT_CLOSED'}
-
-    def draw(self, context):
-        layout = self.layout
-        measurements = context.scene.geoblender_measurements
-
-        col = layout.column(align=True)
-        row = col.row(align=True)
-        row.operator("geometry.measure_angle")
-        row.prop(measurements, "angle", text="")
-
-
-###############################################################################
-
 panel_list = [GeoBlenderPropertiesPanel, GeoBlenderMeasurePanel]
 
 ###############################################################################
@@ -163,12 +191,11 @@ top_level_panel_dict = {
     'subpanels': {}
 }
 
-for op in operator_list:
+for op, path in operators_dict.items():
     try:
-        # Get a list containing the panel hierarchy for the operator
-        panel_loc = op.gb_panel
-        panel_hierarchy = panel_loc.split(">")
-        panel_hierarchy = [p.strip() for p in panel_hierarchy]
+        # Get the list containing the panel hierarchy for the operator, and
+        # Remove any unnecessary white space
+        panel_hierarchy = [p.strip() for p in path]
 
         # Find the correct subpanel dict to actually insert the operator
         current_dict = top_level_panel_dict

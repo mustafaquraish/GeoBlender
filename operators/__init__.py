@@ -7,22 +7,57 @@ import os
 
 ###############################################################################
 
-# This is the list of operators that will be imported by other modules.
-operator_list = []
+# This dictionary stores a mapping between the operator classes and their
+# corresponding panel hierarchy based on the directory structure in `operators`
+# directory
+operators_dict = {}
 
 ###############################################################################
 
-# Form a list of all the files in the current directory
-path = os.path.dirname(os.path.abspath(__file__))
-files = [fname[:-3]
-         for fname in os.listdir(path)
-         if fname.endswith('.py') and fname != '__init__.py']
 
+files = []
+
+
+def file_number(f1):
+    '''
+    This function just serves as a way to extract the initial number in front
+    of the file / folder names to help sort them.
+    '''
+    try:
+        return int(f1.split("_")[0])
+    except BaseException:
+        return 0
+
+
+def get_files(folder, accum=None):
+    '''
+    Recursive find all of the files in the given folder, and construct the
+    import path for them. `accum` is the accumulated import path.
+    '''
+    # For all directory elements
+    for item in sorted(os.listdir(folder), key=file_number):
+        itempath = os.path.join(folder, item)
+        new_accum = f'{accum}.{item}' if accum is not None else item
+        # If this is an operator file, add it to the `files` list
+        if (os.path.isfile(itempath) and item != '__init__.py' and
+                item[-3:] == '.py'):
+            files.append(new_accum[:-3])  # [:-3] to remove the .py
+        # If this is a directory, recurse
+        elif os.path.isdir(itempath) and item != "__pycache__":
+            get_files(itempath, new_accum)
+
+
+# Get the directory of this folder (`operators`) and get all files.
+path = os.path.dirname(os.path.abspath(__file__))
+get_files(path)
 
 # For each file
 for py in files:
+
     # Import the file as a module
     mod = __import__('.'.join([__name__, py]), fromlist=[py])
+    # Construct the Panel Hierarchy based on the file path
+    op_path = [' '.join(f.split('_')[1:]) for f in py.split(".")[:-1]]
 
     # Get all the Operator classes
     classes = [getattr(mod, x)
@@ -30,5 +65,6 @@ for py in files:
                if isinstance(getattr(mod, x), type)
                and issubclass(getattr(mod, x), Operator)]
 
-    # Add them onto the list
-    operator_list += classes
+    # Add the mapping between the operator and the hierarchy to the dict
+    for cl in classes:
+        operators_dict[cl] = op_path

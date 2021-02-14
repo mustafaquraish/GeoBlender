@@ -24,7 +24,7 @@ import bpy
 import addon_utils
 from bpy.app.handlers import persistent
 
-from .operators import operator_list
+from .operators import operators_dict
 from .interface import panel_list
 from .properties import GeoBlenderSettings
 from .properties import GeoBlenderMeasurements
@@ -80,7 +80,7 @@ def load_post_handler(dummy):
 classes = [
     GeoBlenderSettings,
     GeoBlenderMeasurements,
-] + operator_list + panel_list
+] + [op for op in operators_dict] + panel_list
 
 
 def register():

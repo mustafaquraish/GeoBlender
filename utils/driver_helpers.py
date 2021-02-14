@@ -8,22 +8,6 @@ the driver_namespace by __init__.py
 '''
 
 
-def gb_rad_axis_helper(d, r1, r2, o1, o2):
-    '''
-    Function to be used in the driver to help compute the intersection point of
-    the radical axis of 2 circles and the line connecting their centers.
-
-    d:          Distance b/w circles             (float)
-    r1, r2:     Radii of circles                 (float)
-    oa, ob:     X,Y or Z positions of circles    (float)
-
-    Return: Returns the X, Y or Z position of the intersection point when the
-            corresponding X, Y and Z positions are passed in as `oa` and `ob`
-    '''
-    frac = (d * d + r1 * r1 - r2 * r2) / (2 * d * d)
-    return (1 - frac) * o1 + frac * o2
-
-
 def gb_drive_angle_bevel(start, ax, ay, az, bx, by, bz, cx, cy, cz):
     '''
     Function to be used in the driver for Angle arcs. It controls both the
@@ -68,3 +52,73 @@ def gb_drive_angle_bevel(start, ax, ay, az, bx, by, bz, cx, cy, cz):
             factor = angle / math.tau   # End factor
 
     return factor
+
+
+def gb_rad_axis_helper(d, r1, r2, o1, o2):
+    '''
+    Function to be used in the driver to help compute the intersection point of
+    the radical axis of 2 circles and the line connecting their centers.
+
+    d:          Distance b/w circles             (float)
+    r1, r2:     Radii of circles                 (float)
+    o1, o2:     X,Y or Z positions of circles    (float)
+
+    Return: Returns the X, Y or Z position of the intersection point when the
+            corresponding X, Y and Z positions are passed in as `o1` and `o2`
+    '''
+    frac = (d * d + r1 * r1 - r2 * r2) / (2 * d * d)
+    return (1 - frac) * o1 + frac * o2
+
+
+def gb_polar_intersection(d, r, o1, o2):
+    '''
+    Function to be used in the driver to help compute the intersection point of
+    the polar line of a point A relative to a circle and the line connecting the
+    point with the center.
+
+    d:      Distance b/w center of circle and point           (float)
+    r:      Radii of circles                                  (float)
+    o1:     X,Y or Z positions of center of circle            (float)
+    o2:     X,Y or Z positions of the point A                 (float)
+
+    Return: Returns the X, Y or Z position of the intersection point when the
+            corresponding X, Y and Z positions are passed in as `o1` and `o2`
+    '''
+    frac = (r * r) / (d * d)
+    return (1 - frac) * o1 + frac * o2
+
+
+def gb_inv_circle_on(d, r, o1, o2):
+    '''
+    Function to be used in the driver to help compute the intersection point of
+    the inversion of a circle (origin on) and the axis connecting the center of
+    the circle and the origin of the inversion.
+
+    d:      power of inversion                                 (float)
+    r:      radius of circle                                   (float)
+    o1:     X,Y or Z positions of origin                       (float)
+    o2:     X,Y or Z positions of antipodal of origin          (float)
+
+    Return: Returns the X, Y or Z position of the intersection point when the
+            corresponding X, Y and Z positions are passed in as `o1` and `o2`
+    '''
+    frac = (d * d) / (4 * r * r)
+    return (1 - frac) * o1 + frac * o2
+
+
+def gb_inversion_expres(d, r, o1, o2):
+    '''
+    Function to be used in the driver to help compute the intersection point of
+    the inversion of a circle (origin on) and the axis connecting the center of
+    the circle and the origin of the inversion.
+
+    d:      power of inversion                                 (float)
+    r:      distance of origin from point                      (float)
+    o1:     X,Y or Z positions of origin                       (float)
+    o2:     X,Y or Z positions of origin                       (float)
+
+    Return: Returns the X, Y or Z position of the intersection point when the
+            corresponding X, Y and Z positions are passed in as `o1` and `o2`
+    '''
+    frac = (d * d) / (r * r)
+    return (1 - frac) * o1 + frac * o2

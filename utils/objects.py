@@ -35,6 +35,43 @@ def preserve_selection(func):
     return new_func
 
 
+def shade_smooth_option(func):
+
+    def new_func(*args, **kwargs):
+
+        # Call the original functions
+        ret = func(*args, **kwargs)
+
+        # Shade smooth
+        if bpy.context.scene.geoblender_settings.shade_smooth:
+            bpy.ops.object.shade_smooth()
+
+        return ret
+
+    # Return the wrapped function
+    return new_func
+
+
+def add_to_collection(obj, collection, existing=True):
+    '''
+    Adds the given object to the collection. If 'existing' is true and a
+    collection with the same name already exists, it is added to that one.
+    Otherwise, a new collection is created (with a number at the end).
+
+    '''
+    # Make a new collection for extra objects if needed.
+    if not existing or collection not in bpy.data.collections:
+        collection = bpy.data.collections.new(collection)
+        bpy.context.scene.collection.children.link(collection)
+    else:
+        collection = bpy.data.collections[collection]
+
+    old_collections = obj.users_collection  # get old collection
+    collection.objects.link(obj)    # put obj in extras collection
+    for coll in old_collections:
+        coll.objects.unlink(obj)    # unlink from old collection
+
+
 def set_hidden(obj, hide=True):
     '''
     Simple function to hide / unhide objects from the viewport and render.
@@ -46,18 +83,7 @@ def set_hidden(obj, hide=True):
         return
 
     COLLECTION_NAME = bpy.context.scene.geoblender_settings.collection_name
-
-    # Make a new collection for extra objects if needed.
-    if COLLECTION_NAME not in bpy.data.collections:
-        collection = bpy.data.collections.new(COLLECTION_NAME)
-        bpy.context.scene.collection.children.link(collection)
-    else:
-        collection = bpy.data.collections[COLLECTION_NAME]
-
-    old_collections = obj.users_collection  # get old collection
-    collection.objects.link(obj)    # put obj in extras collection
-    for coll in old_collections:
-        coll.objects.unlink(obj)    # unlink from old collection
+    add_to_collection(obj, COLLECTION_NAME)
 
     obj.hide_viewport = hide
     obj.hide_render = hide
@@ -92,12 +118,30 @@ def join_objects(obj_list):
 
 
 @preserve_selection
-def duplicate(obj, hide=False):
+def duplicate(obj, remove_all=False, hide=False):
+    '''
+    Duplicate the given object. If `remove_all` is true, remove constraints,
+    drivers for transforms and parents, keeping the visual transform.
+    '''
     bpy.ops.object.select_all(action='DESELECT')
     obj.select_set(True)
     bpy.ops.object.duplicate()
-    set_hidden(bpy.context.object, hide)
-    return bpy.context.object
+    dupl = bpy.context.object
+
+    if remove_all:
+
+        dupl.driver_remove('scale')
+        dupl.driver_remove('location')
+        dupl.driver_remove('rotation_euler')
+
+        bpy.ops.object.visual_transform_apply()
+        bpy.ops.object.parent_clear(type='CLEAR_KEEP_TRANSFORM')
+
+        for constraint in dupl.constraints:
+            dupl.constraints.remove(constraint)
+
+    set_hidden(dupl, hide)
+    return dupl
 
 
 @preserve_selection
@@ -131,10 +175,26 @@ def add_abs_bevel(obj, bevel_depth):
             'sy': ('transform', obj, 'scale', 'Y'),
             'sz': ('transform', obj, 'scale', 'Z'),
         },
-        expr=f'{bevel_depth} / max(sx, sy, sz)'
+        expr=f'{bevel_depth} / (max(sx, sy, sz) + 1e-5)'
     )
 
-###############################################################################
+
+def uniform_scale(obj, scale):
+    for i in range(3):
+        obj.scale[i] = scale
+
+
+@preserve_selection
+def add_particle_system(obj, **kwargs):
+    bpy.context.view_layer.objects.active = obj
+    bpy.ops.object.particle_system_add()
+    particle_system = bpy.data.particles[-1]
+    for (attr, value) in kwargs.items():
+        setattr(particle_system, attr, value)
+        # print(x)
+    return bpy.data.particles[-1]
+
+# ----------------------------------------------------------------------------
 
 
 @preserve_selection
@@ -172,6 +232,7 @@ def new_circle(radius=1, location=(0, 0, 0), hide=False):
         location=location
     )
     bpy.context.object.data.resolution_u = 64
+    bpy.context.object.data.bevel_resolution = 32
     set_hidden(bpy.context.object, hide)
     return bpy.context.object
 
@@ -190,6 +251,43 @@ def new_arc(radius=1, location=(0, 0, 0), angle=180, sides=40, hide=False):
         shape='3D',
         edit_mode=False
     )
+    bpy.context.object.data.resolution_u = 64
+    bpy.context.object.data.bevel_resolution = 32
+    set_hidden(bpy.context.object, hide)
+    return bpy.context.object
+
+
+@preserve_selection
+def new_polygon(sides=3, length=1, hide=False):
+    bpy.ops.curve.simple(
+        Simple_Type='Polygon',
+        Simple_sides=sides,
+        Simple_radius=length,
+        shape='3D',
+        handleType='VECTOR',
+        edit_mode=False)
+    bpy.context.object.data.resolution_u = 64
+    bpy.context.object.data.bevel_resolution = 32
+    set_hidden(bpy.context.object, hide)
+    return bpy.context.object
+
+
+@preserve_selection
+def new_right_angle(length=2, location=(0, 0, 0), hide=False):
+    bpy.ops.curve.simple(
+        align='WORLD',
+        location=location,
+        rotation=(0, 0, 0),
+        Simple_Type='Angle',
+        Simple_angle=90,
+        Simple_length=length,
+        use_cyclic_u=False,
+        shape='2D',
+        edit_mode=False
+    )
+    bpy.context.object.data.fill_mode = 'NONE'
+    bpy.context.object.data.resolution_u = 64
+    bpy.context.object.data.bevel_resolution = 32
     set_hidden(bpy.context.object, hide)
     return bpy.context.object
 
@@ -209,7 +307,11 @@ def new_mesh_circle(radius=1, vert=100, location=(0, 0, 0), hide=False):
 
 
 @preserve_selection
-def new_line(length=1, axis='Z', hide=False):
+def new_line(length=1, axis='X', hide=False):
+    '''
+    It is highly recommended that this function only be called with axis='X'
+    for the sake of consistency with the rest of the addon.
+    '''
     end_loc = (
         length if axis == 'X' else 0,
         length if axis == 'Y' else 0,
@@ -226,13 +328,14 @@ def new_line(length=1, axis='Z', hide=False):
         use_cyclic_u=False,
         edit_mode=False
     )
-    line = bpy.context.object
-    set_hidden(line, hide)
-    return line
+    bpy.context.object.data.resolution_u = 64
+    bpy.context.object.data.bevel_resolution = 32
+    set_hidden(bpy.context.object, hide)
+    return bpy.context.object
 
 
 @preserve_selection
-def new_cylinder(radius=1, depth=1, vert=100, location=(0, 0, 0), hide=False):
+def new_cylinder(radius=1, depth=1, vert=256, location=(0, 0, 0), hide=False):
     bpy.ops.mesh.primitive_cylinder_add(
         vertices=vert,
         radius=radius,
@@ -242,6 +345,28 @@ def new_cylinder(radius=1, depth=1, vert=100, location=(0, 0, 0), hide=False):
         location=location
     )
     set_hidden(bpy.context.object, hide)
+    return bpy.context.object
+
+
+@preserve_selection
+@shade_smooth_option
+def new_cone(vertices=32, radius1=1, radius2=0, depth=2, hide=False):
+    bpy.ops.view3d.snap_cursor_to_center()
+    bpy.ops.mesh.primitive_cone_add(
+        vertices=vertices,
+        radius1=radius1,
+        radius2=radius2,
+        depth=depth,
+        enter_editmode=False,
+        align='WORLD'
+    )
+    set_hidden(bpy.context.object, hide)
+    bpy.context.object.rotation_euler[1] = 1.5708
+    bpy.ops.object.transform_apply(location=False, rotation=True, scale=False)
+    bpy.context.object.data.use_auto_smooth = True
+    bpy.context.object.location[0] = - depth / 2
+    bpy.ops.object.origin_set(type='ORIGIN_CURSOR', center='MEDIAN')
+
     return bpy.context.object
 
 
@@ -259,6 +384,7 @@ def new_icosphere(radius=1.0, subdivisions=2, location=(0, 0, 0), hide=False):
 
 
 @preserve_selection
+@shade_smooth_option
 def new_sphere(radius=1, segments=32, location=(0, 0, 0), hide=False):
     bpy.ops.mesh.primitive_uv_sphere_add(
         segments=segments,
@@ -270,3 +396,32 @@ def new_sphere(radius=1, segments=32, location=(0, 0, 0), hide=False):
     )
     set_hidden(bpy.context.object, hide)
     return bpy.context.object
+
+
+# ----------------------------------------------------------------------------
+
+def new_point(use_spheres=None, radius=None, segments=None, hide=False):
+    '''
+    Specific to the GeoBlender addon. We want to be able to make points as
+    spheres or empties based on the global settings.
+    '''
+    # Check the global settings to see if we're making a sphere
+    if use_spheres is None:
+        use_spheres = bpy.context.scene.geoblender_settings.use_spheres
+
+    if use_spheres:
+        # Get the sphere properties from the global settings
+        if radius is None:
+            radius = bpy.context.scene.geoblender_settings.sphere_radius
+        if segments is None:
+            segments = bpy.context.scene.geoblender_settings.sphere_subdivisions
+        point = new_sphere(
+            radius=radius,
+            segments=segments,
+            hide=hide,
+        )
+
+    else:
+        point = new_empty(hide=hide)
+
+    return point

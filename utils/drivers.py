@@ -16,7 +16,7 @@ def make_driver_list(obj, prop, fields=None):
     list of the newly added drivers back.
 
     obj:       Source objects       (Blender Object)
-    prop:      Driver's property    ('scale', 'location', ...)
+    prop:      Driver's property    ('scale', 'location', 'rotation_euler', ...)
     fields:    Fields of prop.      (String, explained below)
 
     `fields` is a string containing one or more of the characters 'X', 'Y', 'Z'
@@ -25,7 +25,7 @@ def make_driver_list(obj, prop, fields=None):
     for example, 'XY' means the X and Y fields have a new driver created.
     '''
     if fields is None:
-        return [obj.driver_add(prop.lower())]
+        return [obj.driver_add(prop)]
 
     driver_list = []
     for axis in fields:
@@ -52,7 +52,7 @@ def add_driver(obj, prop, fields=None, vars_def={}, expr="1.0"):
     {
         var_name: (type='transform', target_object, prop, field),
         var_name: (type='distance', object_1, object_2),
-        var_name: (type='datapath', data_path)
+        var_name: (type='datapath', object, "data_path")
     }
     where:
         type: 'transform', 'distance', (... unsupported ...)
@@ -61,7 +61,8 @@ def add_driver(obj, prop, fields=None, vars_def={}, expr="1.0"):
         prop: 'scale', 'location' or 'rotation'
         field: 'X', 'Y', 'Z', 'W', '-'
             - Note: if this value is `-`, then the corresponding destination
-                field is used. (from `driver.array_index`)
+                field is used from the fields of the driven quantity.
+                (from `driver.array_index`)
 
     For example, to represent `x = Cube.scale[1]`,
     {
@@ -97,9 +98,15 @@ def add_driver(obj, prop, fields=None, vars_def={}, expr="1.0"):
                 var.targets[0].id = A
                 var.targets[1].id = B
 
+            elif var_type == "datapath":
+                (A, data_path) = vars_def[var_name][1:]
+                var.type = 'SINGLE_PROP'
+                var.targets[0].id = A
+                var.targets[0].data_path = data_path
+
             else:
                 raise Exception("Driver variable type not in "
-                                "{'transform', 'distance'}")
+                                "{'transform', 'distance', 'datapath'}")
 
         driver.driver.expression = expr
 
