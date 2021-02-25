@@ -47,7 +47,10 @@ bl_info = {
 
 # Enable the Extra Objects: Curves addon
 (installed, enabled) = addon_utils.check("add_curve_extra_objects")
-if installed and (not enabled):
+
+# TODO: Why doesn't it show the addon is installed even though it is?
+# TODO: Why does the addon not appear enabled in preferences, but works?
+if not enabled:
     addon_utils.enable("add_curve_extra_objects")
 
 # -----------------------------------------------------------------------------
