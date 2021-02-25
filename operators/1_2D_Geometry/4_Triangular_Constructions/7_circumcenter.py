@@ -6,11 +6,9 @@ from GeoBlender.geometry.triangles import circumcenter
 class Circumcenter(bpy.types.Operator):
     bl_label = "Circumcenter"
     bl_idname = "geometry.circumce"
-    bl_description = ("Add the circumcenter of a triangle."
-                      " Select three points")
+    bl_description = ("Add the circumcenter of a triangle. "
+                      "Select three points")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
-
-    # GeoBlender Panel Type
 
     use_spheres: bpy.props.BoolProperty(
         name="Spheres for points:",

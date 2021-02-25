@@ -7,10 +7,10 @@ from GeoBlender.geometry.lines import orthogonal_proj_to_line
 class OrthProj(bpy.types.Operator):
     bl_label = "Orthogonal projection"
     bl_idname = "geometry.ortho_proje"
-    bl_description = ("Returns the orthogonal projection of a point on"
-                      " a line. Select either three points or a point"
-                      " and a line. The point that is projected should"
-                      " be the active object")
+    bl_description = ("Returns the orthogonal projection of a point on "
+                      "a line. Select either three points or a point "
+                      "and a line. The point that is projected should "
+                      "be the active object")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     use_spheres: bpy.props.BoolProperty(
@@ -40,17 +40,10 @@ class OrthProj(bpy.types.Operator):
             others.remove(A)
             B = others[0]
 
-            if not (isinstance(B.data, bpy.types.Curve)):
-                return False
+            if isinstance(B.data, bpy.types.Curve):
+                return 'Line' in B.data.name
 
-            elif 'Line' not in B.data.name:
-                return False
-
-            else:
-                return True
-
-        else:
-            return False
+        return False
 
     def invoke(self, context, event):
         self.sphere_radius = context.scene.geoblender_settings.sphere_radius

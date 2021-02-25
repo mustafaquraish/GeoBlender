@@ -6,11 +6,9 @@ from GeoBlender.geometry.triangles import euler_line
 class EulerLine(bpy.types.Operator):
     bl_label = "Euler line"
     bl_idname = "geometry.euler_line"
-    bl_description = ("Add the Euler line of a triangle."
-                      " Select three points")
+    bl_description = ("Add the Euler line of a triangle. "
+                      "Select three points")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
-
-    # GeoBlender Panel Type
 
     bevel_depth: bpy.props.FloatProperty(
         name="Bevel depth:",

@@ -6,12 +6,10 @@ from GeoBlender.geometry.triangles import altitude
 class Alti(bpy.types.Operator):
     bl_label = "Altitude"
     bl_idname = "geometry.altitu"
-    bl_description = ("Add an altitude of a triangle. Select three points for"
-                      " the vertices of the triangle. The vertex of the"
-                      " altitude should be the active object")
+    bl_description = ("Add an altitude of a triangle. Select three points for "
+                      "the vertices of the triangle. The vertex of the "
+                      "altitude should be the active object")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
-
-    # GeoBlender Panel Type
 
     bevel_depth: bpy.props.FloatProperty(
         name="Bevel depth:",

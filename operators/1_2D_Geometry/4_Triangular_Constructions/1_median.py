@@ -6,13 +6,10 @@ from GeoBlender.geometry.triangles import median
 class MedianTriangle(bpy.types.Operator):
     bl_label = "Median"
     bl_idname = "geometry.median_tr"
-    bl_description = ("Add a median of a triangle. Select three points for the"
-                      " vertices of the triangle. The vertex of the median "
+    bl_description = ("Add a median of a triangle. Select three points for "
+                      "the vertices of the triangle. The vertex of the median "
                       "should be the active object")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
-
-    # GeoBlender Panel Type
-    gb_panel = '2D Constructions > Basic Tools > Circles'
 
     bevel_depth: bpy.props.FloatProperty(
         name="Bevel depth:",

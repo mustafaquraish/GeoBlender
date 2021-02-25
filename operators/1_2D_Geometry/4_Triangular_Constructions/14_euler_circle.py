@@ -6,11 +6,9 @@ from GeoBlender.geometry.triangles import euler_circle
 class Eulercircle(bpy.types.Operator):
     bl_label = "Euler circle"
     bl_idname = "geometry.circumceulre"
-    bl_description = ("Add the Euler circle of a triangle."
-                      " Select three points")
+    bl_description = ("Add the Euler circle of a triangle. "
+                      "Select three points")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
-
-    # GeoBlender Panel Type
 
     bevel_depth: bpy.props.FloatProperty(
         name="Bevel depth:",

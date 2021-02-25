@@ -8,10 +8,10 @@ class InversionCircleOn(bpy.types.Operator):
     bl_label = "Inversion of circle (off)"
     bl_idname = "geometry.inversion_circle_off"
     bl_description = (
-        "Adds the inversion of a circle in the case where the"
-        " circle does not go through the origin of inversion."
-        " Select two circles. The circle to be inverted should"
-        " be active. The other circle is the circle of inversion")
+        "Adds the inversion of a circle in the case where the "
+        "circle does not go through the origin of inversion. "
+        "Select two circles. The circle to be inverted should "
+        "be active. The other circle is the circle of inversion")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     bevel_depth: bpy.props.FloatProperty(

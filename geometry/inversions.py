@@ -100,7 +100,7 @@ def inversion_not_on_circle(inv_circle, inv_center, circle,
     inter2 = objects.new_point(hide=hide_extra)
     inter2.name = "interesction 2"
 
-    intersections.line_circle_intersections(
+    intersections.line_circle_intersection(
         inter1,
         inter2,
         connecting_line,

@@ -6,11 +6,11 @@ from GeoBlender.geometry.inversions import inversion_on_line
 class InversionLineOn(bpy.types.Operator):
     bl_label = "Inversion of line (on)"
     bl_idname = "geometry.inversion_line"
-    bl_description = ("Adds the inversion of a line in the case where the"
-                      " line goes through the origin of inversion."
-                      " Select the line (active) and a circle."
-                      " The center of the circle is the origin and the "
-                      " square of the radius is the power of inversion")
+    bl_description = ("Adds the inversion of a line in the case where the "
+                      "line goes through the origin of inversion. "
+                      "Select the line (active) and a circle. "
+                      "The center of the circle is the origin and the  "
+                      "square of the radius is the power of inversion")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     bevel_depth: bpy.props.FloatProperty(

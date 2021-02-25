@@ -8,16 +8,12 @@ from GeoBlender.utils.constraints import copy_location, copy_rotation
 from GeoBlender.utils.drivers import add_driver
 
 
-
 class Polygon(bpy.types.Operator):
     bl_label = "Polygon"
     bl_idname = "geometry.polygon"
     bl_description = ("Add a regular polygon with given center (point). "
-                     " Select a point")
+                      "Select a point")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
-
-
-    
 
     sides_number: bpy.props.IntProperty(
         name="Number of sides:",
@@ -77,8 +73,6 @@ class Polygon(bpy.types.Operator):
         polygon.parent = A
         polygon.rotation_euler[2] = math.radians(self.polygon_rotate)
 
-            
-        
         vertices = []
         for i in range(int(self.sides_number)):
             s = new_point(radius=self.sphere_radius)
@@ -88,21 +82,18 @@ class Polygon(bpy.types.Operator):
                 prop='location',
                 fields='Z',
                 expr="0"
-            )       
+            )
             vertices.append(s)
 
-        for i in range(int(self.sides_number)-1):
+        for i in range(int(self.sides_number) - 1):
             line = new_line()
-            segment(line, vertices[i], vertices[i+1])
+            segment(line, vertices[i], vertices[i + 1])
             add_abs_bevel(line, self.bevel_depth)
             line.name = "Side of polygon"
 
             line = new_line()
-            segment(line, vertices[0], vertices[int(self.sides_number)-1])
+            segment(line, vertices[0], vertices[int(self.sides_number) - 1])
             add_abs_bevel(line, self.bevel_depth)
             line.name = "Side of polygon"
-            
-            
-
 
         return {'FINISHED'}

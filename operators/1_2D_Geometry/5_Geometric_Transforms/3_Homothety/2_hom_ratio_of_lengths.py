@@ -15,13 +15,12 @@ class Homothety_lengths(bpy.types.Operator):
     bl_label = "Homothety with length ratio"
     bl_idname = "geometry.homothety_ratio_distances"
     bl_description = (
-        "Adds the homothetic tranform of an object (active) relative"
-        " to an origin (point) and ratio s/r, with s the length of a line segment" 
-        " and r the radius of a circle. Select the object (active), the origin,"
-        " a line segment (s) and a circle (r)")
+        "Adds the homothetic tranform of an object (active) relative to an "
+        "origin (point) and ratio s/r, with s the length of a line segment "
+        "and r the radius of a circle. Select the object (active), the "
+        "origin, a line segment (s) and a circle (r)")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
-    
     bevel_depth: bpy.props.FloatProperty(
         name="Bevel depth:",
         description="Thickness of curve",
@@ -68,19 +67,16 @@ class Homothety_lengths(bpy.types.Operator):
                 return False
             others.remove(O)
             (L_test, R_test) = others
-            if ('Line' in L_test.data.name and 
-                'Circle' in R_test.data.name):
+            if ('Line' in L_test.data.name and
+                    'Circle' in R_test.data.name):
                 return True
-            elif ('Line' in R_test.data.name and 
-                'Circle' in L_test.data.name):
+            elif ('Line' in R_test.data.name and
+                  'Circle' in L_test.data.name):
                 return True
-            else: 
+            else:
                 return False
-        else: 
+        else:
             return False
-        
-        
-        
 
     def invoke(self, context, event):
         self.use_spheres = context.scene.geoblender_settings.use_spheres
@@ -106,19 +102,18 @@ class Homothety_lengths(bpy.types.Operator):
         (L_test, R_test) = others
         if 'Line' in L_test.data.name:
             L = L_test
-            R = R_test               
+            R = R_test
         if 'Line' in R_test.data.name:
             L = R_test
             R = L_test
 
         # A: object to transform, O: origin, L: line, R: circle
-               
+
         if not (isinstance(A.data, bpy.types.Curve)):
             new = new_point(use_spheres=self.use_spheres,
                             radius=self.sphere_radius)
             new.name = "Homothetic object"
 
-        
         if 'Line' in A.data.name:
             new = new_line()
             new.name = "Homothetic object"
@@ -164,11 +159,9 @@ class Homothety_lengths(bpy.types.Operator):
                                  's1': ('transform', A, 'scale', 'X'), },
                        expr="(s/r)*s1")
             end1 = new_point(use_spheres=self.use_spheres,
-                                   radius=self.sphere_radius)
+                             radius=self.sphere_radius)
             end2 = new_point(use_spheres=self.use_spheres,
-                                   radius=self.sphere_radius)
+                             radius=self.sphere_radius)
             line_ends(end1, end2, new)
-
-            
 
         return {'FINISHED'}

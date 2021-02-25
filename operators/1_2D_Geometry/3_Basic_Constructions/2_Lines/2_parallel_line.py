@@ -7,11 +7,11 @@ from GeoBlender.geometry.lines import parallel_line
 class ParallelLine(bpy.types.Operator):
     bl_label = "Parallel line"
     bl_idname = "geometry.parallel_line"
-    bl_description = ("Returns the line through a given point and"
-                      " parallel to a line. Select either three points"
-                      " or a point"
-                      " and a line. The point the parallel line passes"
-                      " through needs to be the active object")
+    bl_description = ("Returns the line through a given point and "
+                      "parallel to a line. Select either three points "
+                      "or a point "
+                      "and a line. The point the parallel line passes "
+                      "through needs to be the active object")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     bevel_depth: bpy.props.FloatProperty(
@@ -43,17 +43,10 @@ class ParallelLine(bpy.types.Operator):
             others.remove(A)
             B = others[0]
 
-            if not (isinstance(B.data, bpy.types.Curve)):
-                return False
+            if isinstance(B.data, bpy.types.Curve):
+                return 'Line' in B.data.name
 
-            elif 'Line' not in B.data.name:
-                return False
-
-            else:
-                return True
-
-        else:
-            return False
+        return False
 
     def invoke(self, context, event):
         self.hide_extra = context.scene.geoblender_settings.hide_extra

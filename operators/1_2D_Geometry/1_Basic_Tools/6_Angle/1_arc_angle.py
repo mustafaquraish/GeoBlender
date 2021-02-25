@@ -1,6 +1,6 @@
 import bpy
 from GeoBlender.utils.objects import new_arc, add_abs_bevel, new_point
-from GeoBlender.utils.objects import new_line
+from GeoBlender.utils.objects import new_line, uniform_scale
 from GeoBlender.utils.geometry import align_to_plane_of
 from GeoBlender.utils.drivers import add_driver, add_driver_distance
 from GeoBlender.utils.constraints import copy_location, copy_rotation
@@ -11,18 +11,11 @@ from GeoBlender.geometry.lines import ray
 class AngleArcTwoPointsFree(bpy.types.Operator):
     bl_label = "Arc for angle"
     bl_idname = "geometry.create_angle_arc_free"
-    bl_description = ("Add the arc of an angle with given center"
-                      " and one point on each of the two sides of the angle."
-                      " Select three points. The center should "
+    bl_description = ("Add the arc of an angle with given center "
+                      "and one point on each of the two sides of the angle. "
+                      "Select three points. The center should "
                       "be the active object")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
-    '''
-    hide: bpy.props.BoolProperty(
-        name="Hide:",
-        description="hide",
-        default=True,
-    )
-    '''
 
     other_angle: bpy.props.BoolProperty(
         name="Display the outer angle:",
@@ -77,8 +70,6 @@ class AngleArcTwoPointsFree(bpy.types.Operator):
         return (len(context.selected_objects) == 3 and
                 context.object is not None)
 
-    
-
     def execute(self, context):
         A = context.active_object
         others = context.selected_objects[-3:]
@@ -88,15 +79,14 @@ class AngleArcTwoPointsFree(bpy.types.Operator):
         arc = new_arc(angle=360, sides=64, hide=self.hide_arc)
 
         if self.display_sides:
-                side1 = new_line()
-                add_abs_bevel(side1, self.bevel_depth)
-                side2 = new_line()
-                add_abs_bevel(side2, self.bevel_depth)
-                ray(side1, A, B)
-                ray(side2, A, C) 
+            side1 = new_line()
+            add_abs_bevel(side1, self.bevel_depth)
+            side2 = new_line()
+            add_abs_bevel(side2, self.bevel_depth)
+            ray(side1, A, B)
+            ray(side2, A, C)
 
-        for i in range(3):
-            arc.scale[i] = self.radius
+        uniform_scale(arc, self.radius)
 
         add_abs_bevel(arc, self.bevel_depth)
         align_to_plane_of(arc, A, B, C)
@@ -121,7 +111,6 @@ class AngleArcTwoPointsFree(bpy.types.Operator):
             expr='gb_drive_angle_bevel(True,ax,ay,az,bx,by,bz,cx,cy,cz)'
         )
 
-        
         add_driver(
             obj=arc.data,
             prop='bevel_factor_end',
@@ -139,32 +128,29 @@ class AngleArcTwoPointsFree(bpy.types.Operator):
             expr='gb_drive_angle_bevel(False,ax,ay,az,bx,by,bz,cx,cy,cz)'
         )
 
-
-
-        end1 = new_point(radius=self.sphere_radius,hide=self.hide_endpoints)
+        end1 = new_point(radius=self.sphere_radius, hide=self.hide_endpoints)
         end1.name = "Arc endpoint"
-        end2 = new_point(radius=self.sphere_radius,hide=self.hide_endpoints)
+        end2 = new_point(radius=self.sphere_radius, hide=self.hide_endpoints)
         end2.name = "Arc endpoint"
         position_on_curve(end1, arc, position=0)
-        position_on_curve(end2, arc, position=1) 
+        position_on_curve(end2, arc, position=1)
 
         add_driver(
-                obj=end1.constraints[-1],
-                prop= 'offset_factor',
-                vars_def={
-                    'bev': ("datapath", arc, "data.bevel_factor_start"),},
-                expr= "bev"
-                )
+            obj=end1.constraints[-1],
+            prop='offset_factor',
+            vars_def={
+                'bev': ("datapath", arc, "data.bevel_factor_start"),
+            },
+            expr="bev"
+        )
 
         add_driver(
-                obj=end2.constraints[-1],
-                prop= 'offset_factor',
-                vars_def={
-                    'bev': ("datapath", arc, "data.bevel_factor_end"),},
-                expr= "bev"
-                )       
+            obj=end2.constraints[-1],
+            prop='offset_factor',
+            vars_def={
+                'bev': ("datapath", arc, "data.bevel_factor_end"),
+            },
+            expr="bev"
+        )
 
-        
-
-        
         return {'FINISHED'}

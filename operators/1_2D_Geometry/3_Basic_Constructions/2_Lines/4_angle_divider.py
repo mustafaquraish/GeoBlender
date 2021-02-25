@@ -7,9 +7,9 @@ from GeoBlender.geometry.lines import segment, ray, line
 class AngleBisector(bpy.types.Operator):
     bl_label = "Angle divider"
     bl_idname = "geometry.angle_divider"
-    bl_description = ("Adds the angle divider of an angle."
-                      " Select three points defining the angle."
-                      " The vertex of the angle should be the active object")
+    bl_description = ("Adds the angle divider of an angle. "
+                      "Select three points defining the angle. "
+                      "The vertex of the angle should be the active object")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     use_ray: bpy.props.BoolProperty(
@@ -44,8 +44,8 @@ class AngleBisector(bpy.types.Operator):
 
     @classmethod
     def poll(cls, context):
-        return (len(context.selected_objects) == 3 and
-                context.object is not None)
+        return (len(context.selected_objects) == 3
+                and context.object is not None)
 
     def invoke(self, context, event):
         self.hide_extra = context.scene.geoblender_settings.hide_extra
@@ -70,7 +70,6 @@ class AngleBisector(bpy.types.Operator):
 
         if self.use_ray:
             ray(line1, A, point1)
-
         else:
             line(line1, A, point1)
 

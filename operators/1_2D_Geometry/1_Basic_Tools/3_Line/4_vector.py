@@ -7,19 +7,12 @@ from GeoBlender.utils.constraints import locked_track
 from GeoBlender.utils.drivers import add_driver, add_driver_distance
 
 
-
-
 class Vector(bpy.types.Operator):
     bl_label = "Vector"
     bl_idname = "geometry.vector"
-    bl_description = ("Add a vector from one point (origin) to another (endpoint)."
-                     " Select two points. The endpoint should be active")
+    bl_description = ("Add a vector from one point (origin) to another (end). "
+                      "Select two points. The endpoint should be active")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
-
-    # GeoBlender Panel Type
-    gb_panel = '2D Constructions > Basic Tools > Lines'
-
-    
 
     bevel_depth: bpy.props.FloatProperty(
         name="Bevel depth:",
@@ -51,8 +44,6 @@ class Vector(bpy.types.Operator):
         default=False
     )
 
-    
-
     @classmethod
     def poll(cls, context):
         return (len(context.selected_objects) == 2 and
@@ -68,42 +59,34 @@ class Vector(bpy.types.Operator):
         others.remove(A)
         B = others[0]
 
-        
-
-        
         e_new = new_empty(hide=True)
         e_new.location[0] = self.bevel_depth
         e_new.location[1] = self.cone_length
         e_new.location[2] = self.cone_radius
-        
+
         line = new_line()
         segment(line, B, A)
         add_abs_bevel(line, self.bevel_depth)
         line.name = "Vector"
 
-        add_driver(obj=line.data,
-                   prop='bevel_factor_end',
-                   vars_def={'d': ('distance', A, B),
-                             'b1': ('transform', B, 'location', '-'),
-                             'a1': ('transform', A, 'location', '-'),
-                             'bev': ('transform', e_new, 'location', 'X'),
-                             'dep': ('transform', e_new, 'location', 'Y'),
-                             'r1': ('transform', e_new, 'location', 'Z'), },
-                   expr="1-dep/d")
-
-        
-
+        add_driver(
+            obj=line.data,
+            prop='bevel_factor_end',
+            vars_def={
+                'd': ('distance', A, B),
+                'b1': ('transform', B, 'location', '-'),
+                'a1': ('transform', A, 'location', '-'),
+                'bev': ('transform', e_new, 'location', 'X'),
+                'dep': ('transform', e_new, 'location', 'Y'),
+                'r1': ('transform', e_new, 'location', 'Z'),
+            },
+            expr="1 - dep/d"
+        )
 
         cone = new_cone(radius1=self.cone_radius, depth=self.cone_length)
         copy_location(cone, A)
         copy_rotation(cone, A)
-        locked_track(
-            obj=cone,
-            lock='Z',
-            axis='-X',
-            target=B
-        )
+        locked_track(obj=cone, lock='Z', axis='-X', target=B)
         A.hide_viewport = self.hide_endpoint
-
 
         return {'FINISHED'}

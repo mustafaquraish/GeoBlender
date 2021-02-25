@@ -11,9 +11,6 @@ class PointOnCircle(bpy.types.Operator):
     bl_description = "Add a point constrained on a circle. Select a circle"
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
-    # GeoBlender Panel Type
-    gb_panel = '2D Constructions > Basic Tools > Points'
-
     use_spheres: bpy.props.BoolProperty(
         name="Spheres for points:",
         description="Use spheres for points. Otherwise use empties.",

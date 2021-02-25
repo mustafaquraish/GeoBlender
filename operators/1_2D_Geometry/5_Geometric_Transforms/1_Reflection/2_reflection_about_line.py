@@ -6,11 +6,12 @@ from GeoBlender.geometry.lines import reflect_across_line_of_points
 from GeoBlender.utils.constraints import copy_rotation, copy_location
 from GeoBlender.utils.constraints import locked_track
 
+
 class MidpointRef(bpy.types.Operator):
     bl_label = "Reflection about a line"
     bl_idname = "geometry.reflection_line"
-    bl_description = ("Returns the reflection of an object relative to a"
-                      " line (line of reflection). Select an object and "
+    bl_description = ("Returns the reflection of an object relative to a "
+                      "line (line of reflection). Select an object and "
                       "a line. The object should be active")
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
@@ -38,18 +39,10 @@ class MidpointRef(bpy.types.Operator):
             others.remove(A)
             B = others[0]
 
-            if not (isinstance(B.data, bpy.types.Curve)):
-                return False
+            if isinstance(B.data, bpy.types.Curve):
+                return ('Line' in B.data.name)
 
-            elif 'Line' not in B.data.name:
-                return False
-
-            else:
-                return True
-
-        
-        else:
-            return False
+        return False
 
     def invoke(self, context, event):
         self.sphere_radius = context.scene.geoblender_settings.sphere_radius
@@ -65,14 +58,12 @@ class MidpointRef(bpy.types.Operator):
             others.remove(A)
             B = others[0]
 
-            
             C = duplicate(A)
             C.name = "Reflection"
             for constraint in C.constraints:
-               C.constraints.remove(constraint) 
+                C.constraints.remove(constraint)
             reflect_across_line(C, A, B)
-            
-        
+
             e_help_X = new_empty(hide=True)
             e_help_X.parent = A
             e_help_X.location[0] = 1
@@ -80,19 +71,5 @@ class MidpointRef(bpy.types.Operator):
             reflect_across_line(e_rot_X, e_help_X, B)
 
             locked_track(C, 'Z', 'X', e_rot_X)
-
-
-
-
-
-
-
-
-
-
-
-        
-
-            
 
         return {'FINISHED'}
