@@ -39,7 +39,6 @@ class LatexLabelLatex(bpy.types.Operator):
         bpy.ops.object.select_all(action='DESELECT')
         curve.select_set(True)
         bpy.context.view_layer.objects.active = curve
-        bpy.context.object.active_material.roughness = 0
 
         curve.name = "Expression"
         curve.data.bevel_depth = 0  # Seems to work decent
