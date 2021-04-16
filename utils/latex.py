@@ -14,8 +14,11 @@ COLLECTION_NAME = "Latex"
 
 def latex2svg(latexcode):
     # url = "http://latex.codecogs.com/svg.latex?"
-    url = "https://math.now.sh/?from=" + latexcode
-    request = requests.get(url)
+    url = "https://math.now.sh/"
+    params = {
+        'from': latexcode
+    }
+    request = requests.get(url, params=params)
     open(SVGPATH, 'wb').write(request.content)
 
 
