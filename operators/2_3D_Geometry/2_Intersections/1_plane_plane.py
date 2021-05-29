@@ -1,63 +1,89 @@
 import bpy
-from GeoBlender.utils.objects import new_arc, add_abs_bevel, new_point
-from GeoBlender.geometry.intersections import plane_plane_intersection
+
+from GeoBlender.utils import objects
+from GeoBlender.utils import geometry
+from GeoBlender.utils import constraints
 
 
-class planeplaneInter(bpy.types.Operator):
-    bl_label = "Plane - Plane"
-    bl_idname = "geometry.plane_plane"
-    bl_description = ("Returns the intersection of 2 planes. Select 2 planes."
-                      "NOT IMPLEMENTED YET")
-    bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
+class PlanePlaneIntersection(bpy.types.Operator):
+    """Form the line of intersection between two planes. Select both planes."""
+    bl_idname = "add.planeplaneintersection"             # Unique identifier.
+    bl_label = "Plane Plane Intersection"               # Display name in the interface.
+    bl_options = {'REGISTER', 'UNDO'}           # Enable undo for the operator.
 
-    use_spheres: bpy.props.BoolProperty(
-        name="Spheres for points:",
-        description="Use spheres for points. Otherwise use empties.",
-        default=True,
+    bevel_depth: bpy.props.FloatProperty(
+        name="Bevel depth:",
+        description="Thickness of line",
+        min=0,
+        soft_max=0.5,
+        default=0.2,
     )
 
-    sphere_radius: bpy.props.FloatProperty(
-        name="Radius:",
-        description="Radius of spheres drawn for points",
-        soft_min=0.01,
-        soft_max=2,
-        default=0.5,
+    length: bpy.props.FloatProperty(
+        name="Length:",
+        description="Length of line",
+        min=0,
+        soft_max=300,
+        default=100,
     )
+
 
     @classmethod
     def poll(cls, context):
-        # Temporarily...
-        return False
-
-        if not (len(context.selected_objects) == 2):
+        if (len(context.selected_objects) != 2):
             return False
 
         (A, B) = context.selected_objects[-2:]
 
-        if not (isinstance(A.data, bpy.types.Curve)):
+        if not (isinstance(A.data, bpy.types.Mesh) and
+                isinstance(B.data, bpy.types.Mesh)):
             return False
 
-        if not (isinstance(B.data, bpy.types.Curve)):
-            return False
-
-        if 'plane' not in A.data.name:
-            return False
-
-        if 'plane' not in B.data.name:
+        if not ('Plane' in A.data.name and 'Plane' in B.data.name):
             return False
 
         return True
 
     def invoke(self, context, event):
-        self.sphere_radius = context.scene.geoblender_settings.sphere_radius
         self.hide_extra = context.scene.geoblender_settings.hide_extra
+        self.bevel_depth = context.scene.geoblender_settings.bevel_depth
+        self.length = context.scene.geoblender_settings.length
         return self.execute(context)
 
+    # execute() is called when running the operator.
     def execute(self, context):
-        (A, B) = context.selected_objects[-2:]
-        inter = new_point(use_spheres=self.use_spheres,
-                          radius=self.sphere_radius)
+        _A, _B = context.selected_objects[-2:]
 
-        plane_plane_intersection(inter, A, B, hide_extra=self.hide_extra)
+        A = objects.new_plane(hide=self.hide_extra)
+        constraints.copy_transforms(A, _A, transforms='LR')
+
+        B = objects.new_plane(hide=self.hide_extra)
+        constraints.copy_transforms(B, _B, transforms='LR')
+        
+        # A point on the normal of Plane A
+        A_norm = objects.new_empty(hide=self.hide_extra)
+        A_norm.name = "A Norm"
+        objects.uniform_scale(A_norm, 0.1)
+        objects.set_parent(A_norm, A, keep_inverse=False)
+        A_norm.location[2] = 1.0
+
+        # Empty located a A, but in the same orientation as B
+        B_rot_at_A = objects.new_empty(hide=self.hide_extra)
+        B_rot_at_A.name = "B_rot_at_A"
+        constraints.copy_location(B_rot_at_A, A)
+        constraints.copy_rotation(B_rot_at_A, B)
+
+        # (B_norm_at_a - A) gives the normal direction of B
+        B_norm_at_a = objects.new_empty(hide=self.hide_extra)
+        B_norm_at_a.name = "B_norm_at_a"
+        objects.set_parent(B_norm_at_a, B_rot_at_A, keep_inverse=False)
+        B_norm_at_a.location[2] = 1.0
+
+        intersection_line = objects.new_line(axis='Z', length=self.length)
+        objects.move_origin_center(intersection_line)
+        objects.add_abs_bevel(intersection_line, self.bevel_depth)
+
+        geometry.align_to_plane_of(intersection_line, A, A_norm, B_norm_at_a)        
+        constraints.project_along_axis(intersection_line, 'Y', B, opposite=True)
 
         return {'FINISHED'}

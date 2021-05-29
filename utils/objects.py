@@ -116,6 +116,10 @@ def join_objects(obj_list):
     bpy.ops.object.join(c)
     return obj_list[0]
 
+def set_parent(child, parent, keep_inverse=False):
+    child.parent = parent
+    if not keep_inverse:
+        child.matrix_parent_inverse.identity()
 
 @preserve_selection
 def duplicate(obj, remove_all=False, hide=False):
